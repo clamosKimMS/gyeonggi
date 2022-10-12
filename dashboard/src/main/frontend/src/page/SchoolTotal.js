@@ -1,7 +1,199 @@
+/*global kakao*/
+
 import React from "react";
 import '../css/front.css'
+import {useEffect, useState} from "react";
+import {
+    map_Ansan, map_Anseon, map_AnYan, map_Bucheon, map_Dongducheon, map_Gapyeon, map_Gimpo, map_Goyang,
+    map_Gunpo, map_Guri, map_Gwangju, map_Gwangmyeong, map_Hanam, map_Hwaseon, map_Icheon, map_Namyangju,
+    map_Osan, map_Paju, map_Pocheon, map_Pyeongtaek, map_SeongNam, map_Siheung, map_Suwon, map_Uijeonbu,
+    map_Uiwang, map_Yangju, map_Yangpyeon, map_Yeoju, map_Yeoncheon, map_Yongin
+} from "./latitude";
+import {CustomOverlayMap, Map, Polygon, MapInfoWindow} from "react-kakao-maps-sdk";
 
 export default function SchoolTotal() {
+
+    // 지역별 위도경도 배열
+    const [areas, setAreas] = useState([
+        {
+            name: "연천",
+            isMouseOver: false,
+            path: map_Yeoncheon
+        },
+        {
+            name: "포천",
+            isMouseOver: false,
+            path: map_Pocheon
+        },
+        {
+            name: "가평",
+            isMouseOver: false,
+            path: map_Gapyeon
+        },
+        {
+            name: "양평",
+            isMouseOver: false,
+            path: map_Yangpyeon
+        },
+        {
+            name: "여주",
+            isMouseOver: false,
+            path: map_Yeoju
+        },
+        {
+            name: "이천",
+            isMouseOver: false,
+            path: map_Icheon
+        },
+        {
+            name: "용인",
+            isMouseOver: false,
+            path: map_Yongin
+        },
+        {
+            name: "안성",
+            isMouseOver: false,
+            path: map_Anseon
+        },
+        {
+            name: "평택",
+            isMouseOver: false,
+            path: map_Pyeongtaek
+        },
+        {
+            name: "화성",
+            isMouseOver: false,
+            path: map_Hwaseon
+        },
+        {
+            name: "안산",
+            isMouseOver: false,
+            path: map_Ansan
+        },
+        {
+            name: "안양",
+            isMouseOver: false,
+            path: map_AnYan
+        },
+        {
+            name: "군포",
+            isMouseOver: false,
+            path: map_Gunpo
+        },
+        {
+            name: "과천",
+            isMouseOver: false,
+            path: map_Gunpo
+        },
+        {
+            name: "의왕",
+            isMouseOver: false,
+            path: map_Uiwang
+        },
+        {
+            name: "수원",
+            isMouseOver: false,
+            path: map_Suwon
+        },
+        {
+            name: "구리",
+            isMouseOver: false,
+            path: map_Guri
+        },
+        {
+            name: "성남",
+            isMouseOver: false,
+            path: map_SeongNam
+        },
+        {
+            name: "광주",
+            isMouseOver: false,
+            path: map_Gwangju
+        },
+        {
+            name: "하남",
+            isMouseOver: false,
+            path: map_Hanam
+        },
+        {
+            name: "광명",
+            isMouseOver: false,
+            path: map_Gwangmyeong
+        },
+        {
+            name: "부천",
+            isMouseOver: false,
+            path: map_Bucheon
+        },
+        {
+            name: "시흥",
+            isMouseOver: false,
+            path: map_Siheung
+        },
+        {
+            name: "오산",
+            isMouseOver: false,
+            path: map_Osan
+        },
+        {
+            name: "동두천",
+            isMouseOver: false,
+            path: map_Dongducheon
+        },
+        {
+            name: "파주",
+            isMouseOver: false,
+            path: map_Paju
+        },
+        {
+            name: "양주",
+            isMouseOver: false,
+            path: map_Yangju
+        },
+        {
+            name: "김포",
+            isMouseOver: false,
+            path: map_Gimpo
+        },
+        {
+            name: "고양",
+            isMouseOver: false,
+            path: map_Goyang
+        },
+        {
+            name: "의정부",
+            isMouseOver: false,
+            path: map_Uijeonbu
+        },
+        {
+            name: "남양주",
+            isMouseOver: false,
+            path: map_Namyangju
+        }
+    ])
+
+    // Map Hover 지역명 나타내기
+    const [mousePosition, setMousePosition] = useState({
+        lat: 0,
+        lng: 0,
+    })
+
+    const [textPlace, setTextPlace] = useState("");
+
+    useEffect(() => {
+        const tileset = new kakao.maps.Tileset({
+            width: 256,
+            height: 256,
+            getTile: (x, y, z) => {
+                const div = document.createElement('div');
+
+                // GIS맵  배경이미지
+                div.style.background = "rgb(244,244,244)";
+                return div;
+            }
+        })
+        kakao.maps.Tileset.add("TILE_NUMBER", tileset)
+    }, [])
 
     return (
         <div>
@@ -17,10 +209,10 @@ export default function SchoolTotal() {
                                 </li>
                                 <li className="active">
                                     <a href="#" className="btn-dep1 flip">학교일반현황</a>
-                                    <ul className="dep2" style={{display:"block"}}>
+                                    <ul className="dep2" style={{display: "block"}}>
                                         <li className="active">
                                             <a href="#" className="btn-dep2 flip">학교 현황</a>
-                                            <ul className="dep3" style={{display:"block"}}>
+                                            <ul className="dep3" style={{display: "block"}}>
                                                 <li className="active"><a href="#" className="btn-dep3">연도별</a></li>
                                                 <li><a href="#" className="btn-dep3">지역별</a></li>
                                             </ul>
@@ -128,19 +320,88 @@ export default function SchoolTotal() {
                                             </div>
                                         </div>
                                         <div className="map-box1">
-                                            <div className="in-map">
-                                                <img src="img/common/map1.png"/>
-                                            </div>
-                                            <div className="check-box"> {/* checked 있었음음 */ }
+                                            {/*<img src="img/common/map1.png"/>*/}
+
+                                            <Map // 지도를 표시할 Container
+                                                center={{
+                                                    lat: 37.56344698078499,
+                                                    lng: 127.14015019063882,
+                                                }}
+                                                style={{
+                                                    left: "5px",
+                                                    width: "540px",
+                                                    height: "495px",
+                                                }}
+                                                draggable={false}
+                                                zoomable={false}
+                                                disableDoubleClickZoom={true}
+                                                disableDoubleClick={true}
+                                                level={11.3} // 지도의 확대 레벨
+                                                onCreate={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
+                                                onMouseMove={(_map, mouseEvent) =>
+                                                    setMousePosition({
+                                                        lat: mouseEvent.latLng.getLat(),
+                                                        lng: mouseEvent.latLng.getLng(),
+                                                    })
+                                                }
+                                            >
+
+                                                {areas.map((area, index) => (
+                                                    <Polygon
+                                                        key={`area-${area.name}`}
+                                                        path={area.path}
+                                                        strokeWeight={2}
+                                                        strokeColor={"#ffffff"}
+                                                        strokeOpacity={0.8}
+                                                        fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
+                                                        fillOpacity={area.isMouseOver ? 1 : 0.2}
+                                                        onMouseover={() =>
+                                                            setAreas((prev) => [
+                                                                ...prev.filter((_, i) => i !== index),
+                                                                {
+                                                                    ...prev[index],
+                                                                    isMouseover: true,
+                                                                },
+                                                            ])
+                                                        }
+                                                        onMouseout={() =>
+                                                            setAreas((prev) => [
+                                                                ...prev.filter((_, i) => i !== index),
+                                                                {
+                                                                    ...prev[index],
+                                                                    isMouseover: false,
+                                                                },
+                                                            ])
+                                                        }
+
+                                                        onMousedown={() => {
+                                                            setTextPlace(area.name);
+                                                        }}
+
+                                                    />
+                                                ))}
+
+                                                {/*{areas.findIndex((v) => v.isMouseover) !== -1 && (
+                                                        <CustomOverlayMap position={mousePosition}>
+                                                            <div className="area">{areas.find((v) => v.isMouseover).name}</div>
+                                                        </CustomOverlayMap>
+                                                    )}*/}
+
+                                                {console.log(textPlace)}
+
+
+                                            </Map>
+
+                                            <div className="check-box" style={{zIndex:1, paddingBottom:"30px"}}> {/* checked 있었음 */}
                                                 {/*<div><label><input type="checkbox" checked className="checkbox1 green"/>
                                                     <p><em></em><span>유치원</span></p></label></div>*/}
-                                                <div><label><input type="checkbox" className="checkbox1 green"/>
+                                                <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 green"/>
                                                     <p><em></em><span>유치원</span></p></label></div>
-                                                <div><label><input type="checkbox" className="checkbox1 yellow"/>
+                                                <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 yellow"/>
                                                     <p><em></em><span>초등학교</span></p></label></div>
-                                                <div><label><input type="checkbox" className="checkbox1 red"/>
+                                                <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 red"/>
                                                     <p><em></em><span>중학교</span></p></label></div>
-                                                <div><label><input type="checkbox" className="checkbox1 pink"/>
+                                                <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 pink"/>
                                                     <p><em></em><span>고등학교</span></p></label></div>
                                             </div>
                                         </div>
@@ -157,7 +418,7 @@ export default function SchoolTotal() {
                                             </div>
                                         </div>
                                         <div className="table1 type1">
-                                            <table style={{width:"700px"}}>
+                                            <table style={{width: "700px"}}>
                                                 <thead>
                                                 <tr>
                                                     <th>구분</th>
