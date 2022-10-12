@@ -1,21 +1,10 @@
 import React from "react";
-
+import '../css/front.css'
 
 export default function SchoolTotal() {
 
-
-
-
     return (
         <div>
-
-            <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>
-            <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.12.1/features/pageResize/dataTables.pageResize.min.js"></script>
-
-            <script type="text/javascript" src="../js/swiper.min.js"></script>
-            <script type="text/javascript" src="../js/front.js"></script>
 
             <div id="wrap">
                 <div className="container">
@@ -421,7 +410,7 @@ export default function SchoolTotal() {
                                             </div>
                                             <div className="graph-box pdb0">
                                                 <div className="graph"><img src="img/common/graph10.png"/></div>
-                                                <div className="layer1" style={{left:"100px", top:"100px"}}>
+                                                {/*<div className="layer1" style={{left:"100px", top:"100px"}}>
                                                     <div className="tit">2021</div>
                                                     <div className="info">
                                                         <dl>
@@ -441,7 +430,7 @@ export default function SchoolTotal() {
                                                             <dd>135</dd>
                                                         </dl>
                                                     </div>
-                                                </div>
+                                                </div>*/}
 
                                             </div>
                                         </div>
@@ -477,6 +466,7 @@ export default function SchoolTotal() {
 
                 </div>
             </div>
+
         </div>
     );
 }
