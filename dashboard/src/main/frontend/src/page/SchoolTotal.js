@@ -1,10 +1,22 @@
 import React from "react";
 
+
 export default function SchoolTotal() {
+
+
 
 
     return (
         <div>
+
+            <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>
+            <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+            <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.12.1/datatables.min.js"></script>
+            <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.12.1/features/pageResize/dataTables.pageResize.min.js"></script>
+
+            <script type="text/javascript" src="../js/swiper.min.js"></script>
+            <script type="text/javascript" src="../js/front.js"></script>
+
             <div id="wrap">
                 <div className="container">
                     <aside>
@@ -16,10 +28,10 @@ export default function SchoolTotal() {
                                 </li>
                                 <li className="active">
                                     <a href="#" className="btn-dep1 flip">학교일반현황</a>
-                                    <ul className="dep2" style="display: block">
+                                    <ul className="dep2" style={{display:"block"}}>
                                         <li className="active">
                                             <a href="#" className="btn-dep2 flip">학교 현황</a>
-                                            <ul className="dep3" style="display: block">
+                                            <ul className="dep3" style={{display:"block"}}>
                                                 <li className="active"><a href="#" className="btn-dep3">연도별</a></li>
                                                 <li><a href="#" className="btn-dep3">지역별</a></li>
                                             </ul>
@@ -97,7 +109,7 @@ export default function SchoolTotal() {
                             </div>
                         </div>
                     </aside>
-                    <!-- 좌측 메뉴 -->
+                    {/* 좌측 메뉴 */}
 
                     <div className="content">
                         <div className="header">
@@ -130,15 +142,16 @@ export default function SchoolTotal() {
                                             <div className="in-map">
                                                 <img src="img/common/map1.png"/>
                                             </div>
-                                            <div className="check-box">
-                                                <div><label><input type="checkbox" checked className="checkbox1 green"/>
+                                            <div className="check-box"> {/* checked 있었음음 */ }
+                                                {/*<div><label><input type="checkbox" checked className="checkbox1 green"/>
+                                                    <p><em></em><span>유치원</span></p></label></div>*/}
+                                                <div><label><input type="checkbox" className="checkbox1 green"/>
                                                     <p><em></em><span>유치원</span></p></label></div>
-                                                <div><label><input type="checkbox" checked
-                                                                   className="checkbox1 yellow"/>
+                                                <div><label><input type="checkbox" className="checkbox1 yellow"/>
                                                     <p><em></em><span>초등학교</span></p></label></div>
-                                                <div><label><input type="checkbox" checked className="checkbox1 red"/>
+                                                <div><label><input type="checkbox" className="checkbox1 red"/>
                                                     <p><em></em><span>중학교</span></p></label></div>
-                                                <div><label><input type="checkbox" checked className="checkbox1 pink"/>
+                                                <div><label><input type="checkbox" className="checkbox1 pink"/>
                                                     <p><em></em><span>고등학교</span></p></label></div>
                                             </div>
                                         </div>
@@ -155,7 +168,7 @@ export default function SchoolTotal() {
                                             </div>
                                         </div>
                                         <div className="table1 type1">
-                                            <table style="width:700px">
+                                            <table style={{width:"700px"}}>
                                                 <thead>
                                                 <tr>
                                                     <th>구분</th>
@@ -408,7 +421,7 @@ export default function SchoolTotal() {
                                             </div>
                                             <div className="graph-box pdb0">
                                                 <div className="graph"><img src="img/common/graph10.png"/></div>
-                                                <div className="layer1" style="left: 100px; top:100px; ">
+                                                <div className="layer1" style={{left:"100px", top:"100px"}}>
                                                     <div className="tit">2021</div>
                                                     <div className="info">
                                                         <dl>
@@ -459,6 +472,8 @@ export default function SchoolTotal() {
                         </div>
 
                     </div>
+
+                    {/* 우측 영역 */}
 
                 </div>
             </div>
