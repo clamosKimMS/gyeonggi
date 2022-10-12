@@ -268,6 +268,7 @@
 $(function(){
 	// init	
 	// 좌측 하단 메뉴 영역
+    console.log("스크립트실행");
 	$('.dropdown1').each(function(){
 		var $this = $(this);
 		$this.click(function(){

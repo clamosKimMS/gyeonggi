@@ -10,7 +10,7 @@ function App() {
         <Router>
             <Routes>
 
-                <Route path={"/"} element={<SchoolTotal />} />
+                <Route path={"/totalSchool"} element={<SchoolTotal />} />
 
             </Routes>
         </Router>
