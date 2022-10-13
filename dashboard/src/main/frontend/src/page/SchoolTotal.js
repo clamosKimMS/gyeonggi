@@ -16,157 +16,157 @@ export default function SchoolTotal() {
     // 지역별 위도경도 배열
     const [areas, setAreas] = useState([
         {
-            name: "연천",
+            name: "연천군",
             isMouseOver: false,
             path: map_Yeoncheon
         },
         {
-            name: "포천",
+            name: "포천시",
             isMouseOver: false,
             path: map_Pocheon
         },
         {
-            name: "가평",
+            name: "가평군",
             isMouseOver: false,
             path: map_Gapyeon
         },
         {
-            name: "양평",
+            name: "양평군",
             isMouseOver: false,
             path: map_Yangpyeon
         },
         {
-            name: "여주",
+            name: "여주시",
             isMouseOver: false,
             path: map_Yeoju
         },
         {
-            name: "이천",
+            name: "이천시",
             isMouseOver: false,
             path: map_Icheon
         },
         {
-            name: "용인",
+            name: "용인시",
             isMouseOver: false,
             path: map_Yongin
         },
         {
-            name: "안성",
+            name: "안성시",
             isMouseOver: false,
             path: map_Anseon
         },
         {
-            name: "평택",
+            name: "평택시",
             isMouseOver: false,
             path: map_Pyeongtaek
         },
         {
-            name: "화성",
+            name: "화성시",
             isMouseOver: false,
             path: map_Hwaseon
         },
         {
-            name: "안산",
+            name: "안산시",
             isMouseOver: false,
             path: map_Ansan
         },
         {
-            name: "안양",
+            name: "안양시",
             isMouseOver: false,
             path: map_AnYan
         },
         {
-            name: "군포",
+            name: "군포시",
             isMouseOver: false,
             path: map_Gunpo
         },
         {
-            name: "과천",
+            name: "과천시",
             isMouseOver: false,
             path: map_Gunpo
         },
         {
-            name: "의왕",
+            name: "의왕시",
             isMouseOver: false,
             path: map_Uiwang
         },
         {
-            name: "수원",
+            name: "수원시",
             isMouseOver: false,
             path: map_Suwon
         },
         {
-            name: "구리",
+            name: "구리시",
             isMouseOver: false,
             path: map_Guri
         },
         {
-            name: "성남",
+            name: "성남시",
             isMouseOver: false,
             path: map_SeongNam
         },
         {
-            name: "광주",
+            name: "광주시",
             isMouseOver: false,
             path: map_Gwangju
         },
         {
-            name: "하남",
+            name: "하남시",
             isMouseOver: false,
             path: map_Hanam
         },
         {
-            name: "광명",
+            name: "광명시",
             isMouseOver: false,
             path: map_Gwangmyeong
         },
         {
-            name: "부천",
+            name: "부천시",
             isMouseOver: false,
             path: map_Bucheon
         },
         {
-            name: "시흥",
+            name: "시흥시",
             isMouseOver: false,
             path: map_Siheung
         },
         {
-            name: "오산",
+            name: "오산시",
             isMouseOver: false,
             path: map_Osan
         },
         {
-            name: "동두천",
+            name: "동두천시",
             isMouseOver: false,
             path: map_Dongducheon
         },
         {
-            name: "파주",
+            name: "파주시",
             isMouseOver: false,
             path: map_Paju
         },
         {
-            name: "양주",
+            name: "양주시",
             isMouseOver: false,
             path: map_Yangju
         },
         {
-            name: "김포",
+            name: "김포시",
             isMouseOver: false,
             path: map_Gimpo
         },
         {
-            name: "고양",
+            name: "고양시",
             isMouseOver: false,
             path: map_Goyang
         },
         {
-            name: "의정부",
+            name: "의정부시",
             isMouseOver: false,
             path: map_Uijeonbu
         },
         {
-            name: "남양주",
+            name: "남양주시",
             isMouseOver: false,
             path: map_Namyangju
         }
