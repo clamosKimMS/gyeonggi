@@ -1,21 +1,26 @@
 package clamos.io.dashboard.repository;
 
+import clamos.io.dashboard.dto.SchoolDTO;
 import clamos.io.dashboard.entity.SchoolEntity;
+import clamos.io.dashboard.service.SchoolService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @SpringBootTest
 class SchoolRepositoryTest {
 
     @Autowired
     private SchoolRepository repository;
+
+    @Autowired
+    private SchoolService service;
 
     @Test
     @DisplayName("연결 확인용 테스트")
@@ -40,10 +45,11 @@ class SchoolRepositoryTest {
     @DisplayName("testData")
     public void testData() {
 
-        List<Integer[]> result = repository.Chart_1();
+        List<Integer[]> schoolDto = repository.Chart_1();
 
-        for (Integer[] arr : result) {
-            System.out.println(Arrays.toString(arr));
+        System.out.println("데이터 출력 -- ");
+        for (Integer[] dto : schoolDto) {
+            System.out.println(Arrays.toString(dto));
         }
 
     }

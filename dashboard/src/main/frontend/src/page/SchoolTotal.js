@@ -12,6 +12,7 @@ import {
 import {CustomOverlayMap, Map, Polygon, MapInfoWindow} from "react-kakao-maps-sdk";
 
 export default function SchoolTotal() {
+    const [textPlace, setTextPlace] = useState('');
 
     // 지역별 위도경도 배열
     const [areas, setAreas] = useState([
@@ -178,8 +179,9 @@ export default function SchoolTotal() {
         lng: 0,
     })
 
-    const [textPlace, setTextPlace] = useState("");
-
+    const handleAreaClick = (areaName) => {
+        setTextPlace(areaName);
+    }
     useEffect(() => {
         const tileset = new kakao.maps.Tileset({
             width: 256,
@@ -374,18 +376,28 @@ export default function SchoolTotal() {
                                                             ])
                                                         }
 
-                                                        onMousedown={() => {
-                                                            setTextPlace(area.name);
-                                                        }}
-
+                                                        onMousedown={() => handleAreaClick(area.name)}
+                                                        // setTextPlace(area.name);
                                                     />
                                                 ))}
 
-                                                {/*{areas.findIndex((v) => v.isMouseover) !== -1 && (
-                                                        <CustomOverlayMap position={mousePosition}>
-                                                            <div className="area">{areas.find((v) => v.isMouseover).name}</div>
-                                                        </CustomOverlayMap>
-                                                    )}*/}
+                                                {areas.findIndex((v) => v.isMouseover) !== -1 && (
+                                                    <CustomOverlayMap position={mousePosition}>
+                                                        <div className="area"
+                                                             style={{
+                                                                 position: "absolute",
+                                                                 background: "#fff",
+                                                                 border: "1px",
+                                                                 borderColor: "#888",
+                                                                 borderRadius: "3px",
+                                                                 fontSize: "12px",
+                                                                 top: "-5px",
+                                                                 left: "15px",
+                                                                 padding: "2px",
+                                                             }}
+                                                        >{areas.find((v) => v.isMouseover).name}</div>
+                                                    </CustomOverlayMap>
+                                                )}
 
                                                 {console.log(textPlace)}
 
@@ -418,181 +430,7 @@ export default function SchoolTotal() {
                                             </div>
                                         </div>
                                         <div className="table1 type1">
-                                            <table style={{width: "700px"}}>
-                                                <thead>
-                                                <tr>
-                                                    <th>구분</th>
-                                                    <th>2022</th>
-                                                    <th>2021</th>
-                                                    <th>2020</th>
-                                                    <th>2019</th>
-                                                    <th>2018</th>
-                                                    <th>2017</th>
-                                                    <th>2016</th>
-                                                    <th>2015</th>
-                                                    <th>2014</th>
-                                                    <th>2013</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>김포</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>오산</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>수원</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>파주</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>광주</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>부천</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>김포</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>오산</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>수원</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>파주</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>광주</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>부천</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                    <td>5732</td>
-                                                    <td>456</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                            <iframe title="viz 테이블 데이터" style={{width:'100%',height:'100vh'}} src={`http://hsviz.clamos.io/sheet/6346360f3f7bf50000abb443?apikey=084ecb00-cac0-433b-bd2f-d79fb894e93a&table[지역명]=${textPlace}`}></iframe>
                                         </div>
                                     </div>
 

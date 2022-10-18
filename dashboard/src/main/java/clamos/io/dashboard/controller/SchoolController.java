@@ -1,6 +1,7 @@
 package clamos.io.dashboard.controller;
 
 import clamos.io.dashboard.dto.SchoolDTO;
+import clamos.io.dashboard.dto.SchoolInterfaceDTO;
 import clamos.io.dashboard.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,10 +21,10 @@ public class SchoolController {
 
     private final SchoolService service;
 
-    @GetMapping("/schoolTypeCount")
-    public void controller_getSumSchool() {
+    /*@GetMapping("/schoolTypeCount")
+    public List<SchoolDTO> controller_getSumSchool() {
 
-        service.getSumSchool();
+        return service.getSumSchool();
 
-    }
+    }*/
 }
