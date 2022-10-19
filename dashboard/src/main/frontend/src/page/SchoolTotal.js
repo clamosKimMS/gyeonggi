@@ -5,7 +5,7 @@ import '../css/front.css'
 import {useEffect, useState} from "react";
 import {
     map_Ansan, map_Anseon, map_AnYan, map_Bucheon, map_Dongducheon, map_Gapyeon, map_Gimpo, map_Goyang,
-    map_Gunpo, map_Guri, map_Gwangju, map_Gwangmyeong, map_Hanam, map_Hwaseon, map_Icheon, map_Namyangju,
+    map_Gunpo, map_Guri, map_Gwacheon, map_Gwangju, map_Gwangmyeong, map_Hanam, map_Hwaseon, map_Icheon, map_Namyangju,
     map_Osan, map_Paju, map_Pocheon, map_Pyeongtaek, map_SeongNam, map_Siheung, map_Suwon, map_Uijeonbu,
     map_Uiwang, map_Yangju, map_Yangpyeon, map_Yeoju, map_Yeoncheon, map_Yongin
 } from "./latitude";
@@ -84,7 +84,7 @@ export default function SchoolTotal() {
         {
             name: "과천시",
             isMouseOver: false,
-            path: map_Gunpo
+            path: map_Gwacheon
         },
         {
             name: "의왕시",

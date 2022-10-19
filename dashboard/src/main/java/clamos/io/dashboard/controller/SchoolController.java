@@ -21,10 +21,10 @@ public class SchoolController {
 
     private final SchoolService service;
 
-    /*@GetMapping("/schoolTypeCount")
+    @GetMapping("/schoolTypeCount")
     public List<SchoolDTO> controller_getSumSchool() {
 
-        return service.getSumSchool();
+        return service.getSchoolCount();
 
-    }*/
+    }
 }

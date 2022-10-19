@@ -1,14 +1,16 @@
 package clamos.io.dashboard.dto;
 
+import lombok.Setter;
+
 import java.util.List;
+
 
 public interface SchoolInterfaceDTO {
 
-    List<Integer> survey_base_date();
-
-    List<Integer> kinder_cnt();
-    List<Integer> ele_cnt();
-    List<Integer> mid_cnt();
-    List<Integer> high_cnt();
+    Integer survey_base_date();
+    Integer kinder_cnt();
+    Integer ele_cnt();
+    Integer mid_cnt();
+    Integer high_cnt();
 
 }

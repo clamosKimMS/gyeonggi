@@ -60,26 +60,11 @@ export default function Test() {
 
     Chart.register(...registerables);
 
-    // useEffect(()=> {
-    //     const division = (schoolType, n개씩) => {
-    //         const length = 배열.length;
-    //         const divide = Math.floor(length / n개씩) + (Math.floor( length % n개씩 ) > 0 ? 1 : 0);
-    //         const newArray = [];
-    //
-    //         for (let i = 0; i <= divide; i++) {
-    //             // 배열 0부터 n개씩 잘라 새 배열에 넣기
-    //             newArray.push(배열.splice(0, n개씩));
-    //         }
-    //
-    //         return newArray;
-    //     }
-    // },[schoolType])
-
     return (
         <div>
 
             <h1>this is TestPage</h1>
-
+            {console.log(schoolType)}
         </div>
     );
 
