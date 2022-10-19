@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface SchoolService {
 
-    List<SchoolDTO> getSchoolCount();
+    List<SchoolDTO> getSchoolCount(String Area);
 
 }

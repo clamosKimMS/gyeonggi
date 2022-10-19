@@ -51,7 +51,6 @@ const data = {
 export default function Test() {
 
     const [schoolType, setSchoolType] = useState([]);
-
     useEffect( () => {
         axios.get('/gyeonggi/schoolTypeCount')
             .then(response => setSchoolType((response?.data)))

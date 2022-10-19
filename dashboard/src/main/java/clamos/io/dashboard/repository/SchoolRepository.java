@@ -7,6 +7,7 @@ import clamos.io.dashboard.entity.SchoolEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
             "group by m.survey_base_date")
     List<SchoolDTO> Chart_1();*/
 
-     @Query(value = "select survey_base_date as survey_base_date" +
+    @Query(value = "select survey_base_date as survey_base_date" +
             ", coalesce(sum(case when schl_type = '유치원' then schl_count else 0 end), 0) as kinder_cnt " +
             ", coalesce(sum(case when schl_type = '초등학교' then schl_count else 0 end), 0) as ele_cnt " +
             ", coalesce(sum(case when schl_type = '중학교' then schl_count else 0 end), 0) as mid_cnt " +
@@ -48,9 +49,9 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
             "from tb_schl_stat_kms " +
             "where schl_exist_status <> '폐(원)교' " +
             "and main_or_branch_school <> '분교장' " +
-            "and admdst= '파주시' " +
+            "and admdst= :Area " +
             "group by survey_base_date" +
             "", nativeQuery = true)
-    List<Integer[]> Chart_1();
+    List<Integer[]> Chart_1(@Param("Area") String Area);
 
 }

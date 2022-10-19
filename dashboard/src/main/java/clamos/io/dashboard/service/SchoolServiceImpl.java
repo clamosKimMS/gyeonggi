@@ -18,9 +18,9 @@ public class SchoolServiceImpl implements SchoolService{
     private final SchoolRepository repository;
 
     @Override
-    public List<SchoolDTO> getSchoolCount() {
+    public List<SchoolDTO> getSchoolCount(String Area) {
 
-        List<Integer[]> result_tmp = repository.Chart_1();
+        List<Integer[]> result_tmp = repository.Chart_1(Area);
 
         List<SchoolDTO> dto = new ArrayList<>();
 

@@ -5,10 +5,7 @@ import clamos.io.dashboard.dto.SchoolInterfaceDTO;
 import clamos.io.dashboard.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,10 +18,12 @@ public class SchoolController {
 
     private final SchoolService service;
 
-    @GetMapping("/schoolTypeCount")
-    public List<SchoolDTO> controller_getSumSchool() {
+    @GetMapping("/schoolTypeCount/{Area}")
+    public List<SchoolDTO> controller_getSumSchool(@PathVariable String Area) {
 
-        return service.getSchoolCount();
+        System.out.println("클릭한 도시 : " + Area);
+
+        return service.getSchoolCount(Area);
 
     }
 }

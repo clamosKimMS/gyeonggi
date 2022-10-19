@@ -52,7 +52,7 @@ class SchoolRepositoryTest {
     @DisplayName("testData")
     public void testData() {
 
-        List<Integer[]> result_tmp = repository.Chart_1();
+        List<Integer[]> result_tmp = repository.Chart_1("파주시");
 
         List<SchoolDTO> result = new ArrayList<>();
 
@@ -77,7 +77,7 @@ class SchoolRepositoryTest {
     @DisplayName("Integer[] injection to DTO")
     public void InjectionTest() {
 
-        List<SchoolDTO> dto = service.getSchoolCount();
+        List<SchoolDTO> dto = service.getSchoolCount("파주시");
 
         for (SchoolDTO result : dto) {
             System.out.println(result.toString());
