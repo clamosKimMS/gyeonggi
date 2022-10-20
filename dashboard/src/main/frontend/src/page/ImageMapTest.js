@@ -1,6 +1,6 @@
 /*global kakao*/
 
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from 'axios';
 import {
     map_Ansan, map_Anseon, map_AnYan, map_Bucheon, map_Dongducheon, map_Gapyeon, map_Gimpo, map_Goyang,
@@ -8,10 +8,10 @@ import {
     map_Osan, map_Paju, map_Pocheon, map_Pyeongtaek, map_SeongNam, map_Siheung, map_Suwon, map_Uijeonbu,
     map_Uiwang, map_Yangju, map_Yangpyeon, map_Yeoju, map_Yeoncheon, map_Yongin
 } from "./latitude";
+
 import {CustomOverlayMap, Map, Polygon, MapInfoWindow} from "react-kakao-maps-sdk";
 
 export default function ImageMapTest() {
-
 
     // 학교별
     const [schoolType, setSchoolType] = useState([]);
@@ -188,6 +188,9 @@ export default function ImageMapTest() {
             .catch(error => console.log(error));
     }
 
+    // 전체 학교수 max ( opacity 조절용 )
+    const [totalCount, setTotalCount] = useState();
+
     // Map Hover 지역명 나타내기
     const [mousePosition, setMousePosition] = useState({
         lat: 0,
@@ -195,59 +198,61 @@ export default function ImageMapTest() {
     })
 
     /* for Opacity  */
+    let maxCount = 20;
+
     const [fillOpacity, setFillOpacity] = useState();
 
-    const memoizedCallBack = useCallback(
-        (name) => {
-            return placeCount(name);
-        },
-    );
-
     const placeCount = (name) => {
-        /*console.log('render');*/
-        /*axios.get('/gyeonggi/searchPlaceCount/' + name)
-            .then(response => {
-                console.log(response);
-                // setFillOpacity(response.data)
-            })
-            .catch(error => console.log(error));*/
-
-        return 0.2;
+        // console.log(temp);
+        if(!temp || temp?.length < 1) {
+            return ;
+        }
+        let a = temp?.filter(data => data.name === name).map((data) => {
+            return data.total_cnt;
+        });
+        return a[0] / totalCount;
+        // return [datasets.name]
+        // return 0.2;
     }
-    /*----------------*/
 
-    // 전체 학교수 max ( opacity 조절용 )
-    const [totalCount, setTotalCount] = useState();
-    const [totalCountList, setTotalCountList] = useState();
-    useEffect(() => {
-        const tileset = new kakao.maps.Tileset(
-            {
-                width: 256,
-                height: 256,
-                getTile: () => {
-
-                    const dom = document.createElement('div');
-                    // GIS맵  배경이미지
-                    dom.style.background = "rgb(244,244,244)";
-
-                    return dom;
-                },
+    const [temp,setTemp] = useState();
+    const totalLength = async() => {
+        await axios.get('/gyeonggi/getSchoolTotalCountList')
+            .then(response => {
+                setTemp(response.data);
             })
-        kakao.maps.Tileset.add("TILE_NUMBER", tileset)
-
-        axios.get('/gyeonggi/getMaxTotal')
-            .then(response => setTotalCount(response?.data))
             .catch(error => console.log(error));
+    }
 
-        axios.get('/gyeonggi/getSchoolTotalCountList')
-            .then(response => setTotalCountList(response?.data))
-            .catch(error => console.log(error));
-
+    useEffect(() => {
+        totalLength();
     }, [])
 
-    return (
-        <div>
+    /*----------------*/
 
+    useEffect(() => {
+        const tileset = new kakao.maps.Tileset({
+            width: 256,
+            height: 256,
+            getTile: () => {
+                const dom = document.createElement('div');
+                // GIS맵  배경이미지
+                dom.style.background = "rgb(244,244,244)";
+                return dom;
+            },
+        })
+        kakao.maps.Tileset.add("TILE_NUMBER", tileset)
+
+
+        axios.get('/gyeonggi/getMaxTotal')
+            .then(response => setTotalCount(response.data))
+            .catch(error => console.log(error));
+    }, [])
+
+
+    return (
+
+        <div>
             <div className="map-box1">
                 <Map // 지도를 표시할 Container
                     center={{
@@ -259,26 +264,25 @@ export default function ImageMapTest() {
                         width: "540px",
                         height: "495px",
                     }}
-
                     draggable={false}
                     zoomable={false}
                     disableDoubleClickZoom={true}
                     disableDoubleClick={true}
-                    level={11.3} // 지도의 확대 레벨
-                    onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
-                >
 
-                    {areas.map((area, index) => (
-                        <Polygon
+                    level={11.3} // 지도의 확대 레벨
+
+                    onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
+
+                >
+                    {areas.map((area, index) => (<Polygon
                             key={`area-${area.name}`}
                             path={area.path}
                             strokeWeight={2}
                             strokeColor={"#ffffff"}
                             strokeOpacity={0.8}
                             fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
-                            fillOpacity={area.isMouseOver ? 1 : 0.2}
-                            // fillOpacity={area.isMouseOver ? 1 : memoizedCallBack(area.name) }
-
+                            // fillOpacity={area.isMouseOver ? 1 : 0.2}
+                            fillOpacity={area.isMouseOver ? 1 : placeCount(area.name)}
                             onMousemove={(_map, mouseEvent) =>
                                 setMousePosition({
                                     lat: mouseEvent.latLng.getLat(),
@@ -295,7 +299,6 @@ export default function ImageMapTest() {
                                     },
                                 ])
                             }
-
                             onMouseout={() =>
                                 setAreas((prev) => [
                                     ...prev.filter((_, i) => i !== index),
@@ -311,7 +314,9 @@ export default function ImageMapTest() {
                         />
                     ))}
 
+
                     {areas.findIndex((v) => v.isMouseover) !== -1 && (
+
                         <CustomOverlayMap position={mousePosition}>
                             <div className="area"
                                  style={{
@@ -326,7 +331,9 @@ export default function ImageMapTest() {
                                      padding: "2px",
                                  }}
                             >{areas.find((v) => v.isMouseover).name}</div>
+
                         </CustomOverlayMap>
+
                     )}
 
                 </Map>
@@ -334,8 +341,7 @@ export default function ImageMapTest() {
             </div>
             {/*{console.log(schoolType)}*/}
             {/*{console.log(totalCount)}*/}
-            {console.log(totalCountList)}
         </div>
-    );
 
+    );
 }
