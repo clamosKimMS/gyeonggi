@@ -10,4 +10,8 @@ public interface SchoolService {
 
     List<SchoolDTO> getSchoolCount(String Area);
 
+    Integer getMaxSchoolTotal();
+
+    Integer getAreaSearchCount(String Area);
+
 }

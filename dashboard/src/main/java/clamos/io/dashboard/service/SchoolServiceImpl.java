@@ -41,4 +41,18 @@ public class SchoolServiceImpl implements SchoolService{
 
     }
 
+    @Override
+    public Integer getMaxSchoolTotal() {
+
+        return repository.maxTotal();
+
+    }
+
+    @Override
+    public Integer getAreaSearchCount(String Area) {
+
+        return repository.areaSearchCount(Area);
+
+    }
+
 }

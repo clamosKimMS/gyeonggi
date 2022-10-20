@@ -54,4 +54,82 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
             "", nativeQuery = true)
     List<Integer[]> Chart_1(@Param("Area") String Area);
 
+    @Query(nativeQuery = true,
+            value = "select max(cnt) " +
+                    "from ( " +
+                    " select count(*) as cnt " +
+                    " from tb_schl_stat_kms " +
+                    " where survey_base_date = '2022' " +
+                    " and schl_exist_status <> '폐(원)교' " +
+                    " and main_or_branch_school <> '분교장' " +
+                    " and schl_type = '유치원' " +
+                    "group by admdst )" +
+                    "as query ")
+    Integer maxKinder();
+
+    @Query(nativeQuery = true,
+            value = "select max(cnt) " +
+                    "from ( " +
+                    " select count(*) as cnt " +
+                    " from tb_schl_stat_kms " +
+                    " where survey_base_date = '2022' " +
+                    " and schl_exist_status <> '폐(원)교' " +
+                    " and main_or_branch_school <> '분교장' " +
+                    " and schl_type = '초등학교' " +
+                    "group by admdst )" +
+                    "as query ")
+    Integer maxEle();
+
+    @Query(nativeQuery = true,
+            value = "select max(cnt) " +
+                    "from ( " +
+                    " select count(*) as cnt " +
+                    " from tb_schl_stat_kms " +
+                    " where survey_base_date = '2022' " +
+                    " and schl_exist_status <> '폐(원)교' " +
+                    " and main_or_branch_school <> '분교장' " +
+                    " and schl_type = '중학교' " +
+                    "group by admdst )" +
+                    "as query ")
+    Integer maxMid();
+
+    @Query(nativeQuery = true,
+            value = "select max(cnt) " +
+                    "from ( " +
+                    " select count(*) as cnt " +
+                    " from tb_schl_stat_kms " +
+                    " where survey_base_date = '2022' " +
+                    " and schl_exist_status <> '폐(원)교' " +
+                    " and main_or_branch_school <> '분교장' " +
+                    " and schl_type = '고등학교' " +
+                    "group by admdst )" +
+                    "as query ")
+    Integer maxHigh();
+
+
+    @Query(nativeQuery = true,
+            value = "select max(cnt) " +
+                    "from ( " +
+                    " select count(*) as cnt " +
+                    " from tb_schl_stat_kms " +
+                    " where survey_base_date = '2022' " +
+                    " and schl_exist_status <> '폐(원)교' " +
+                    " and main_or_branch_school <> '분교장' " +
+                    "group by admdst )" +
+                    "as query ")
+    Integer maxTotal();
+
+    @Query(nativeQuery = true,
+            value = "select max(cnt) " +
+                    "from ( " +
+                    " select count(*) as cnt " +
+                    " from tb_schl_stat_kms " +
+                    " where survey_base_date = '2022' " +
+                    " and schl_exist_status <> '폐(원)교' " +
+                    " and main_or_branch_school <> '분교장' " +
+                    " and admdst = :Area " +
+                    "group by admdst ) " +
+                    "as query ")
+    Integer areaSearchCount(@Param("Area") String Area);
+
 }

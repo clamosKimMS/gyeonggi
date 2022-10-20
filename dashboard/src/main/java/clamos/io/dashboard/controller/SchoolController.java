@@ -24,6 +24,22 @@ public class SchoolController {
         System.out.println("클릭한 도시 : " + Area);
 
         return service.getSchoolCount(Area);
+    }
+
+    @GetMapping("/getMaxTotal")
+    public Integer controller_getMaxSchoolTotal() {
+
+        return service.getMaxSchoolTotal();
+
 
     }
+
+    @GetMapping("/searchPlaceCount/{Area}")
+    public Integer controller_searchPlaceCount(@PathVariable String Area ) {
+
+        System.out.println("선택된 도시 : " + Area);
+        System.out.println("도시의 합   : " + service.getAreaSearchCount(Area));
+        return service.getAreaSearchCount(Area);
+    }
+
 }

@@ -7,6 +7,8 @@ import clamos.io.dashboard.service.SchoolService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -82,6 +84,36 @@ class SchoolRepositoryTest {
         for (SchoolDTO result : dto) {
             System.out.println(result.toString());
         }
+
+    }
+
+    @Test
+    @DisplayName("학교 타입별 MAX 단위 테스트")
+    public void SchoolTypeTotalTest() {
+
+        Integer kinder = repository.maxKinder();
+        Integer ele = repository.maxEle();
+        Integer mid = repository.maxMid();
+        Integer high = repository.maxHigh();
+
+        Integer totalMax = repository.maxTotal();
+
+        System.out.println("유치원 맥스   : " + kinder);
+        System.out.println("초등학교 맥스 : " + ele);
+        System.out.println("중학교 맥스   : " + mid);
+        System.out.println("고등학교 맥스 : " + high);
+        System.out.println("토탈 맥스 : " + totalMax);
+
+    }
+
+    @Test
+    @DisplayName(" 지역 검색 MAX 단위 테스트 ")
+    public void SearchPlaceMaxTest() {
+
+        Integer currentMaxCount = service.getAreaSearchCount("광주시");
+        System.out.println(currentMaxCount);
+
+        assertEquals(5, currentMaxCount);
 
     }
 

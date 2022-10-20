@@ -12,10 +12,9 @@ import {CustomOverlayMap, Map, Polygon, MapInfoWindow} from "react-kakao-maps-sd
 
 export default function ImageMapTest() {
 
-    const [schoolType, setSchoolType] = useState([]);
 
-    // 클릭한 위치
-    const [textPlace, setTextPlace] = useState('파주시');
+    // 학교별
+    const [schoolType, setSchoolType] = useState([]);
 
     // 지역별 위도경도 배열
     const [areas, setAreas] = useState([
@@ -176,24 +175,44 @@ export default function ImageMapTest() {
         }
     ])
 
+    // 지역별 클릭 이벤트
+    const HandleAreaClick = (areaName) => {
+        console.log("핸들러 : " + areaName)
+        searchPlace(areaName);
+    }
+
+    // 지도 지역을 클릭했을 때 어느 지역인지 Controller에서 가져옴
+    const searchPlace = (areaName) => {
+        axios.get('/gyeonggi/schoolTypeCount/' + areaName)
+            .then(response => setSchoolType(response.data))
+            .catch(error => console.log(error));
+    }
+
+    // 전체 학교수 max ( opacity 조절용 )
+    const [totalCount, setTotalCount] = useState();
+
+
+
     // Map Hover 지역명 나타내기
     const [mousePosition, setMousePosition] = useState({
         lat: 0,
         lng: 0,
     })
 
-    const HandleAreaClick = (areaName) => {
-        setTextPlace(areaName);
-        searchPlace(areaName);
-    }
-
-    const searchPlace = (areaName) => {
-        console.log("위치 : " + areaName);
-        axios.get('/gyeonggi/schoolTypeCount/' + areaName)
-            .then(response => setSchoolType((response?.data)))
+    /* for Opacity  */
+    const [fillOpacity, setFillOpacity] = useState();
+    const placeCount = (name) => {
+        console.log('render');
+        axios.get('/gyeonggi/searchPlaceCount/' + name)
+            .then(response => {
+                console.log(response);
+                // setFillOpacity(response.data)
+            })
             .catch(error => console.log(error));
-    }
 
+        // return 0.2;
+    }
+    /*----------------*/
 
     useEffect(() => {
         const tileset = new kakao.maps.Tileset(
@@ -210,8 +229,12 @@ export default function ImageMapTest() {
                 },
             })
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
-    }, [])
 
+        axios.get('/gyeonggi/getMaxTotal')
+            .then(response => setTotalCount(response.data))
+            .catch(error => console.log(error));
+
+    }, [])
 
     return (
         <div>
@@ -244,14 +267,15 @@ export default function ImageMapTest() {
                             strokeColor={"#ffffff"}
                             strokeOpacity={0.8}
                             fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
-                            fillOpacity={area.isMouseOver ? 1 : 0.2}
+                            // fillOpacity={area.isMouseOver ? 1 : 0.2}
+                            fillOpacity={area.isMouseOver ? 1 : placeCount(area.name) }
 
-                            onMousemove={(_map, mouseEvent) =>
+                            /*onMousemove={(_map, mouseEvent) =>
                                 setMousePosition({
                                     lat: mouseEvent.latLng.getLat(),
                                     lng: mouseEvent.latLng.getLng(),
                                 })
-                            }
+                            }*/
 
                             onMouseover={() =>
                                 setAreas((prev) => [
@@ -299,7 +323,8 @@ export default function ImageMapTest() {
                 </Map>
 
             </div>
-            {console.log(schoolType)}
+            {/*{console.log(schoolType)}*/}
+            {/*{console.log(totalCount)}*/}
 
         </div>
     );
