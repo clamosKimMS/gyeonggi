@@ -132,4 +132,13 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
                     "as query ")
     Integer areaSearchCount(@Param("Area") String Area);
 
+    @Query(nativeQuery = true,
+            value = "select admdst, count(schl_count) " +
+                    "from tb_schl_stat_kms " +
+                    "where survey_base_date = '2022' " +
+                    "and schl_exist_status <> '폐(원)교' " +
+                    "and main_or_branch_school <> '분교장' " +
+                    "group by admdst ")
+    List<String[]> areaSearchCountList();
+
 }

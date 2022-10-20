@@ -2,6 +2,7 @@ package clamos.io.dashboard.controller;
 
 import clamos.io.dashboard.dto.SchoolDTO;
 import clamos.io.dashboard.dto.SchoolInterfaceDTO;
+import clamos.io.dashboard.dto.SchoolMaxCountDTO;
 import clamos.io.dashboard.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -40,6 +41,13 @@ public class SchoolController {
         System.out.println("선택된 도시 : " + Area);
         System.out.println("도시의 합   : " + service.getAreaSearchCount(Area));
         return service.getAreaSearchCount(Area);
+    }
+
+    @GetMapping("/getSchoolTotalCountList")
+    public List<SchoolMaxCountDTO> controller_getSchoolCount() {
+
+        return service.getSchoolCountList();
+
     }
 
 }

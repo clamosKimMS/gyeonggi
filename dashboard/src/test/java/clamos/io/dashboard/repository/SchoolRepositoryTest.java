@@ -2,6 +2,7 @@ package clamos.io.dashboard.repository;
 
 import clamos.io.dashboard.dto.SchoolDTO;
 import clamos.io.dashboard.dto.SchoolInterfaceDTO;
+import clamos.io.dashboard.dto.SchoolMaxCountDTO;
 import clamos.io.dashboard.entity.SchoolEntity;
 import clamos.io.dashboard.service.SchoolService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -114,6 +115,28 @@ class SchoolRepositoryTest {
         System.out.println(currentMaxCount);
 
         assertEquals(5, currentMaxCount);
+
+    }
+
+    @Test
+    @DisplayName(" 지역 max count List 단위 테스트 ")
+    public void areaSearchCountListTest() {
+
+        List<String[]> result_tmp = repository.areaSearchCountList();
+        List<SchoolMaxCountDTO> result = new ArrayList<>();
+
+        for (String[] dto : result_tmp) {
+            SchoolMaxCountDTO school = SchoolMaxCountDTO.builder()
+                    .name(dto[0])
+                    .total_cnt(Integer.parseInt(dto[1]))
+                    .build();
+
+            result.add(school);
+        }
+
+        for (SchoolMaxCountDTO dto : result) {
+            System.out.println(dto.toString());
+        }
 
     }
 

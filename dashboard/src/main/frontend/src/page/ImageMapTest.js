@@ -1,6 +1,6 @@
 /*global kakao*/
 
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import axios from 'axios';
 import {
     map_Ansan, map_Anseon, map_AnYan, map_Bucheon, map_Dongducheon, map_Gapyeon, map_Gimpo, map_Goyang,
@@ -188,11 +188,6 @@ export default function ImageMapTest() {
             .catch(error => console.log(error));
     }
 
-    // 전체 학교수 max ( opacity 조절용 )
-    const [totalCount, setTotalCount] = useState();
-
-
-
     // Map Hover 지역명 나타내기
     const [mousePosition, setMousePosition] = useState({
         lat: 0,
@@ -201,19 +196,29 @@ export default function ImageMapTest() {
 
     /* for Opacity  */
     const [fillOpacity, setFillOpacity] = useState();
+
+    const memoizedCallBack = useCallback(
+        (name) => {
+            return placeCount(name);
+        },
+    );
+
     const placeCount = (name) => {
-        console.log('render');
-        axios.get('/gyeonggi/searchPlaceCount/' + name)
+        /*console.log('render');*/
+        /*axios.get('/gyeonggi/searchPlaceCount/' + name)
             .then(response => {
                 console.log(response);
                 // setFillOpacity(response.data)
             })
-            .catch(error => console.log(error));
+            .catch(error => console.log(error));*/
 
-        // return 0.2;
+        return 0.2;
     }
     /*----------------*/
 
+    // 전체 학교수 max ( opacity 조절용 )
+    const [totalCount, setTotalCount] = useState();
+    const [totalCountList, setTotalCountList] = useState();
     useEffect(() => {
         const tileset = new kakao.maps.Tileset(
             {
@@ -231,7 +236,11 @@ export default function ImageMapTest() {
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
 
         axios.get('/gyeonggi/getMaxTotal')
-            .then(response => setTotalCount(response.data))
+            .then(response => setTotalCount(response?.data))
+            .catch(error => console.log(error));
+
+        axios.get('/gyeonggi/getSchoolTotalCountList')
+            .then(response => setTotalCountList(response?.data))
             .catch(error => console.log(error));
 
     }, [])
@@ -267,15 +276,15 @@ export default function ImageMapTest() {
                             strokeColor={"#ffffff"}
                             strokeOpacity={0.8}
                             fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
-                            // fillOpacity={area.isMouseOver ? 1 : 0.2}
-                            fillOpacity={area.isMouseOver ? 1 : placeCount(area.name) }
+                            fillOpacity={area.isMouseOver ? 1 : 0.2}
+                            // fillOpacity={area.isMouseOver ? 1 : memoizedCallBack(area.name) }
 
-                            /*onMousemove={(_map, mouseEvent) =>
+                            onMousemove={(_map, mouseEvent) =>
                                 setMousePosition({
                                     lat: mouseEvent.latLng.getLat(),
                                     lng: mouseEvent.latLng.getLng(),
                                 })
-                            }*/
+                            }
 
                             onMouseover={() =>
                                 setAreas((prev) => [
@@ -325,7 +334,7 @@ export default function ImageMapTest() {
             </div>
             {/*{console.log(schoolType)}*/}
             {/*{console.log(totalCount)}*/}
-
+            {console.log(totalCountList)}
         </div>
     );
 

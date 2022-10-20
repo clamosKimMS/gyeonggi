@@ -2,6 +2,7 @@ package clamos.io.dashboard.service;
 
 import clamos.io.dashboard.dto.SchoolDTO;
 import clamos.io.dashboard.dto.SchoolInterfaceDTO;
+import clamos.io.dashboard.dto.SchoolMaxCountDTO;
 import clamos.io.dashboard.repository.SchoolRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -52,6 +53,25 @@ public class SchoolServiceImpl implements SchoolService{
     public Integer getAreaSearchCount(String Area) {
 
         return repository.areaSearchCount(Area);
+
+    }
+
+    @Override
+    public List<SchoolMaxCountDTO> getSchoolCountList() {
+
+        List<String[]> result_tmp = repository.areaSearchCountList();
+        List<SchoolMaxCountDTO> result = new ArrayList<>();
+
+        for (String[] dto : result_tmp) {
+            SchoolMaxCountDTO school = SchoolMaxCountDTO.builder()
+                    .name(dto[0])
+                    .total_cnt(Integer.parseInt(dto[1]))
+                    .build();
+
+            result.add(school);
+        }
+
+        return result;
 
     }
 

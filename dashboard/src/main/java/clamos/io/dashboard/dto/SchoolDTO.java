@@ -13,6 +13,7 @@ import javax.persistence.Id;
 public class SchoolDTO {
 
     private Integer survey_base_date;
+
     private Integer kinder_cnt;
     private Integer ele_cnt;
     private Integer mid_cnt;
