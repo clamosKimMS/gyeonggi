@@ -204,8 +204,8 @@ export default function ImageMapTest() {
 
     const placeCount = (name) => {
         // console.log(temp);
-        if(!temp || temp?.length < 1) {
-            return ;
+        if (!temp || temp?.length < 1) {
+            return;
         }
         let a = temp?.filter(data => data.name === name).map((data) => {
             return data.total_cnt;
@@ -215,8 +215,8 @@ export default function ImageMapTest() {
         // return 0.2;
     }
 
-    const [temp,setTemp] = useState();
-    const totalLength = async() => {
+    const [temp, setTemp] = useState();
+    const totalLength = async () => {
         await axios.get('/gyeonggi/getSchoolTotalCountList')
             .then(response => {
                 setTemp(response.data);
@@ -249,10 +249,39 @@ export default function ImageMapTest() {
             .catch(error => console.log(error));
     }, [])
 
+    // 학교 타입지정
+    const [type, setType] = useState("kemh");
+    const typeChange = (e) => {
+
+        const query = 'input[name="schoolType"]:checked';
+        const selectEls = document.querySelectorAll(query);
+
+        let result = '';
+        selectEls.forEach((el => {
+            result += el.value + '';
+        }))
+        setType(result);
+    }
 
     return (
 
         <div>
+
+            <div className="check-box" style={{zIndex: 1, paddingBottom: "30px"}} onChange={typeChange}>
+                <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 green" name="schoolType"
+                                   value="k"/>
+                    <p><em></em><span>유치원</span></p></label></div>
+                <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 yellow" name="schoolType"
+                                   value="e"/>
+                    <p><em></em><span>초등학교</span></p></label></div>
+                <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 red" name="schoolType"
+                                   value="m"/>
+                    <p><em></em><span>중학교</span></p></label></div>
+                <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 pink" name="schoolType"
+                                   value="h"/>
+                    <p><em></em><span>고등학교</span></p></label></div>
+            </div>
+
             <div className="map-box1">
                 <Map // 지도를 표시할 Container
                     center={{
@@ -341,6 +370,7 @@ export default function ImageMapTest() {
             </div>
             {/*{console.log(schoolType)}*/}
             {/*{console.log(totalCount)}*/}
+            {console.log(type)}
         </div>
 
     );

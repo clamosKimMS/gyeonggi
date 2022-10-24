@@ -10,6 +10,6 @@ import lombok.*;
 public class SchoolMaxCountDTO {
 
     private String name;
-    private Integer total_cnt;
+    private Long total_cnt;
 
 }

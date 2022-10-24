@@ -65,7 +65,7 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
                     " and schl_type = '유치원' " +
                     "group by admdst )" +
                     "as query ")
-    Integer maxKinder();
+    Long maxKinder();
 
     @Query(nativeQuery = true,
             value = "select max(cnt) " +
@@ -78,7 +78,7 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
                     " and schl_type = '초등학교' " +
                     "group by admdst )" +
                     "as query ")
-    Integer maxEle();
+    Long maxEle();
 
     @Query(nativeQuery = true,
             value = "select max(cnt) " +
@@ -91,7 +91,7 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
                     " and schl_type = '중학교' " +
                     "group by admdst )" +
                     "as query ")
-    Integer maxMid();
+    Long maxMid();
 
     @Query(nativeQuery = true,
             value = "select max(cnt) " +
@@ -104,7 +104,7 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
                     " and schl_type = '고등학교' " +
                     "group by admdst )" +
                     "as query ")
-    Integer maxHigh();
+    Long maxHigh();
 
 
     @Query(nativeQuery = true,
@@ -117,7 +117,7 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
                     " and main_or_branch_school <> '분교장' " +
                     "group by admdst )" +
                     "as query ")
-    Integer maxTotal();
+    Long maxTotal();
 
     @Query(nativeQuery = true,
             value = "select max(cnt) " +
@@ -130,7 +130,7 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
                     " and admdst = :Area " +
                     "group by admdst ) " +
                     "as query ")
-    Integer areaSearchCount(@Param("Area") String Area);
+    Long areaSearchCount(@Param("Area") String Area);
 
     @Query(nativeQuery = true,
             value = "select admdst, count(schl_count) " +

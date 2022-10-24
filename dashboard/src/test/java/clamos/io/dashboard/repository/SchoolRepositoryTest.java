@@ -3,9 +3,14 @@ package clamos.io.dashboard.repository;
 import clamos.io.dashboard.dto.SchoolDTO;
 import clamos.io.dashboard.dto.SchoolInterfaceDTO;
 import clamos.io.dashboard.dto.SchoolMaxCountDTO;
+import clamos.io.dashboard.entity.QSchoolEntity;
 import clamos.io.dashboard.entity.SchoolEntity;
 import clamos.io.dashboard.service.SchoolService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +37,9 @@ class SchoolRepositoryTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    EntityManager em;
 
     @Test
     @DisplayName("연결 확인용 테스트")
@@ -92,12 +101,12 @@ class SchoolRepositoryTest {
     @DisplayName("학교 타입별 MAX 단위 테스트")
     public void SchoolTypeTotalTest() {
 
-        Integer kinder = repository.maxKinder();
-        Integer ele = repository.maxEle();
-        Integer mid = repository.maxMid();
-        Integer high = repository.maxHigh();
+        Long kinder = repository.maxKinder();
+        Long ele = repository.maxEle();
+        Long mid = repository.maxMid();
+        Long high = repository.maxHigh();
 
-        Integer totalMax = repository.maxTotal();
+        Long totalMax = repository.maxTotal();
 
         System.out.println("유치원 맥스   : " + kinder);
         System.out.println("초등학교 맥스 : " + ele);
@@ -128,7 +137,7 @@ class SchoolRepositoryTest {
         for (String[] dto : result_tmp) {
             SchoolMaxCountDTO school = SchoolMaxCountDTO.builder()
                     .name(dto[0])
-                    .total_cnt(Integer.parseInt(dto[1]))
+//                    .total_cnt(Integer.parseInt(dto[1]))
                     .build();
 
             result.add(school);
@@ -137,6 +146,44 @@ class SchoolRepositoryTest {
         for (SchoolMaxCountDTO dto : result) {
             System.out.println(dto.toString());
         }
+
+    }
+
+    @Test
+    @DisplayName("QueryDSL Test")
+    public void QueryDSLTest() {
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        List<SchoolMaxCountDTO> query = queryFactory
+                .select(Projections.bean(SchoolMaxCountDTO.class, qSchoolEntity.admdst.as("name"), qSchoolEntity.count().as("total_cnt")))
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                )
+                .groupBy(qSchoolEntity.admdst)
+                .fetch();
+
+        System.out.println(query);
+
+        /*JPAQuery<Tuple> query = queryFactory
+                .select(qSchoolEntity.admdst, qSchoolEntity.count())
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                )
+                .groupBy(qSchoolEntity.admdst);
+
+        List<Tuple> itemList = query.fetch();
+
+        for (Tuple tuple : itemList) {
+            System.out.println(tuple);
+        }*/
+
+
 
     }
 

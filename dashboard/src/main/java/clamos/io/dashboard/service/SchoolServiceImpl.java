@@ -43,14 +43,14 @@ public class SchoolServiceImpl implements SchoolService{
     }
 
     @Override
-    public Integer getMaxSchoolTotal() {
+    public Long getMaxSchoolTotal() {
 
         return repository.maxTotal();
 
     }
 
     @Override
-    public Integer getAreaSearchCount(String Area) {
+    public Long getAreaSearchCount(String Area) {
 
         return repository.areaSearchCount(Area);
 
@@ -65,7 +65,7 @@ public class SchoolServiceImpl implements SchoolService{
         for (String[] dto : result_tmp) {
             SchoolMaxCountDTO school = SchoolMaxCountDTO.builder()
                     .name(dto[0])
-                    .total_cnt(Integer.parseInt(dto[1]))
+                    .total_cnt(Long.parseLong(dto[1]))
                     .build();
 
             result.add(school);
