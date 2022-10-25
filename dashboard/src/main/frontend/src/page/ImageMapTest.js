@@ -175,6 +175,21 @@ export default function ImageMapTest() {
         }
     ])
 
+    // 표기할 학교의 타입을 지정함 ( k:유치원 / e:초등 / m:중등 / h:고등 )
+    const [type, setType] = useState("kemh");
+
+    // 행정구역별 전체 학교수를 가져옴 ( opacity 조절용 )
+    const [dtoList, setDtoList] = useState();
+
+    // 전체 학교수 max ( opacity 조절용 )
+    const [totalCount, setTotalCount] = useState();
+
+    // Map Hover 지역명 나타내기
+    const [mousePosition, setMousePosition] = useState({
+        lat: 0,
+        lng: 0,
+    })
+
     // 지역별 클릭 이벤트
     const HandleAreaClick = (areaName) => {
         console.log("핸들러 : " + areaName)
@@ -188,26 +203,13 @@ export default function ImageMapTest() {
             .catch(error => console.log(error));
     }
 
-    // 전체 학교수 max ( opacity 조절용 )
-    const [totalCount, setTotalCount] = useState();
-
-    // Map Hover 지역명 나타내기
-    const [mousePosition, setMousePosition] = useState({
-        lat: 0,
-        lng: 0,
-    })
-
     /* for Opacity  */
-    let maxCount = 20;
-
-    const [fillOpacity, setFillOpacity] = useState();
-
     const placeCount = (name) => {
-        // console.log(temp);
-        if (!temp || temp?.length < 1) {
+        // console.log(dtoList);
+        if (!dtoList || dtoList?.length < 1) {
             return;
         }
-        let a = temp?.filter(data => data.name === name).map((data) => {
+        let a = dtoList?.filter(data => data.name === name).map((data) => {
             return data.total_cnt;
         });
         return a[0] / totalCount;
@@ -215,22 +217,38 @@ export default function ImageMapTest() {
         // return 0.2;
     }
 
-    const [temp, setTemp] = useState();
-
-    const totalLength = () => {
-
-        console.log("totalLength : " + type);
-
+    const totalDtoList = () => {
         axios.get('/gyeonggi/getSchoolTotalCountList/' + type)
-            .then(response => setTemp(response.data) )
+            .then(response => setDtoList(response.data) )
             .catch(error => console.log(error));
     }
+    /*----------------*/
+
+
+    // 학교 타입지정
+    const typeChange = () => {
+        const query = 'input[name="schoolType"]:checked';
+        const selectEls = document.querySelectorAll(query);
+        let result = '';
+        selectEls.forEach((el => {
+            result += el.value + '';
+        }))
+        setType(result);
+    }
+
+
+
+
 
     useEffect(() => {
-        totalLength();
-    }, [])
+        axios.get('/gyeonggi/getMaxTotal')
+            .then(response => setTotalCount(response.data))
+            .catch(error => console.log(error));
+    }, [totalCount]);
 
-    /*----------------*/
+    useEffect(() => {
+        totalDtoList();
+    }, [type])
 
     useEffect(() => {
         const tileset = new kakao.maps.Tileset({
@@ -244,30 +262,8 @@ export default function ImageMapTest() {
             },
         })
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
-
-
-        axios.get('/gyeonggi/getMaxTotal')
-            .then(response => setTotalCount(response.data))
-            .catch(error => console.log(error));
     }, [])
 
-    // 학교 타입지정
-    const [type, setType] = useState("kemh");
-    const typeChange = () => {
-
-        const query = 'input[name="schoolType"]:checked';
-        const selectEls = document.querySelectorAll(query);
-
-        let result = '';
-        selectEls.forEach((el => {
-            result += el.value + '';
-        }))
-
-        setType(result);
-
-        totalLength();
-
-    }
 
     return (
 
