@@ -15,6 +15,6 @@ public interface SchoolService {
 
     Long getAreaSearchCount(String Area);
 
-    List<SchoolMaxCountDTO> getSchoolCountList();
+    List<SchoolMaxCountDTO> getSchoolCountList(String type);
 
 }

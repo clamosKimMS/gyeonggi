@@ -216,11 +216,13 @@ export default function ImageMapTest() {
     }
 
     const [temp, setTemp] = useState();
-    const totalLength = async () => {
-        await axios.get('/gyeonggi/getSchoolTotalCountList')
-            .then(response => {
-                setTemp(response.data);
-            })
+
+    const totalLength = () => {
+
+        console.log("totalLength : " + type);
+
+        axios.get('/gyeonggi/getSchoolTotalCountList/' + type)
+            .then(response => setTemp(response.data) )
             .catch(error => console.log(error));
     }
 
@@ -251,7 +253,7 @@ export default function ImageMapTest() {
 
     // 학교 타입지정
     const [type, setType] = useState("kemh");
-    const typeChange = (e) => {
+    const typeChange = () => {
 
         const query = 'input[name="schoolType"]:checked';
         const selectEls = document.querySelectorAll(query);
@@ -260,7 +262,11 @@ export default function ImageMapTest() {
         selectEls.forEach((el => {
             result += el.value + '';
         }))
+
         setType(result);
+
+        totalLength();
+
     }
 
     return (
@@ -370,7 +376,9 @@ export default function ImageMapTest() {
             </div>
             {/*{console.log(schoolType)}*/}
             {/*{console.log(totalCount)}*/}
-            {console.log(type)}
+            {/*{console.log(type)}*/}
+            {/*{console.log(temp)}*/}
+
         </div>
 
     );

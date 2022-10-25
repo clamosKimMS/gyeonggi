@@ -201,16 +201,14 @@ class SchoolRepositoryTest {
         List<SchoolMaxCountDTO> query = queryFactory
                 .select(Projections.bean(SchoolMaxCountDTO.class,
                         qSchoolEntity.admdst.as("name"),
-                        qSchoolEntity.count().as("total_cnt"),
-                        qSchoolEntity.schl_type.as("schoolType")))
+                        qSchoolEntity.count().as("total_cnt")))
                 .from(qSchoolEntity)
                 .where(qSchoolEntity.survey_base_date.like("2022")
                         .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
                         .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
-                        .and(eqSchool("hm"))
+                        .and(eqSchool("ke"))
                 )
                 .groupBy(qSchoolEntity.admdst)
-                .groupBy(qSchoolEntity.schl_type)
                 .fetch();
 
 

@@ -3,11 +3,17 @@ package clamos.io.dashboard.service;
 import clamos.io.dashboard.dto.SchoolDTO;
 import clamos.io.dashboard.dto.SchoolInterfaceDTO;
 import clamos.io.dashboard.dto.SchoolMaxCountDTO;
+import clamos.io.dashboard.entity.QSchoolEntity;
 import clamos.io.dashboard.repository.SchoolRepository;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +23,9 @@ import java.util.List;
 public class SchoolServiceImpl implements SchoolService{
 
     private final SchoolRepository repository;
+
+    @Autowired
+    EntityManager em;
 
     @Override
     public List<SchoolDTO> getSchoolCount(String Area) {
@@ -57,9 +66,32 @@ public class SchoolServiceImpl implements SchoolService{
     }
 
     @Override
-    public List<SchoolMaxCountDTO> getSchoolCountList() {
+    public List<SchoolMaxCountDTO> getSchoolCountList(String type) {
 
-        List<String[]> result_tmp = repository.areaSearchCountList();
+        System.out.println("타입 : "  + type);
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        List<SchoolMaxCountDTO> queryResult = queryFactory
+                .select(Projections.bean(SchoolMaxCountDTO.class,
+                        qSchoolEntity.admdst.as("name"),
+                        qSchoolEntity.count().as("total_cnt")))
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                        .and(eqSchool(type))
+                )
+                .groupBy(qSchoolEntity.admdst)
+                .fetch();
+
+
+        System.out.println(queryResult);
+
+        return queryResult;
+
+        /*List<String[]> result_tmp = repository.areaSearchCountList();
         List<SchoolMaxCountDTO> result = new ArrayList<>();
 
         for (String[] dto : result_tmp) {
@@ -71,7 +103,32 @@ public class SchoolServiceImpl implements SchoolService{
             result.add(school);
         }
 
-        return result;
+        return result;*/
+
+
+
+    }
+
+    private BooleanBuilder eqSchool(String type) {
+
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        if (type.contains("k")) {
+            conditionBuilder.or(qSchoolEntity.schl_type.contains("유치원"));
+        }
+        if (type.contains("e")) {
+            conditionBuilder.or(qSchoolEntity.schl_type.contains("초등학교"));
+        }
+        if (type.contains("m")) {
+            conditionBuilder.or(qSchoolEntity.schl_type.contains("중학교"));
+        }
+        if (type.contains("h")) {
+            conditionBuilder.or(qSchoolEntity.schl_type.contains("고등학교"));
+        }
+
+        return conditionBuilder;
 
     }
 

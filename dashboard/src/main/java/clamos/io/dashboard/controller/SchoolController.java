@@ -43,13 +43,13 @@ public class SchoolController {
         return service.getAreaSearchCount(Area);
     }
 
-    @GetMapping("/getSchoolTotalCountList")
-    public List<SchoolMaxCountDTO> controller_getSchoolCount() {
+    @GetMapping("/getSchoolTotalCountList/{type}")
+    public List<SchoolMaxCountDTO> controller_getSchoolCount(@PathVariable String type) {
 
-        return service.getSchoolCountList();
+        System.out.println("학교유형 :" + type);
+
+        return service.getSchoolCountList(type);
 
     }
-
-
 
 }
