@@ -100,25 +100,6 @@ class SchoolRepositoryTest {
     }
 
     @Test
-    @DisplayName("학교 타입별 MAX 단위 테스트")
-    public void SchoolTypeTotalTest() {
-
-        Long kinder = repository.maxKinder();
-        Long ele = repository.maxEle();
-        Long mid = repository.maxMid();
-        Long high = repository.maxHigh();
-
-        Long totalMax = repository.maxTotal();
-
-        System.out.println("유치원 맥스   : " + kinder);
-        System.out.println("초등학교 맥스 : " + ele);
-        System.out.println("중학교 맥스   : " + mid);
-        System.out.println("고등학교 맥스 : " + high);
-        System.out.println("토탈 맥스 : " + totalMax);
-
-    }
-
-    @Test
     @DisplayName(" 지역 검색 MAX 단위 테스트 ")
     public void SearchPlaceMaxTest() {
 

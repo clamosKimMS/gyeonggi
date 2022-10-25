@@ -238,8 +238,6 @@ export default function ImageMapTest() {
 
 
 
-
-
     useEffect(() => {
         axios.get('/gyeonggi/getMaxTotal')
             .then(response => setTotalCount(response.data))

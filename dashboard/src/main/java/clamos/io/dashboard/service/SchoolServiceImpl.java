@@ -60,11 +60,11 @@ public class SchoolServiceImpl implements SchoolService{
 
     @Override
     public Long getAreaSearchCount(String Area) {
-
         return repository.areaSearchCount(Area);
 
     }
 
+    // 지역별 전체 학교 수 ( 학교타입 지정 가능 )
     @Override
     public List<SchoolMaxCountDTO> getSchoolCountList(String type) {
 
@@ -91,24 +91,9 @@ public class SchoolServiceImpl implements SchoolService{
 
         return queryResult;
 
-        /*List<String[]> result_tmp = repository.areaSearchCountList();
-        List<SchoolMaxCountDTO> result = new ArrayList<>();
-
-        for (String[] dto : result_tmp) {
-            SchoolMaxCountDTO school = SchoolMaxCountDTO.builder()
-                    .name(dto[0])
-                    .total_cnt(Long.parseLong(dto[1]))
-                    .build();
-
-            result.add(school);
-        }
-
-        return result;*/
-
-
-
     }
 
+    // 학교 타입
     private BooleanBuilder eqSchool(String type) {
 
         BooleanBuilder conditionBuilder = new BooleanBuilder();
