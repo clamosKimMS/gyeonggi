@@ -11,5 +11,6 @@ public class SchoolMaxCountDTO {
 
     private String name;
     private Long total_cnt;
+    private String schoolType;
 
 }

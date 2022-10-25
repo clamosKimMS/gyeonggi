@@ -7,8 +7,10 @@ import clamos.io.dashboard.entity.QSchoolEntity;
 import clamos.io.dashboard.entity.SchoolEntity;
 import clamos.io.dashboard.service.SchoolService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -120,7 +122,7 @@ class SchoolRepositoryTest {
     @DisplayName(" 지역 검색 MAX 단위 테스트 ")
     public void SearchPlaceMaxTest() {
 
-        Integer currentMaxCount = service.getAreaSearchCount("광주시");
+        Long currentMaxCount = service.getAreaSearchCount("광주시");
         System.out.println(currentMaxCount);
 
         assertEquals(5, currentMaxCount);
@@ -168,6 +170,7 @@ class SchoolRepositoryTest {
 
         System.out.println(query);
 
+
         /*JPAQuery<Tuple> query = queryFactory
                 .select(qSchoolEntity.admdst, qSchoolEntity.count())
                 .from(qSchoolEntity)
@@ -184,6 +187,59 @@ class SchoolRepositoryTest {
         }*/
 
 
+
+    }
+
+
+    @Test
+    @DisplayName("BooleanBuilder")
+    public void BooleanBuilderTest() {
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        List<SchoolMaxCountDTO> query = queryFactory
+                .select(Projections.bean(SchoolMaxCountDTO.class,
+                        qSchoolEntity.admdst.as("name"),
+                        qSchoolEntity.count().as("total_cnt"),
+                        qSchoolEntity.schl_type.as("schoolType")))
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                        .and(eqSchool("hm"))
+                )
+                .groupBy(qSchoolEntity.admdst)
+                .groupBy(qSchoolEntity.schl_type)
+                .fetch();
+
+
+        System.out.println(query);
+
+
+
+    }
+
+    private BooleanBuilder eqSchool(String type) {
+
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        if (type.contains("k")) {
+            conditionBuilder.or(qSchoolEntity.schl_type.contains("유치원"));
+        }
+        if (type.contains("e")) {
+            conditionBuilder.or(qSchoolEntity.schl_type.contains("초등학교"));
+        }
+        if (type.contains("m")) {
+            conditionBuilder.or(qSchoolEntity.schl_type.contains("중학교"));
+        }
+        if (type.contains("h")) {
+            conditionBuilder.or(qSchoolEntity.schl_type.contains("고등학교"));
+        }
+
+        return conditionBuilder;
 
     }
 
