@@ -205,17 +205,13 @@ export default function ImageMapTest() {
 
     /* for Opacity  */
     const placeCount = (name) => {
-        // console.log(dtoList);
         if (!dtoList || dtoList?.length < 1) {
             return;
         }
         let a = dtoList?.filter(data => data?.name === name).map((data) => {
             return data.total_cnt;
         });
-        console.log(" opacity :  " + a[0] / totalCount);
         return a[0] / totalCount;
-        // return [datasets.name]
-        // return 0.2;
     }
 
     const totalDtoList = () => {
@@ -245,13 +241,12 @@ export default function ImageMapTest() {
 
     useEffect(() => {
 
-        console.log("totalCount : " + totalCount);
-
         // 모든 지역 학교 수를 가져옴
-        totalDtoList();
-
-        //
-        getTotalCount()
+        axios.all([axios.get("/gyeonggi/getSchoolTotalCountList/"+type),axios.get('/gyeonggi/getMaxTotal/'+ type)])
+            .then(axios.spread((res1,res2)=> {
+                setDtoList(res1.data);
+                setTotalCount(res2.data);
+            }))
 
     }, [type])
 
