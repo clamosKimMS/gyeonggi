@@ -20,13 +20,14 @@ public class SchoolController {
     private final SchoolService service;
 
     /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ ImageMap에 필요한 Controller ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
-    @GetMapping("/getMaxTotal")
-    public Long controller_getMaxSchoolTotal() {
-        return service.getMaxSchoolTotal();
+    @GetMapping("/getMaxTotal/{type}")
+    public Long controller_getMaxSchoolTotal(@PathVariable String type) {
+        System.out.println("Max 학교유형 : " + type);
+        return service.getMaxSchoolTotal(type);
     }
     @GetMapping("/getSchoolTotalCountList/{type}")
     public List<SchoolMaxCountDTO> controller_getSchoolCount(@PathVariable String type) {
-        System.out.println("학교유형 :" + type);
+        System.out.println("List 학교유형 :" + type);
         return service.getSchoolCountList(type);
     }
 

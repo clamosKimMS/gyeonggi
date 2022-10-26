@@ -11,12 +11,15 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -84,7 +87,6 @@ class SchoolRepositoryTest {
         for (SchoolDTO school : result) {
             System.out.println(school.toString());
         }
-
     }
 
     @Test
@@ -168,7 +170,6 @@ class SchoolRepositoryTest {
         }*/
 
 
-
     }
 
 
@@ -195,7 +196,32 @@ class SchoolRepositoryTest {
 
         System.out.println(query);
 
+    }
 
+    @Test
+    @DisplayName("QueryDSL 전체 학교 수 테스트")
+    public void getMaxSchoolTotalTest() {
+
+        String type = "ke";
+
+        System.out.println("serviceMax 타입 : " + type);
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        Long queryResult = queryFactory
+                .select(qSchoolEntity.count())
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                        .and(eqSchool(type)))
+                .groupBy(qSchoolEntity.admdst)
+                .orderBy(qSchoolEntity.count().desc())
+                .limit(1)
+                .fetchOne();
+
+        System.out.println(queryResult);
 
     }
 

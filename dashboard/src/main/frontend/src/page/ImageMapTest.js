@@ -199,7 +199,7 @@ export default function ImageMapTest() {
     // 지도 지역을 클릭했을 때 어느 지역인지 Controller에서 가져옴
     const searchPlace = (areaName) => {
         axios.get('/gyeonggi/schoolTypeCount/' + areaName)
-            .then(response => setSchoolType(response.data))
+            .then(response => setSchoolType(response?.data))
             .catch(error => console.log(error));
     }
 
@@ -209,9 +209,10 @@ export default function ImageMapTest() {
         if (!dtoList || dtoList?.length < 1) {
             return;
         }
-        let a = dtoList?.filter(data => data.name === name).map((data) => {
+        let a = dtoList?.filter(data => data?.name === name).map((data) => {
             return data.total_cnt;
         });
+        console.log(" opacity :  " + a[0] / totalCount);
         return a[0] / totalCount;
         // return [datasets.name]
         // return 0.2;
@@ -219,11 +220,10 @@ export default function ImageMapTest() {
 
     const totalDtoList = () => {
         axios.get('/gyeonggi/getSchoolTotalCountList/' + type)
-            .then(response => setDtoList(response.data) )
+            .then(response => setDtoList(response?.data) )
             .catch(error => console.log(error));
     }
     /*----------------*/
-
 
     // 학교 타입지정
     const typeChange = () => {
@@ -234,20 +234,28 @@ export default function ImageMapTest() {
             result += el.value + '';
         }))
         setType(result);
+
     }
 
-
-
-    useEffect(() => {
-        axios.get('/gyeonggi/getMaxTotal')
-            .then(response => setTotalCount(response.data))
+    const getTotalCount = () => {
+        axios.get('/gyeonggi/getMaxTotal/' + type)
+            .then(response => setTotalCount(response?.data))
             .catch(error => console.log(error));
-    }, [totalCount]);
+    }
 
     useEffect(() => {
+
+        console.log("totalCount : " + totalCount);
+
+        // 모든 지역 학교 수를 가져옴
         totalDtoList();
+
+        //
+        getTotalCount()
+
     }, [type])
 
+    // GIS 그림
     useEffect(() => {
         const tileset = new kakao.maps.Tileset({
             width: 256,
@@ -261,7 +269,6 @@ export default function ImageMapTest() {
         })
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
     }, [])
-
 
     return (
 
@@ -311,7 +318,7 @@ export default function ImageMapTest() {
                             strokeOpacity={0.8}
                             fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
                             // fillOpacity={area.isMouseOver ? 1 : 0.2}
-                            fillOpacity={area.isMouseOver ? 1 : placeCount(area.name)}
+                            fillOpacity={area.isMouseOver ? 1 : placeCount(area?.name)}
                             onMousemove={(_map, mouseEvent) =>
                                 setMousePosition({
                                     lat: mouseEvent.latLng.getLat(),
@@ -368,10 +375,6 @@ export default function ImageMapTest() {
                 </Map>
 
             </div>
-            {/*{console.log(schoolType)}*/}
-            {/*{console.log(totalCount)}*/}
-            {/*{console.log(type)}*/}
-            {/*{console.log(temp)}*/}
 
         </div>
 

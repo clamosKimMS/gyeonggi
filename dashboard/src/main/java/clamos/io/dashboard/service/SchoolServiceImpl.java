@@ -52,9 +52,30 @@ public class SchoolServiceImpl implements SchoolService{
     }
 
     @Override
-    public Long getMaxSchoolTotal() {
+    public Long getMaxSchoolTotal(String type) {
+        
+        // 학교 전체수를 Query DSL로 바꿀 필요 있음
 
-        return repository.maxTotal();
+        System.out.println("serviceMax 타입 : " + type);
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        Long queryResult = queryFactory
+                .select(qSchoolEntity.count())
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                        .and(eqSchool(type)))
+                .groupBy(qSchoolEntity.admdst)
+                .orderBy(qSchoolEntity.count().desc())
+                .limit(1)
+                .fetchOne();
+
+        System.out.println(queryResult);
+
+        return queryResult;
 
     }
 
@@ -68,7 +89,7 @@ public class SchoolServiceImpl implements SchoolService{
     @Override
     public List<SchoolMaxCountDTO> getSchoolCountList(String type) {
 
-        System.out.println("타입 : "  + type);
+        System.out.println("serviceList 타입 : "  + type);
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;

@@ -8,6 +8,8 @@ class DashboardApplicationTests {
 
     @Test
     void contextLoads() {
+        System.out.println("Hi");
+
     }
 
 }
