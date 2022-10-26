@@ -7,7 +7,7 @@ import {
     map_Gunpo, map_Guri, map_Gwacheon, map_Gwangju, map_Gwangmyeong, map_Hanam, map_Hwaseon, map_Icheon, map_Namyangju,
     map_Osan, map_Paju, map_Pocheon, map_Pyeongtaek, map_SeongNam, map_Siheung, map_Suwon, map_Uijeonbu,
     map_Uiwang, map_Yangju, map_Yangpyeon, map_Yeoju, map_Yeoncheon, map_Yongin
-} from "./latitude";
+} from "./LatAndLong/AreaLocal";
 
 import {CustomOverlayMap, Map, Polygon, MapInfoWindow} from "react-kakao-maps-sdk";
 
@@ -17,7 +17,7 @@ export default function ImageMapTest() {
     const [schoolType, setSchoolType] = useState([]);
 
     // 지역별 위도경도 배열
-    const [areas, setAreas] = useState([
+    const [areasLocal, setAreasLocal] = useState([
         {
             name: "연천군",
             isMouseOver: false,
@@ -214,11 +214,6 @@ export default function ImageMapTest() {
         return a[0] / totalCount;
     }
 
-    const totalDtoList = () => {
-        axios.get('/gyeonggi/getSchoolTotalCountList/' + type)
-            .then(response => setDtoList(response?.data) )
-            .catch(error => console.log(error));
-    }
     /*----------------*/
 
     // 학교 타입지정
@@ -233,19 +228,13 @@ export default function ImageMapTest() {
 
     }
 
-    const getTotalCount = () => {
-        axios.get('/gyeonggi/getMaxTotal/' + type)
-            .then(response => setTotalCount(response?.data))
-            .catch(error => console.log(error));
-    }
-
     useEffect(() => {
 
         // 모든 지역 학교 수를 가져옴
         axios.all([axios.get("/gyeonggi/getSchoolTotalCountList/"+type),axios.get('/gyeonggi/getMaxTotal/'+ type)])
-            .then(axios.spread((res1,res2)=> {
-                setDtoList(res1.data);
-                setTotalCount(res2.data);
+            .then(axios.spread((axios_dtoList,axios_totalCount)=> {
+                setDtoList(axios_dtoList.data);
+                setTotalCount(axios_totalCount.data);
             }))
 
     }, [type])
@@ -305,7 +294,7 @@ export default function ImageMapTest() {
                     onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
 
                 >
-                    {areas.map((area, index) => (<Polygon
+                    {areasLocal.map((area, index) => (<Polygon
                             key={`area-${area.name}`}
                             path={area.path}
                             strokeWeight={2}
@@ -322,7 +311,7 @@ export default function ImageMapTest() {
                             }
 
                             onMouseover={() =>
-                                setAreas((prev) => [
+                                setAreasLocal((prev) => [
                                     ...prev.filter((_, i) => i !== index),
                                     {
                                         ...prev[index],
@@ -331,7 +320,7 @@ export default function ImageMapTest() {
                                 ])
                             }
                             onMouseout={() =>
-                                setAreas((prev) => [
+                                setAreasLocal((prev) => [
                                     ...prev.filter((_, i) => i !== index),
                                     {
                                         ...prev[index],
@@ -346,7 +335,7 @@ export default function ImageMapTest() {
                     ))}
 
 
-                    {areas.findIndex((v) => v.isMouseover) !== -1 && (
+                    {areasLocal.findIndex((v) => v.isMouseover) !== -1 && (
 
                         <CustomOverlayMap position={mousePosition}>
                             <div className="area"
@@ -361,7 +350,7 @@ export default function ImageMapTest() {
                                      left: "15px",
                                      padding: "2px",
                                  }}
-                            >{areas.find((v) => v.isMouseover).name}</div>
+                            >{areasLocal.find((v) => v.isMouseover).name}</div>
 
                         </CustomOverlayMap>
 

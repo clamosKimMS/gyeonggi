@@ -8,7 +8,7 @@ import {
     map_Gunpo, map_Guri, map_Gwacheon, map_Gwangju, map_Gwangmyeong, map_Hanam, map_Hwaseon, map_Icheon, map_Namyangju,
     map_Osan, map_Paju, map_Pocheon, map_Pyeongtaek, map_SeongNam, map_Siheung, map_Suwon, map_Uijeonbu,
     map_Uiwang, map_Yangju, map_Yangpyeon, map_Yeoju, map_Yeoncheon, map_Yongin
-} from "./latitude";
+} from "./LatAndLong/AreaLocal";
 import {CustomOverlayMap, Map, Polygon, MapInfoWindow} from "react-kakao-maps-sdk";
 
 export default function SchoolTotal() {
