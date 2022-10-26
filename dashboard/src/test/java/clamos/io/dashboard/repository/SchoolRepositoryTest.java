@@ -153,23 +153,6 @@ class SchoolRepositoryTest {
 
         System.out.println(query);
 
-
-        /*JPAQuery<Tuple> query = queryFactory
-                .select(qSchoolEntity.admdst, qSchoolEntity.count())
-                .from(qSchoolEntity)
-                .where(qSchoolEntity.survey_base_date.like("2022")
-                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
-                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
-                )
-                .groupBy(qSchoolEntity.admdst);
-
-        List<Tuple> itemList = query.fetch();
-
-        for (Tuple tuple : itemList) {
-            System.out.println(tuple);
-        }*/
-
-
     }
 
 

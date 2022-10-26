@@ -8,6 +8,15 @@ import {
     map_Osan, map_Paju, map_Pocheon, map_Pyeongtaek, map_SeongNam, map_Siheung, map_Suwon, map_Uijeonbu,
     map_Uiwang, map_Yangju, map_Yangpyeon, map_Yeoju, map_Yeoncheon, map_Yongin
 } from "./LatAndLong/AreaLocal";
+import {
+    eduMap_Yeoncheon, eduMap_Pocheon, eduMap_Gapyeon, eduMap_Yangpyeon,
+    eduMap_Yeoju, eduMap_Icheon, eduMap_Yongin,
+    eduMap_Anseon, eduMap_Pyeongtaek, eduMap_Hwaseon_Osan, eduMap_Ansan,
+    eduMap_AnYan_Gwacheon, eduMap_Gunpo_Uiwang, eduMap_Suwon, eduMap_Guri_Namyangju,
+    eduMap_SeongNam, eduMap_Gwangju_Hanam, eduMap_Gwangmyeong, eduMap_Bucheon, eduMap_Siheung,
+    eduMap_Dongducheon_Yangju, eduMap_Paju, eduMap_Gimpo, eduMap_Goyang,
+    eduMap_Uijeonbu
+} from "./LatAndLong/AreaEdu";
 
 import {CustomOverlayMap, Map, Polygon, MapInfoWindow} from "react-kakao-maps-sdk";
 
@@ -16,7 +25,7 @@ export default function ImageMapTest() {
     // 학교별
     const [schoolType, setSchoolType] = useState([]);
 
-    // 지역별 위도경도 배열
+    // 행정구역 / 교육청 별 위도경도 배열
     const [areasLocal, setAreasLocal] = useState([
         {
             name: "연천군",
@@ -173,6 +182,133 @@ export default function ImageMapTest() {
             isMouseOver: false,
             path: map_Namyangju
         }
+    ])
+    const [areasEdu, setAreasEdu] = useState([
+        {
+            name: "연천군",
+            isMouseOver: false,
+            path: eduMap_Yeoncheon
+        },
+        {
+            name: "포천시",
+            isMouseOver: false,
+            path: eduMap_Pocheon
+        },
+        {
+            name: "가평군",
+            isMouseOver: false,
+            path: eduMap_Gapyeon
+        },
+        {
+            name: "양평군",
+            isMouseOver: false,
+            path: eduMap_Yangpyeon
+        },
+        {
+            name: "여주시",
+            isMouseOver: false,
+            path: eduMap_Yeoju
+        },
+        {
+            name: "이천시",
+            isMouseOver: false,
+            path: eduMap_Icheon
+        },
+        {
+            name: "용인시",
+            isMouseOver: false,
+            path: eduMap_Yongin
+        },
+        {
+            name: "안성시",
+            isMouseOver: false,
+            path: eduMap_Anseon
+        },
+        {
+            name: "평택시",
+            isMouseOver: false,
+            path: eduMap_Pyeongtaek
+        },
+        {
+            name: "화성시 오산시",
+            isMouseOver: false,
+            path: eduMap_Hwaseon_Osan
+        },
+        {
+            name: "안산시",
+            isMouseOver: false,
+            path: eduMap_Ansan
+        },
+        {
+            name: "안양시 과천시",
+            isMouseOver: false,
+            path: eduMap_AnYan_Gwacheon
+        },
+        {
+            name: "군포시 의왕시",
+            isMouseOver: false,
+            path: eduMap_Gunpo_Uiwang
+        },
+        {
+            name: "수원시",
+            isMouseOver: false,
+            path: eduMap_Suwon
+        },
+        {
+            name: "구리시 남양주시",
+            isMouseOver: false,
+            path: eduMap_Guri_Namyangju
+        },
+        {
+            name: "성남시",
+            isMouseOver: false,
+            path: eduMap_SeongNam
+        },
+        {
+            name: "광주시 하남시",
+            isMouseOver: false,
+            path: eduMap_Gwangju_Hanam
+        },
+        {
+            name: "광명시",
+            isMouseOver: false,
+            path: eduMap_Gwangmyeong
+        },
+        {
+            name: "부천시",
+            isMouseOver: false,
+            path: eduMap_Bucheon
+        },
+        {
+            name: "시흥시",
+            isMouseOver: false,
+            path: eduMap_Siheung
+        },
+        {
+            name: "동두천시 양주시",
+            isMouseOver: false,
+            path: eduMap_Dongducheon_Yangju
+        },
+        {
+            name: "파주시",
+            isMouseOver: false,
+            path: eduMap_Paju
+        },
+        {
+            name: "김포시",
+            isMouseOver: false,
+            path: eduMap_Gimpo
+        },
+        {
+            name: "고양시",
+            isMouseOver: false,
+            path: eduMap_Goyang
+        },
+        {
+            name: "의정부시",
+            isMouseOver: false,
+            path: eduMap_Uijeonbu
+        },
     ])
 
     // 표기할 학교의 타입을 지정함 ( k:유치원 / e:초등 / m:중등 / h:고등 )
