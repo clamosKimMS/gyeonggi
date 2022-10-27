@@ -1,9 +1,7 @@
 package clamos.io.dashboard.service;
 
 import clamos.io.dashboard.dto.SchoolDTO;
-import clamos.io.dashboard.dto.SchoolInterfaceDTO;
 import clamos.io.dashboard.dto.SchoolMaxCountDTO;
-import clamos.io.dashboard.entity.SchoolEntity;
 
 import java.util.List;
 
@@ -11,10 +9,14 @@ public interface SchoolService {
 
     List<SchoolDTO> getSchoolCount(String Area);
 
-    Long getMaxSchoolTotal(String type);
-
     Long getAreaSearchCount(String Area);
 
-    List<SchoolMaxCountDTO> getSchoolCountList(String type);
+    // 행정구역별 countList
+    List<SchoolMaxCountDTO> getAreaSchoolCountList(String type);
+    Long getAreaMaxSchoolTotal(String type);
+
+    // 지역청별 countList
+    List<SchoolMaxCountDTO> getEduSchoolCountList(String type);
+    Long getEduMaxSchoolTotal(String type);
 
 }

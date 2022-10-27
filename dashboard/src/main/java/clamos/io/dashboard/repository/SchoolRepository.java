@@ -44,12 +44,11 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer>, 
             "", nativeQuery = true)
     List<Integer[]> Chart_1(@Param("Area") String Area);
 
-    @Query(nativeQuery = true,
+    /*@Query(nativeQuery = true,
             value = "select admdst, count(schl_count) " +
                     "from tb_schl_stat_kms " +
                     "where survey_base_date = '2022' " +
-                    "and schl_exis" +
-                    "t_status <> '폐(원)교' " +
+                    "and schl_exist_status <> '폐(원)교' " +
                     "and main_or_branch_school <> '분교장' " +
                     "group by admdst ")
     List<String[]> areaSearchCountList();
@@ -65,6 +64,6 @@ public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer>, 
                     " and main_or_branch_school <> '분교장' " +
                     "group by admdst )" +
                     "as query ")
-    Long maxTotal();
+    Long maxTotal();*/
 
 }

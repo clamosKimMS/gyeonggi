@@ -326,6 +326,17 @@ export default function ImageMapTest() {
         lng: 0,
     })
 
+    // 행정구역 지역청 구분
+    const [areaType, setAreaType] = useState("행정구역");
+
+    const toggleArea = () => {
+        if (areaType == "지역청") {
+            setAreaType("행정구역");
+        }else {
+            setAreaType("지역청");
+        }
+    }
+
     // 지역별 클릭 이벤트
     const HandleAreaClick = (areaName) => {
         console.log("핸들러 : " + areaName)
@@ -349,7 +360,6 @@ export default function ImageMapTest() {
         });
         return a[0] / totalCount;
     }
-
     /*----------------*/
 
     // 학교 타입지정
@@ -394,6 +404,18 @@ export default function ImageMapTest() {
 
         <div>
 
+            <div className="content">
+                <div className="header">
+                    <div className="left">
+                        <h2><strong>{areaType}</strong></h2>
+                        <div className="tabs" onClick={ () => toggleArea()}>
+                            <a href="#" className={(areaType == "행정구역") ? "active" : ""}>행정구역</a>
+                            <a href="#" className={(areaType == "지역청") ? "active" : ""}>지역청</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className="check-box" style={{zIndex: 1, paddingBottom: "30px"}} onChange={typeChange}>
                 <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 green" name="schoolType"
                                    value="k"/>
@@ -430,6 +452,7 @@ export default function ImageMapTest() {
                     onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
 
                 >
+                    
                     {areasLocal.map((area, index) => (<Polygon
                             key={`area-${area.name}`}
                             path={area.path}
@@ -469,10 +492,7 @@ export default function ImageMapTest() {
                             // setTextPlace(area.name);
                         />
                     ))}
-
-
                     {areasLocal.findIndex((v) => v.isMouseover) !== -1 && (
-
                         <CustomOverlayMap position={mousePosition}>
                             <div className="area"
                                  style={{
@@ -489,7 +509,6 @@ export default function ImageMapTest() {
                             >{areasLocal.find((v) => v.isMouseover).name}</div>
 
                         </CustomOverlayMap>
-
                     )}
 
                 </Map>

@@ -186,7 +186,7 @@ class SchoolRepositoryTest {
     @DisplayName("QueryDSL 전체 학교 수 테스트")
     public void getMaxSchoolTotalTest() {
 
-        String type = "ke";
+        String type = "kemh";
 
         System.out.println("serviceMax 타입 : " + type);
 
@@ -210,11 +210,20 @@ class SchoolRepositoryTest {
     }
 
     @Test
-    @DisplayName("행정구역 / 지역청 구분")
+    @DisplayName("QueryDSL 지역청별 전체 학교 수 테스트")
+    public void getEduMaxSchoolTotalTest() {
+
+        long max = service.getEduMaxSchoolTotal("ke");
+        System.out.println(max);
+
+    }
+
+    @Test
+    @DisplayName("지역청 구분")
     public void ClassificationTest() {
 
         // given
-        String type = "kemh"; // 유초중고 전체 선택
+        String type = "ke"; // 유초중고 전체 선택
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;

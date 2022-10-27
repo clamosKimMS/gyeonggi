@@ -1,7 +1,6 @@
 package clamos.io.dashboard.controller;
 
 import clamos.io.dashboard.dto.SchoolDTO;
-import clamos.io.dashboard.dto.SchoolInterfaceDTO;
 import clamos.io.dashboard.dto.SchoolMaxCountDTO;
 import clamos.io.dashboard.service.SchoolService;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +22,12 @@ public class SchoolController {
     @GetMapping("/getMaxTotal/{type}")
     public Long controller_getMaxSchoolTotal(@PathVariable String type) {
         System.out.println("Max 학교유형 : " + type);
-        return service.getMaxSchoolTotal(type);
+        return service.getAreaMaxSchoolTotal(type);
     }
     @GetMapping("/getSchoolTotalCountList/{type}")
     public List<SchoolMaxCountDTO> controller_getSchoolCount(@PathVariable String type) {
         System.out.println("List 학교유형 :" + type);
-        return service.getSchoolCountList(type);
+        return service.getAreaSchoolCountList(type);
     }
 
     /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ Chart 그리는데에 사용할 Controller ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */

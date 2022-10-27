@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -52,7 +54,7 @@ public class SchoolServiceImpl implements SchoolService{
     }
 
     @Override
-    public Long getMaxSchoolTotal(String type) {
+    public Long getAreaMaxSchoolTotal(String type) {
         
         // 학교 전체수를 Query DSL로 바꿀 필요 있음
 
@@ -80,6 +82,22 @@ public class SchoolServiceImpl implements SchoolService{
     }
 
     @Override
+    public Long getEduMaxSchoolTotal(String type) {
+
+        List<SchoolMaxCountDTO> result = getEduSchoolCountList(type);
+
+        Long max = 0L;
+
+        for (SchoolMaxCountDTO dto : result) {
+            log.info(dto);
+            max = dto.getTotal_cnt() > max ? max = dto.getTotal_cnt() : max;
+        }
+
+
+        return max;
+    }
+
+    @Override
     public Long getAreaSearchCount(String Area) {
         return repository.areaSearchCount(Area);
 
@@ -87,7 +105,7 @@ public class SchoolServiceImpl implements SchoolService{
 
     // 지역별 전체 학교 수 ( 학교타입 지정 가능 )
     @Override
-    public List<SchoolMaxCountDTO> getSchoolCountList(String type) {
+    public List<SchoolMaxCountDTO> getAreaSchoolCountList(String type) {
 
         System.out.println("serviceList 타입 : "  + type);
 
@@ -110,6 +128,123 @@ public class SchoolServiceImpl implements SchoolService{
         System.out.println("지역별 전체 학교 수");
         for (SchoolMaxCountDTO dto : queryResult) {
             System.out.println(dto);
+        }
+
+        return queryResult;
+
+    }
+
+    @Override
+    public List<SchoolMaxCountDTO> getEduSchoolCountList(String type) {
+
+        int guri = 0;
+        int donducheon = 0;
+        int anyang = 0;
+        int osan = 0;
+        int hanam = 0;
+        int uiwang = 0;
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        List<SchoolMaxCountDTO> queryResult = queryFactory
+                .select(Projections.bean(SchoolMaxCountDTO.class,
+                        qSchoolEntity.admdst.as("name"),
+                        qSchoolEntity.count().as("total_cnt")))
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                        .and(eqSchool(type))
+                )
+                .groupBy(qSchoolEntity.admdst)
+                .orderBy(qSchoolEntity.admdst.asc())
+                .fetch();
+
+        for (int i = 0; i < queryResult.size(); i++) {
+
+            if (queryResult.get(i).getName().equals("구리시")) {
+                guri = i;
+            }
+            if (queryResult.get(i).getName().equals("동두천시")) {
+                donducheon = i;
+            }
+            if (queryResult.get(i).getName().equals("안양시")) {
+                anyang = i;
+            }
+            if (queryResult.get(i).getName().equals("오산시")) {
+                osan = i;
+            }
+            if (queryResult.get(i).getName().equals("하남시")) {
+                hanam = i;
+            }
+            if (queryResult.get(i).getName().equals("의왕시")) {
+                uiwang = i;
+            }
+
+        }
+
+        for (int i = 0; i < queryResult.size(); i++) {
+            if (queryResult.get(i).getName().equals("남양주시")) {
+
+                queryResult.get(i).setName("남양주시-구리시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(guri).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("양주시")) {
+
+                queryResult.get(i).setName("양주시-동두천시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(donducheon).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("과천시")) {
+
+                queryResult.get(i).setName("과천시-안양시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(anyang).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("화성시")) {
+
+                queryResult.get(i).setName("화성시-오산시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(osan).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("광주시")) {
+
+                queryResult.get(i).setName("광주시-하남시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(hanam).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("군포시")) {
+
+                queryResult.get(i).setName("군포시-의왕시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(uiwang).getTotal_cnt() );
+
+            }
+        }
+
+
+        for (int i = 0; i < queryResult.size(); i++) {
+
+            if (queryResult.get(i).getName().equals("구리시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("동두천시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("안양시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("오산시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("하남시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("의왕시")) {
+                queryResult.remove(i);
+            }
+
         }
 
         return queryResult;
