@@ -7,6 +7,7 @@ import clamos.io.dashboard.dto.SchoolMaxCountDTO;
 import clamos.io.dashboard.entity.SchoolEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer> {
+public interface SchoolRepository extends JpaRepository<SchoolEntity, Integer>, QuerydslPredicateExecutor<SchoolEntity> {
 
     @Query(nativeQuery = true,
             value = "select max(cnt) " +

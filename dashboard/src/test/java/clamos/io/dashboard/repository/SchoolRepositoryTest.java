@@ -7,8 +7,12 @@ import clamos.io.dashboard.entity.SchoolEntity;
 import clamos.io.dashboard.service.SchoolService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.sql.JPASQLQuery;
 import com.querydsl.sql.SQLTemplates;
@@ -304,23 +308,28 @@ class SchoolRepositoryTest {
 
         QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
 
+        StringExpression cases = new CaseBuilder()
+                .when(qSchoolEntity.admdst.eq("구리시")).then("구리시-남양주시")
+                .when(qSchoolEntity.admdst.eq("남양주시")).then("구리시-남양주시")
+                .otherwise(Expressions.nullExpression());
+
         JPASQLQuery<QSchoolEntity> query = new JPASQLQuery<>(em, SQLTemplates.DEFAULT);
 
-        List<SchoolMaxCountDTO> dtoList = query
-                .with(QSchoolEntity.schoolEntity)
-                .as(
-                        query.select(
-                                new CaseBuilder()
-                                        .when(qSchoolEntity.admdst.eq("구리시"))
-                                        .then("남양주시")
-                                        .otherwise("false")
-                                        .as("name")
-                        )
+        List<SchoolMaxCountDTO> list = query
+                .select(Projections.bean(SchoolMaxCountDTO.class,
+                        qSchoolEntity.admdst.as("name"),
+                        qSchoolEntity.count().as("total_cnt")))
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                        .and(eqSchool(type))
                 )
-                .select("name")
+                .groupBy(qSchoolEntity.admdst)
+                .orderBy(qSchoolEntity.admdst.asc())
                 .fetch();
 
-        for (SchoolMaxCountDTO dto : dtoList) {
+        for (SchoolMaxCountDTO dto : list) {
             System.out.println(dto);
         }
 
