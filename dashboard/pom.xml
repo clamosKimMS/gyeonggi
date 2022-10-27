@@ -78,6 +78,11 @@
             <version>${querydsl.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-sql-spring</artifactId>
+            <version>${querydsl.version}</version>
+        </dependency>
 
     </dependencies>
 

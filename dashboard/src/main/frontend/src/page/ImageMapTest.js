@@ -230,7 +230,7 @@ export default function ImageMapTest() {
             path: eduMap_Pyeongtaek
         },
         {
-            name: "화성시 오산시",
+            name: "화성시-오산시",
             isMouseOver: false,
             path: eduMap_Hwaseon_Osan
         },
@@ -240,12 +240,12 @@ export default function ImageMapTest() {
             path: eduMap_Ansan
         },
         {
-            name: "안양시 과천시",
+            name: "안양시-과천시",
             isMouseOver: false,
             path: eduMap_AnYan_Gwacheon
         },
         {
-            name: "군포시 의왕시",
+            name: "군포시-의왕시",
             isMouseOver: false,
             path: eduMap_Gunpo_Uiwang
         },
@@ -255,7 +255,7 @@ export default function ImageMapTest() {
             path: eduMap_Suwon
         },
         {
-            name: "구리시 남양주시",
+            name: "구리시-남양주시",
             isMouseOver: false,
             path: eduMap_Guri_Namyangju
         },
@@ -265,7 +265,7 @@ export default function ImageMapTest() {
             path: eduMap_SeongNam
         },
         {
-            name: "광주시 하남시",
+            name: "광주시-하남시",
             isMouseOver: false,
             path: eduMap_Gwangju_Hanam
         },
@@ -285,7 +285,7 @@ export default function ImageMapTest() {
             path: eduMap_Siheung
         },
         {
-            name: "동두천시 양주시",
+            name: "동두천시-양주시",
             isMouseOver: false,
             path: eduMap_Dongducheon_Yangju
         },

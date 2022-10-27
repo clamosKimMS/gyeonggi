@@ -23561,7 +23561,7 @@ const eduMap_Guri_Namyangju = [
             lat: 37.7803570968083
         }
     ] // 남양주
-] // 구리 - 남양주 교육청
+] // 구리-남양주 교육청
 const eduMap_SeongNam = [
     [
         {

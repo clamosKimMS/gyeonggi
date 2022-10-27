@@ -1,35 +1,29 @@
 package clamos.io.dashboard.repository;
 
 import clamos.io.dashboard.dto.SchoolDTO;
-import clamos.io.dashboard.dto.SchoolInterfaceDTO;
 import clamos.io.dashboard.dto.SchoolMaxCountDTO;
 import clamos.io.dashboard.entity.QSchoolEntity;
 import clamos.io.dashboard.entity.SchoolEntity;
 import clamos.io.dashboard.service.SchoolService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.junit.jupiter.api.Assertions;
+import com.querydsl.jpa.sql.JPASQLQuery;
+import com.querydsl.sql.SQLTemplates;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @SpringBootTest
 class SchoolRepositoryTest {
@@ -112,7 +106,7 @@ class SchoolRepositoryTest {
 
     }
 
-    @Test
+    /*@Test
     @DisplayName(" 지역 max count List 단위 테스트 ")
     public void areaSearchCountListTest() {
 
@@ -132,7 +126,7 @@ class SchoolRepositoryTest {
             System.out.println(dto.toString());
         }
 
-    }
+    }*/
 
     @Test
     @DisplayName("QueryDSL Test")
@@ -177,7 +171,10 @@ class SchoolRepositoryTest {
                 .fetch();
 
 
-        System.out.println(query);
+        System.out.println("dtoList - ");
+        for (SchoolMaxCountDTO dto : query) {
+            System.out.println(dto);
+        }
 
     }
 
@@ -208,10 +205,131 @@ class SchoolRepositoryTest {
 
     }
 
+    @Test
+    @DisplayName("행정구역 / 지역청 구분")
+    public void ClassificationTest() {
+
+        // given
+        String type = "kemh"; // 유초중고 전체 선택
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        List<SchoolMaxCountDTO> queryResult = queryFactory
+                .select(Projections.bean(SchoolMaxCountDTO.class,
+                        qSchoolEntity.admdst.as("name"),
+                        qSchoolEntity.count().as("total_cnt")))
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.like("2022")
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                        .and(eqSchool(type))
+                )
+                .groupBy(qSchoolEntity.admdst)
+                .orderBy(qSchoolEntity.admdst.asc())
+                .fetch();
+
+        System.out.println("가공전 dto - ");
+        for (SchoolMaxCountDTO dto : queryResult) {
+            System.out.println(dto);
+        }
+
+        // when
+        System.out.println(" \n\n ============== when 절 ============== ");
+
+
+        int NamYangju = 0;
+        int Yangju = 0;
+        int Gwacheon = 0;
+        int Hwaseon = 0;
+        int Gwangju = 0;
+        int Gunpo = 0;
+
+        for (int i = 0; i < queryResult.size(); i++) {
+            if (queryResult.get(i).getName().equals("남양주시")) {
+                NamYangju = i;
+            }
+            if (queryResult.get(i).getName().equals("양주시")) {
+                Yangju = i;
+            }
+            if (queryResult.get(i).getName().equals("과천시")) {
+                Gwacheon = i;
+            }
+            if (queryResult.get(i).getName().equals("화성시")) {
+                Hwaseon = i;
+            }
+            if (queryResult.get(i).getName().equals("광주시")) {
+                Gwangju = i;
+            }
+            if (queryResult.get(i).getName().equals("군포시")) {
+                Gunpo = i;
+            }
+        }
+
+        System.out.println(NamYangju + " " + Yangju + " " + Gwacheon + " " + Hwaseon + " " + Gwangju + " " + Gunpo);
+
+        for (int i = 0; i < queryResult.size(); i++) {
+
+            if (queryResult.get(i).getName().equals("구리시")) {
+
+            }
+            if (queryResult.get(i).getName().equals("동두천시")) {
+
+            }
+            if (queryResult.get(i).getName().equals("안양시")) {
+
+            }
+            if (queryResult.get(i).getName().equals("오산시")) {
+
+            }
+            if (queryResult.get(i).getName().equals("하남시")) {
+
+            }
+            if (queryResult.get(i).getName().equals("의왕시")) {
+
+            }
+        }
+
+
+        // then
+
+
+    }
+
+    @Test
+    @DisplayName("JPASQLQueryTest")
+    public void JPASQLQueryTest() {
+
+        String type = "ke";
+
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        JPASQLQuery<QSchoolEntity> query = new JPASQLQuery<>(em, SQLTemplates.DEFAULT);
+
+        List<SchoolMaxCountDTO> dtoList = query
+                .with(QSchoolEntity.schoolEntity)
+                .as(
+                        query.select(
+                                new CaseBuilder()
+                                        .when(qSchoolEntity.admdst.eq("구리시"))
+                                        .then("남양주시")
+                                        .otherwise("false")
+                                        .as("name")
+                        )
+                )
+                .select("name")
+                .fetch();
+
+        for (SchoolMaxCountDTO dto : dtoList) {
+            System.out.println(dto);
+        }
+
+    }
+
+    // 학교 타입
     private BooleanBuilder eqSchool(String type) {
 
         BooleanBuilder conditionBuilder = new BooleanBuilder();
-
         QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
 
         if (type.contains("k")) {

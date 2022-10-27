@@ -107,8 +107,10 @@ public class SchoolServiceImpl implements SchoolService{
                 .groupBy(qSchoolEntity.admdst)
                 .fetch();
 
-
-        System.out.println(queryResult);
+        System.out.println("지역별 전체 학교 수");
+        for (SchoolMaxCountDTO dto : queryResult) {
+            System.out.println(dto);
+        }
 
         return queryResult;
 
