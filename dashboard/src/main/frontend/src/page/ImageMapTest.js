@@ -22,6 +22,8 @@ import {CustomOverlayMap, Map, Polygon, MapInfoWindow} from "react-kakao-maps-sd
 
 export default function ImageMapTest() {
 
+    const visibleRef1 = useRef();
+    const visibleRef2 = useRef();
     // 학교별
     const [schoolType, setSchoolType] = useState([]);
 
@@ -240,7 +242,7 @@ export default function ImageMapTest() {
             path: eduMap_Ansan
         },
         {
-            name: "안양시-과천시",
+            name: "과천시-안양시",
             isMouseOver: false,
             path: eduMap_AnYan_Gwacheon
         },
@@ -255,7 +257,7 @@ export default function ImageMapTest() {
             path: eduMap_Suwon
         },
         {
-            name: "구리시-남양주시",
+            name: "남양주시-구리시",
             isMouseOver: false,
             path: eduMap_Guri_Namyangju
         },
@@ -285,7 +287,7 @@ export default function ImageMapTest() {
             path: eduMap_Siheung
         },
         {
-            name: "동두천시-양주시",
+            name: "양주시-동두천시",
             isMouseOver: false,
             path: eduMap_Dongducheon_Yangju
         },
@@ -332,7 +334,7 @@ export default function ImageMapTest() {
     const toggleArea = () => {
         if (areaType == "지역청") {
             setAreaType("행정구역");
-        }else {
+        } else {
             setAreaType("지역청");
         }
     }
@@ -376,14 +378,23 @@ export default function ImageMapTest() {
 
     useEffect(() => {
 
-        // 모든 지역 학교 수를 가져옴
-        axios.all([axios.get("/gyeonggi/getSchoolTotalCountList/"+type),axios.get('/gyeonggi/getMaxTotal/'+ type)])
-            .then(axios.spread((axios_dtoList,axios_totalCount)=> {
-                setDtoList(axios_dtoList.data);
-                setTotalCount(axios_totalCount.data);
-            }))
+        if (areaType == "행정구역") {
+            // 모든 지역 학교 수를 가져옴
+            axios.all([axios.get("/gyeonggi/getLocalSchoolTotalCountList/" + type), axios.get('/gyeonggi/getLocalMaxTotal/' + type)])
+                .then(axios.spread((axios_dtoList, axios_totalCount) => {
+                    setDtoList(axios_dtoList.data);
+                    setTotalCount(axios_totalCount.data);
+                }))
+        } else if (areaType == "지역청") {
 
-    }, [type])
+            axios.all([axios.get("/gyeonggi/getEduSchoolTotalCountList/" + type), axios.get('/gyeonggi/getEduMaxTotal/' + type)])
+                .then(axios.spread((axios_dtoList, axios_totalCount) => {
+                    setDtoList(axios_dtoList.data);
+                    setTotalCount(axios_totalCount.data);
+                }))
+        }
+
+    }, [type, areaType])
 
     // GIS 그림
     useEffect(() => {
@@ -400,6 +411,7 @@ export default function ImageMapTest() {
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
     }, [])
 
+
     return (
 
         <div>
@@ -408,7 +420,7 @@ export default function ImageMapTest() {
                 <div className="header">
                     <div className="left">
                         <h2><strong>{areaType}</strong></h2>
-                        <div className="tabs" onClick={ () => toggleArea()}>
+                        <div className="tabs" onClick={() => toggleArea()}>
                             <a href="#" className={(areaType == "행정구역") ? "active" : ""}>행정구역</a>
                             <a href="#" className={(areaType == "지역청") ? "active" : ""}>지역청</a>
                         </div>
@@ -431,7 +443,12 @@ export default function ImageMapTest() {
                     <p><em></em><span>고등학교</span></p></label></div>
             </div>
 
+            {/*{*/}
+            {/*    areaType === "행정구역" ?*/}
+            {/*}*/}
+            {/* 행정구역별 */}
             <div className="map-box1">
+
                 <Map // 지도를 표시할 Container
                     center={{
                         lat: 37.56344698078499,
@@ -452,7 +469,7 @@ export default function ImageMapTest() {
                     onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
 
                 >
-                    
+
                     {areasLocal.map((area, index) => (<Polygon
                             key={`area-${area.name}`}
                             path={area.path}
@@ -507,6 +524,90 @@ export default function ImageMapTest() {
                                      padding: "2px",
                                  }}
                             >{areasLocal.find((v) => v.isMouseover).name}</div>
+
+                        </CustomOverlayMap>
+                    )}
+                </Map>
+
+            </div>
+
+            {/* 지역청별 */}
+            <div className="map-box1">
+                <Map // 지도를 표시할 Container
+                    center={{
+                        lat: 37.56344698078499,
+                        lng: 127.14015019063882,
+                    }}
+                    style={{
+                        left: "5px",
+                        width: "540px",
+                        height: "495px",
+                    }}
+                    draggable={false}
+                    zoomable={false}
+                    disableDoubleClickZoom={true}
+                    disableDoubleClick={true}
+
+                    level={11.3} // 지도의 확대 레벨
+
+                    onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
+
+                >
+
+                    {areasEdu.map((area, index) => (<Polygon
+                            key={`area-${area.name}`}
+                            path={area.path}
+                            strokeWeight={2}
+                            strokeColor={"#ffffff"}
+                            strokeOpacity={0.8}
+                            fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
+                            // fillOpacity={area.isMouseOver ? 1 : 0.2}
+                            fillOpacity={area.isMouseOver ? 1 : placeCount(area?.name)}
+                            onMousemove={(_map, mouseEvent) =>
+                                setMousePosition({
+                                    lat: mouseEvent.latLng.getLat(),
+                                    lng: mouseEvent.latLng.getLng(),
+                                })
+                            }
+
+                            onMouseover={() =>
+                                setAreasEdu((prev) => [
+                                    ...prev.filter((_, i) => i !== index),
+                                    {
+                                        ...prev[index],
+                                        isMouseover: true,
+                                    },
+                                ])
+                            }
+                            onMouseout={() =>
+                                setAreasEdu((prev) => [
+                                    ...prev.filter((_, i) => i !== index),
+                                    {
+                                        ...prev[index],
+                                        isMouseover: false,
+                                    },
+                                ])
+                            }
+
+                            onMousedown={() => HandleAreaClick(area.name)}
+                            // setTextPlace(area.name);
+                        />
+                    ))}
+                    {areasEdu.findIndex((v) => v.isMouseover) !== -1 && (
+                        <CustomOverlayMap position={mousePosition}>
+                            <div className="area"
+                                 style={{
+                                     position: "absolute",
+                                     background: "#fff",
+                                     border: "1px",
+                                     borderColor: "#888",
+                                     borderRadius: "3px",
+                                     fontSize: "12px",
+                                     top: "-5px",
+                                     left: "15px",
+                                     padding: "2px",
+                                 }}
+                            >{areasEdu.find((v) => v.isMouseover).name}</div>
 
                         </CustomOverlayMap>
                     )}

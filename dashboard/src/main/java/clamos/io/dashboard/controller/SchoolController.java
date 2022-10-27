@@ -19,16 +19,31 @@ public class SchoolController {
     private final SchoolService service;
 
     /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ ImageMap에 필요한 Controller ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
-    @GetMapping("/getMaxTotal/{type}")
+
+    // 행정구역별
+    @GetMapping("/getLocalMaxTotal/{type}")
     public Long controller_getMaxSchoolTotal(@PathVariable String type) {
         System.out.println("Max 학교유형 : " + type);
         return service.getAreaMaxSchoolTotal(type);
     }
-    @GetMapping("/getSchoolTotalCountList/{type}")
+    @GetMapping("/getLocalSchoolTotalCountList/{type}")
     public List<SchoolMaxCountDTO> controller_getSchoolCount(@PathVariable String type) {
         System.out.println("List 학교유형 :" + type);
         return service.getAreaSchoolCountList(type);
     }
+
+
+    // 지역청별
+    @GetMapping("/getEduMaxTotal/{type}")
+    public Long controller_getEduMaxSchoolTotal(@PathVariable String type) {
+        return service.getEduMaxSchoolTotal(type);
+    }
+    @GetMapping("/getEduSchoolTotalCountList/{type}")
+    public List<SchoolMaxCountDTO> controller_getEduSchoolCount(@PathVariable String type) {
+        return service.getEduSchoolCountList(type);
+    }
+
+
 
     /* ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ Chart 그리는데에 사용할 Controller ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
     @GetMapping("/schoolTypeCount/{Area}")
