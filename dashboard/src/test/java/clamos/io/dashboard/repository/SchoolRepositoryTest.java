@@ -241,62 +241,105 @@ class SchoolRepositoryTest {
         // when
         System.out.println(" \n\n ============== when 절 ============== ");
 
-
-        int NamYangju = 0;
-        int Yangju = 0;
-        int Gwacheon = 0;
-        int Hwaseon = 0;
-        int Gwangju = 0;
-        int Gunpo = 0;
-
-        for (int i = 0; i < queryResult.size(); i++) {
-            if (queryResult.get(i).getName().equals("남양주시")) {
-                NamYangju = i;
-            }
-            if (queryResult.get(i).getName().equals("양주시")) {
-                Yangju = i;
-            }
-            if (queryResult.get(i).getName().equals("과천시")) {
-                Gwacheon = i;
-            }
-            if (queryResult.get(i).getName().equals("화성시")) {
-                Hwaseon = i;
-            }
-            if (queryResult.get(i).getName().equals("광주시")) {
-                Gwangju = i;
-            }
-            if (queryResult.get(i).getName().equals("군포시")) {
-                Gunpo = i;
-            }
-        }
-
-        System.out.println(NamYangju + " " + Yangju + " " + Gwacheon + " " + Hwaseon + " " + Gwangju + " " + Gunpo);
+        int guri = 0;
+        int donducheon = 0;
+        int anyang = 0;
+        int osan = 0;
+        int hanam = 0;
+        int uiwang = 0;
 
         for (int i = 0; i < queryResult.size(); i++) {
 
             if (queryResult.get(i).getName().equals("구리시")) {
-
+                guri = i;
             }
             if (queryResult.get(i).getName().equals("동두천시")) {
-
+                donducheon = i;
             }
             if (queryResult.get(i).getName().equals("안양시")) {
-
+                anyang = i;
             }
             if (queryResult.get(i).getName().equals("오산시")) {
-
+                osan = i;
             }
             if (queryResult.get(i).getName().equals("하남시")) {
-
+                hanam = i;
             }
             if (queryResult.get(i).getName().equals("의왕시")) {
+                uiwang = i;
+            }
+
+        }
+
+        for (int i = 0; i < queryResult.size(); i++) {
+            if (queryResult.get(i).getName().equals("남양주시")) {
+
+                queryResult.get(i).setName("남양주시-구리시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(guri).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("양주시")) {
+
+                queryResult.get(i).setName("양주시-동두천시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(donducheon).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("과천시")) {
+
+                queryResult.get(i).setName("과천시-안양시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(anyang).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("화성시")) {
+
+                queryResult.get(i).setName("화성시-오산시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(osan).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("광주시")) {
+
+                queryResult.get(i).setName("광주시-하남시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(hanam).getTotal_cnt() );
+
+            }
+            if (queryResult.get(i).getName().equals("군포시")) {
+
+                queryResult.get(i).setName("군포시-의왕시");
+                queryResult.get(i).setTotal_cnt( queryResult.get(i).getTotal_cnt() + queryResult.get(uiwang).getTotal_cnt() );
 
             }
         }
 
 
-        // then
+        for (int i = 0; i < queryResult.size(); i++) {
 
+            if (queryResult.get(i).getName().equals("구리시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("동두천시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("안양시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("오산시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("하남시")) {
+                queryResult.remove(i);
+            }
+            if (queryResult.get(i).getName().equals("의왕시")) {
+                queryResult.remove(i);
+            }
+
+        }
+
+
+        // then
+        for (SchoolMaxCountDTO dto : queryResult) {
+            System.out.println(dto);
+
+        }
 
     }
 
