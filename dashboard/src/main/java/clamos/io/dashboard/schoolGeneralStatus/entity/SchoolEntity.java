@@ -1,4 +1,4 @@
-package clamos.io.dashboard.entity;
+package clamos.io.dashboard.schoolGeneralStatus.entity;
 
 import lombok.*;
 

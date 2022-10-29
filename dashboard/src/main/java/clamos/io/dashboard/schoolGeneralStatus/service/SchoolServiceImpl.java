@@ -1,10 +1,9 @@
-package clamos.io.dashboard.service;
+package clamos.io.dashboard.schoolGeneralStatus.service;
 
-import clamos.io.dashboard.dto.SchoolDTO;
-import clamos.io.dashboard.dto.SchoolInterfaceDTO;
-import clamos.io.dashboard.dto.SchoolMaxCountDTO;
-import clamos.io.dashboard.entity.QSchoolEntity;
-import clamos.io.dashboard.repository.SchoolRepository;
+import clamos.io.dashboard.schoolGeneralStatus.dto.SchoolDTO;
+import clamos.io.dashboard.schoolGeneralStatus.dto.SchoolMaxCountDTO;
+import clamos.io.dashboard.schoolGeneralStatus.entity.QSchoolEntity;
+import clamos.io.dashboard.schoolGeneralStatus.repository.SchoolRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -16,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Log4j2

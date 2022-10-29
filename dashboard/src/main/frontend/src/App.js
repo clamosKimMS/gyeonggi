@@ -1,9 +1,7 @@
 import './App.css';
 
 import React from "react";
-import SchoolTotal from "./page/SchoolTotal";
-import Test from "./page/Test";
-import ImageMapTest from "./page/ImageMapTest";
+import SchoolGeneralStatus from "./page/SchoolGeneralStatus";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
 
@@ -12,11 +10,13 @@ function App() {
         <Router>
             <Routes>
 
-                <Route path={"/totalSchool"} element={<SchoolTotal />} />
+                <Route path={"/schoolGeneralStatus"} element={ <SchoolGeneralStatus/>} />
 
-                <Route path={"/test"} element={<Test />} />
 
-                <Route path={"/mapTest"} element={ <ImageMapTest/>} />
+                {/*Chart.js 및 퍼블리싱된 페이지 Test 용*/}
+                {/*<Route path={"/totalSchool"} element={<SchoolTotal />} />*/}
+                {/*<Route path={"/test"} element={<Test />} />*/}
+
 
             </Routes>
         </Router>

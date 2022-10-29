@@ -1,7 +1,7 @@
-package clamos.io.dashboard.service;
+package clamos.io.dashboard.schoolGeneralStatus.service;
 
-import clamos.io.dashboard.dto.SchoolDTO;
-import clamos.io.dashboard.dto.SchoolMaxCountDTO;
+import clamos.io.dashboard.schoolGeneralStatus.dto.SchoolDTO;
+import clamos.io.dashboard.schoolGeneralStatus.dto.SchoolMaxCountDTO;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package clamos.io.dashboard.controller;
+package clamos.io.dashboard.schoolGeneralStatus.controller;
 
-import clamos.io.dashboard.dto.SchoolDTO;
-import clamos.io.dashboard.dto.SchoolMaxCountDTO;
-import clamos.io.dashboard.service.SchoolService;
+import clamos.io.dashboard.schoolGeneralStatus.dto.SchoolDTO;
+import clamos.io.dashboard.schoolGeneralStatus.dto.SchoolMaxCountDTO;
+import clamos.io.dashboard.schoolGeneralStatus.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;

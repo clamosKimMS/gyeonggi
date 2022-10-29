@@ -1,4 +1,4 @@
-package clamos.io.dashboard.dto;
+package clamos.io.dashboard.schoolGeneralStatus.dto;
 
 import lombok.Setter;
 
