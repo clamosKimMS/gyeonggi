@@ -13,6 +13,7 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.sql.JPASQLQuery;
 import com.querydsl.sql.SQLTemplates;
@@ -384,6 +385,37 @@ class SchoolRepositoryTest {
         for (SchoolMaxCountDTO dto : list) {
             System.out.println(dto);
         }
+
+    }
+
+    @Test
+    @DisplayName("QueryDSL 전체 학교 수 테스트")
+    public void getMaxYearTotalCount() {
+
+        String type = "kemh";
+
+        System.out.println("serviceMax 타입 : " + type);
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QSchoolEntity qSchoolEntity = QSchoolEntity.schoolEntity;
+
+        Long queryResult = queryFactory
+                .select(qSchoolEntity.count())
+                .from(qSchoolEntity)
+                .where(qSchoolEntity.survey_base_date.eq(
+                                JPAExpressions
+                                        .select(qSchoolEntity.survey_base_date.max())
+                                        .from(qSchoolEntity)
+                        )
+                        .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
+                        .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
+                        .and(eqSchool(type)))
+                .groupBy(qSchoolEntity.admdst)
+                .orderBy(qSchoolEntity.count().desc())
+                .limit(1)
+                .fetchOne();
+
+        System.out.println(queryResult);
 
     }
 

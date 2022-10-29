@@ -7,6 +7,7 @@ import clamos.io.dashboard.entity.QSchoolEntity;
 import clamos.io.dashboard.repository.SchoolRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -66,7 +67,11 @@ public class SchoolServiceImpl implements SchoolService{
         Long queryResult = queryFactory
                 .select(qSchoolEntity.count())
                 .from(qSchoolEntity)
-                .where(qSchoolEntity.survey_base_date.like("2022")
+                .where(qSchoolEntity.survey_base_date.eq(
+                                JPAExpressions
+                                        .select(qSchoolEntity.survey_base_date.max())
+                                        .from(qSchoolEntity)
+                        )
                         .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
                         .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
                         .and(eqSchool(type)))
@@ -117,7 +122,11 @@ public class SchoolServiceImpl implements SchoolService{
                         qSchoolEntity.admdst.as("name"),
                         qSchoolEntity.count().as("total_cnt")))
                 .from(qSchoolEntity)
-                .where(qSchoolEntity.survey_base_date.like("2022")
+                .where(qSchoolEntity.survey_base_date.eq(
+                                        JPAExpressions
+                                                .select(qSchoolEntity.survey_base_date.max())
+                                                .from(qSchoolEntity)
+                                )
                         .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
                         .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
                         .and(eqSchool(type))
@@ -152,7 +161,11 @@ public class SchoolServiceImpl implements SchoolService{
                         qSchoolEntity.admdst.as("name"),
                         qSchoolEntity.count().as("total_cnt")))
                 .from(qSchoolEntity)
-                .where(qSchoolEntity.survey_base_date.like("2022")
+                .where(qSchoolEntity.survey_base_date.eq(
+                                        JPAExpressions
+                                                .select(qSchoolEntity.survey_base_date.max())
+                                                .from(qSchoolEntity)
+                                )
                         .and(qSchoolEntity.schl_exist_status.notLike("폐(원)교"))
                         .and(qSchoolEntity.main_or_branch_school.notLike("분교장"))
                         .and(eqSchool(type))
@@ -253,6 +266,10 @@ public class SchoolServiceImpl implements SchoolService{
 
     // 학교 타입
     private BooleanBuilder eqSchool(String type) {
+
+        if (type.equals(null) || type.trim().length() == 0) {
+
+        }
 
         BooleanBuilder conditionBuilder = new BooleanBuilder();
 

@@ -91,8 +91,7 @@ export default function ImageMapTest() {
         }))
 
         if (result == '') {
-            alert("학교타입을 최소 하나 이상 체크해주세요");
-            return false;
+
         }
 
         setType(result);
@@ -395,6 +394,7 @@ export default function ImageMapTest() {
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
                     setDtoList(axios_dtoList.data);
                     setTotalCount(axios_totalCount.data);
+
                 }))
 
         } else if (areaType == "지역청") {
