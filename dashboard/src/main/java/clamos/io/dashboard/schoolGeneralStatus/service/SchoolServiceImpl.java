@@ -92,7 +92,7 @@ public class SchoolServiceImpl implements SchoolService{
 
         for (SchoolMaxCountDTO dto : result) {
             log.info(dto);
-            max = dto.getTotal_cnt() > max ? max = dto.getTotal_cnt() : max;
+            max = dto.getTotal_cnt() > max ? dto.getTotal_cnt() : max;
         }
 
 

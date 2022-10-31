@@ -1,10 +1,11 @@
 package clamos.io.dashboard.repository;
 
-import clamos.io.dashboard.dto.SchoolDTO;
-import clamos.io.dashboard.dto.SchoolMaxCountDTO;
-import clamos.io.dashboard.entity.QSchoolEntity;
-import clamos.io.dashboard.entity.SchoolEntity;
-import clamos.io.dashboard.service.SchoolService;
+import clamos.io.dashboard.schoolGeneralStatus.dto.SchoolDTO;
+import clamos.io.dashboard.schoolGeneralStatus.dto.SchoolMaxCountDTO;
+import clamos.io.dashboard.schoolGeneralStatus.entity.QSchoolEntity;
+import clamos.io.dashboard.schoolGeneralStatus.entity.SchoolEntity;
+import clamos.io.dashboard.schoolGeneralStatus.repository.SchoolRepository;
+import clamos.io.dashboard.schoolGeneralStatus.service.SchoolService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Expression;
