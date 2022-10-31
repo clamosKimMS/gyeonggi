@@ -379,8 +379,6 @@ export default function MultiCulturalFamilyStudent() {
 
             </div>
 
-            {console.log(totalCount)}
-
         </div>
     );
 };

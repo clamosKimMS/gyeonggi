@@ -60,6 +60,9 @@ public class MulticulturalFamilyServiceImpl implements MulticulturalFamilyServic
 
     }
 
+
+
+    // 지역청별
     @Override
     public Integer getMaxMultiFmEdu(String yr) {
 

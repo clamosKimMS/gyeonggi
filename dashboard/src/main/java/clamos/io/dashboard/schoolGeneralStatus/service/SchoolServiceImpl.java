@@ -264,9 +264,9 @@ public class SchoolServiceImpl implements SchoolService{
     // 학교 타입
     private BooleanBuilder eqSchool(String type) {
 
-        if (type.equals(null) || type.trim().length() == 0) {
+        /*if (type.equals(null) || type.trim().length() == 0) {
 
-        }
+        }*/
 
         BooleanBuilder conditionBuilder = new BooleanBuilder();
 
