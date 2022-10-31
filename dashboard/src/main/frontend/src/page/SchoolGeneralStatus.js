@@ -71,10 +71,10 @@ export default function SchoolGeneralStatus() {
     // console.log("렌더링")
 
     // 학교별
-    const [schoolType, setSchoolType] = useState([]);
+    // const [schoolType, setSchoolType] = useState([]);
 
     // 행정구역 / 교육청 별 위도경도 배열
-    const [areasPoly, setareasPoly] = useState([]);
+    const [areasPoly, setAreasPoly] = useState([]);
 
     // 표기할 학교의 타입을 지정함 ( k:유치원 / e:초등 / m:중등 / h:고등 )
     const [type, setType] = useState("kemh");
@@ -104,16 +104,16 @@ export default function SchoolGeneralStatus() {
 
     // 지역별 클릭 이벤트
     const HandleAreaClick = (areaName) => {
-        console.log("핸들러 : " + areaName)
-        searchPlace(areaName);
+        console.log("지역명 : " + areaName)
+        // searchPlace(areaName);
     }
 
     // 지도 지역을 클릭했을 때 어느 지역인지 Controller에서 가져옴
-    const searchPlace = (areaName) => {
-        axios.get('/gyeonggi/schoolTypeCount/' + areaName)
-            .then(response => setSchoolType(response?.data))
-            .catch(error => console.log(error));
-    }
+    // const searchPlace = (areaName) => {
+    //     axios.get('/gyeonggi/schoolTypeCount/' + areaName)
+    //         .then(response => setSchoolType(response?.data))
+    //         .catch(error => console.log(error));
+    // }
 
     /* for Opacity  */
     const placeCount = (name) => {
@@ -146,7 +146,7 @@ export default function SchoolGeneralStatus() {
     // dtoList 바뀔 때 보이는 맵도 다르게하기위함
     useEffect(() => {
         if (areaType == "행정구역") {
-            setareasPoly([
+            setAreasPoly([
                 {
                     name: "연천군",
                     isMouseOver: false,
@@ -304,7 +304,7 @@ export default function SchoolGeneralStatus() {
                 }
             ])
         } else if (areaType == "지역청") {
-            setareasPoly([
+            setAreasPoly([
                 {
                     name: "연천군",
                     isMouseOver: false,
@@ -542,7 +542,7 @@ export default function SchoolGeneralStatus() {
                             }
 
                             onMouseover={() =>
-                                setareasPoly((prev) => [
+                                setAreasPoly((prev) => [
                                     ...prev.filter((_, i) => i !== index),
                                     {
                                         ...prev[index],
@@ -551,7 +551,7 @@ export default function SchoolGeneralStatus() {
                                 ])
                             }
                             onMouseout={() =>
-                                setareasPoly((prev) => [
+                                setAreasPoly((prev) => [
                                     ...prev.filter((_, i) => i !== index),
                                     {
                                         ...prev[index],

@@ -51,7 +51,8 @@ public class MulticulturalFamilyServiceImpl implements MulticulturalFamilyServic
                 .select(Projections.bean(MulticulturalFamilyDTO.class,
                         qEntity.admdst.as("admdst"), qEntity.mc_stdnt_tot.sum().as("mc_stdnt_tot_sum")))
                 .from(qEntity)
-                .where(qEntity.yr.like(yr))
+                .where(qEntity.yr.like(yr)
+                        .and(qEntity.admdst.ne("소계")))
                 .groupBy(qEntity.admdst)
                 .fetch();
 
@@ -91,7 +92,8 @@ public class MulticulturalFamilyServiceImpl implements MulticulturalFamilyServic
                 .select(Projections.bean(MulticulturalFamilyDTO.class,
                         qEntity.admdst.as("admdst"), qEntity.mc_stdnt_tot.sum().as("mc_stdnt_tot_sum")))
                 .from(qEntity)
-                .where(qEntity.yr.like(yr))
+                .where(qEntity.yr.like(yr)
+                        .and(qEntity.admdst.ne("소계")))
                 .groupBy(qEntity.admdst)
                 .fetch();
 

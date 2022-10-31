@@ -1,3 +1,5 @@
+/*global kakao*/
+
 import React, {useEffect, useState} from "react";
 import axios from 'axios';
 import {
@@ -67,7 +69,7 @@ import {CustomOverlayMap, Map, Polygon} from "react-kakao-maps-sdk";
 export default function MultiCulturalFamilyStudent() {
 
     // 행정구역 / 교육청 별 위도경도 배열
-    const [areasPoly, setareasPoly] = useState([]);
+    const [areasPoly, setAreasPoly] = useState([]);
 
     // 행정구역별 전체 학교수를 가져옴 ( opacity 조절용 )
     const [dtoList, setDtoList] = useState();
@@ -77,15 +79,11 @@ export default function MultiCulturalFamilyStudent() {
 
     // Map Hover 지역명 나타내기
     const [mousePosition, setMousePosition] = useState({
-        lat: 0,
-        lng: 0,
+        lat: 0, lng: 0,
     })
 
     // 행정구역 지역청 구분
     const [areaType, setAreaType] = useState("행정구역");
-
-
-
     const toggleArea = () => {
         if (areaType == "지역청") {
             setAreaType("행정구역");
@@ -94,8 +92,294 @@ export default function MultiCulturalFamilyStudent() {
         }
     }
 
+    // 연도 선택
+    const [year, setYear] = useState("2022");
+    const yearChange = (e) => {
+        setYear(e.target.value);
+    }
+
+    // 지역별 클릭 이벤트
+    const HandleAreaClick = (areaName) => {
+        console.log("지역명 : " + areaName)
+    }
+
+    /* for Opacity  */
+    const placeCount = (name) => {
+        if (!dtoList || dtoList?.length < 1) {
+            return;
+        }
+        let a = dtoList?.filter(data => data?.admdst === name).map((data) => {
+            return data.mc_stdnt_tot_sum;
+        });
+        return a[0] / totalCount;
+    }
+    /*----------------*/
+
+    useEffect(() => {
+        if (areaType == "행정구역") {
+            setAreasPoly([{
+                name: "연천군", isMouseOver: false, path: map_Yeoncheon
+            }, {
+                name: "포천시", isMouseOver: false, path: map_Pocheon
+            }, {
+                name: "가평군", isMouseOver: false, path: map_Gapyeon
+            }, {
+                name: "양평군", isMouseOver: false, path: map_Yangpyeon
+            }, {
+                name: "여주시", isMouseOver: false, path: map_Yeoju
+            }, {
+                name: "이천시", isMouseOver: false, path: map_Icheon
+            }, {
+                name: "용인시", isMouseOver: false, path: map_Yongin
+            }, {
+                name: "안성시", isMouseOver: false, path: map_Anseon
+            }, {
+                name: "평택시", isMouseOver: false, path: map_Pyeongtaek
+            }, {
+                name: "화성시", isMouseOver: false, path: map_Hwaseon
+            }, {
+                name: "안산시", isMouseOver: false, path: map_Ansan
+            }, {
+                name: "안양시", isMouseOver: false, path: map_AnYan
+            }, {
+                name: "군포시", isMouseOver: false, path: map_Gunpo
+            }, {
+                name: "과천시", isMouseOver: false, path: map_Gwacheon
+            }, {
+                name: "의왕시", isMouseOver: false, path: map_Uiwang
+            }, {
+                name: "수원시", isMouseOver: false, path: map_Suwon
+            }, {
+                name: "구리시", isMouseOver: false, path: map_Guri
+            }, {
+                name: "성남시", isMouseOver: false, path: map_SeongNam
+            }, {
+                name: "광주시", isMouseOver: false, path: map_Gwangju
+            }, {
+                name: "하남시", isMouseOver: false, path: map_Hanam
+            }, {
+                name: "광명시", isMouseOver: false, path: map_Gwangmyeong
+            }, {
+                name: "부천시", isMouseOver: false, path: map_Bucheon
+            }, {
+                name: "시흥시", isMouseOver: false, path: map_Siheung
+            }, {
+                name: "오산시", isMouseOver: false, path: map_Osan
+            }, {
+                name: "동두천시", isMouseOver: false, path: map_Dongducheon
+            }, {
+                name: "파주시", isMouseOver: false, path: map_Paju
+            }, {
+                name: "양주시", isMouseOver: false, path: map_Yangju
+            }, {
+                name: "김포시", isMouseOver: false, path: map_Gimpo
+            }, {
+                name: "고양시", isMouseOver: false, path: map_Goyang
+            }, {
+                name: "의정부시", isMouseOver: false, path: map_Uijeonbu
+            }, {
+                name: "남양주시", isMouseOver: false, path: map_Namyangju
+            }])
+        } else if (areaType == "지역청") {
+            setAreasPoly([{
+                name: "연천군", isMouseOver: false, path: eduMap_Yeoncheon
+            }, {
+                name: "포천시", isMouseOver: false, path: eduMap_Pocheon
+            }, {
+                name: "가평군", isMouseOver: false, path: eduMap_Gapyeon
+            }, {
+                name: "양평군", isMouseOver: false, path: eduMap_Yangpyeon
+            }, {
+                name: "여주시", isMouseOver: false, path: eduMap_Yeoju
+            }, {
+                name: "이천시", isMouseOver: false, path: eduMap_Icheon
+            }, {
+                name: "용인시", isMouseOver: false, path: eduMap_Yongin
+            }, {
+                name: "안성시", isMouseOver: false, path: eduMap_Anseon
+            }, {
+                name: "평택시", isMouseOver: false, path: eduMap_Pyeongtaek
+            }, {
+                name: "화성시-오산시", isMouseOver: false, path: eduMap_Hwaseon_Osan
+            }, {
+                name: "안산시", isMouseOver: false, path: eduMap_Ansan
+            }, {
+                name: "과천시-안양시", isMouseOver: false, path: eduMap_AnYan_Gwacheon
+            }, {
+                name: "군포시-의왕시", isMouseOver: false, path: eduMap_Gunpo_Uiwang
+            }, {
+                name: "수원시", isMouseOver: false, path: eduMap_Suwon
+            }, {
+                name: "남양주시-구리시", isMouseOver: false, path: eduMap_Guri_Namyangju
+            }, {
+                name: "성남시", isMouseOver: false, path: eduMap_SeongNam
+            }, {
+                name: "광주시-하남시", isMouseOver: false, path: eduMap_Gwangju_Hanam
+            }, {
+                name: "광명시", isMouseOver: false, path: eduMap_Gwangmyeong
+            }, {
+                name: "부천시", isMouseOver: false, path: eduMap_Bucheon
+            }, {
+                name: "시흥시", isMouseOver: false, path: eduMap_Siheung
+            }, {
+                name: "양주시-동두천시", isMouseOver: false, path: eduMap_Dongducheon_Yangju
+            }, {
+                name: "파주시", isMouseOver: false, path: eduMap_Paju
+            }, {
+                name: "김포시", isMouseOver: false, path: eduMap_Gimpo
+            }, {
+                name: "고양시", isMouseOver: false, path: eduMap_Goyang
+            }, {
+                name: "의정부시", isMouseOver: false, path: eduMap_Uijeonbu
+            },])
+        }
+    }, [dtoList])
+
+    useEffect(() => {
+
+        if (areaType == "행정구역") {
+            axios.all([axios.get('/gyeonggi/getLocalMultiFmMaxList/' + year), axios.get("/gyeonggi/getLocalMultiFmMaxTotal/" + year)])
+                .then(axios.spread((axios_dtoList, axios_totalCount) => {
+                    setDtoList(axios_dtoList.data);
+                    setTotalCount(axios_totalCount.data);
+                }))
+
+        } else if (areaType == "지역청") {
+            axios.all([axios.get('/gyeonggi/getEduMultiFmMaxList/' + year), axios.get("/gyeonggi/getEduMultiFmMaxTotal/" + year)])
+                .then(axios.spread((axios_dtoList, axios_totalCount) => {
+                    setTotalCount(axios_totalCount.data);
+                    setDtoList(axios_dtoList.data);
+                }))
+        }
+
+    }, [year, areaType])
+
+    // GIS 그림
+    useEffect(() => {
+        const tileset = new kakao.maps.Tileset({
+            width: 256, height: 256, getTile: () => {
+                const dom = document.createElement('div');
+                // GIS맵  배경이미지
+                dom.style.background = "rgb(244,244,244)";
+                return dom;
+            },
+        })
+        kakao.maps.Tileset.add("TILE_NUMBER", tileset)
+    }, [])
+
     return (
         <div>
+            <div className="content">
+                <div className="header">
+                    <div className="left">
+                        <h2><strong>{areaType}</strong></h2>
+                        <div className="tabs" onClick={() => toggleArea()}>
+                            <a href="#" className={(areaType == "행정구역") ? "active" : ""}>행정구역</a>
+                            <a href="#" className={(areaType == "지역청") ? "active" : ""}>지역청</a>
+                        </div>
+                    </div>
+                    <div className="years">
+                        <div className="year">
+                            <span>연도조회 :</span>
+                            <select value={year} onChange={yearChange} className="dropdown">
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                                <option value="2017">2017</option>
+                                <option value="2016">2016</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="map-box1">
+
+                <Map // 지도를 표시할 Container
+                    center={{
+                        lat: 37.56344698078499,
+                        lng: 127.14015019063882,
+                    }}
+                    style={{
+                        left: "5px",
+                        width: "540px",
+                        height: "495px",
+                    }}
+                    draggable={false}
+                    zoomable={false}
+                    disableDoubleClickZoom={true}
+                    disableDoubleClick={true}
+
+                    level={11.3} // 지도의 확대 레벨
+
+                    onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
+
+                >
+
+                    {areasPoly.map((area, index) => (<Polygon
+                            key={`area-${area.name}`}
+                            path={area.path}
+                            strokeWeight={2}
+                            strokeColor={"#ffffff"}
+                            strokeOpacity={0.8}
+                            fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
+                            // fillOpacity={area.isMouseOver ? 1 : 0.2}
+                            fillOpacity={area.isMouseOver ? 1 : placeCount(area?.name)}
+                            onMousemove={(_map, mouseEvent) =>
+                                setMousePosition({
+                                    lat: mouseEvent.latLng.getLat(),
+                                    lng: mouseEvent.latLng.getLng(),
+                                })
+                            }
+
+                            onMouseover={() =>
+                                setAreasPoly((prev) => [
+                                    ...prev.filter((_, i) => i !== index),
+                                    {
+                                        ...prev[index],
+                                        isMouseover: true,
+                                    },
+                                ])
+                            }
+                            onMouseout={() =>
+                                setAreasPoly((prev) => [
+                                    ...prev.filter((_, i) => i !== index),
+                                    {
+                                        ...prev[index],
+                                        isMouseover: false,
+                                    },
+                                ])
+                            }
+
+                            onMousedown={() => HandleAreaClick(area.name)}
+                            // setTextPlace(area.name);
+                        />
+                    ))}
+                    {areasPoly.findIndex((v) => v.isMouseover) !== -1 && (
+                        <CustomOverlayMap position={mousePosition}>
+                            <div className="area"
+                                 style={{
+                                     position: "absolute",
+                                     background: "#fff",
+                                     border: "1px",
+                                     borderColor: "#888",
+                                     borderRadius: "3px",
+                                     fontSize: "12px",
+                                     top: "-5px",
+                                     left: "15px",
+                                     padding: "2px",
+                                 }}
+                            >{areasPoly.find((v) => v.isMouseover).name}</div>
+
+                        </CustomOverlayMap>
+                    )}
+                </Map>
+
+            </div>
+
+            {console.log(totalCount)}
 
         </div>
     );
