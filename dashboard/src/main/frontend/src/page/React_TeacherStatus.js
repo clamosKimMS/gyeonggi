@@ -66,12 +66,7 @@ import "../css/front.css"
 
 import {CustomOverlayMap, Map, Polygon} from "react-kakao-maps-sdk";
 
-export default function SchoolGeneralStatus() {
-
-    // console.log("렌더링")
-
-    // 학교별
-    // const [schoolType, setSchoolType] = useState([]);
+export default function React_TeacherStatus() {
 
     // 행정구역 / 교육청 별 위도경도 배열
     const [areasPoly, setAreasPoly] = useState([]);
@@ -111,13 +106,6 @@ export default function SchoolGeneralStatus() {
 
         setReactAreaName(areaName);
     }
-
-    // 지도 지역을 클릭했을 때 어느 지역인지 Controller에서 가져옴
-    // const searchPlace = (areaName) => {
-    //     axios.get('/gyeonggi/schoolTypeCount/' + areaName)
-    //         .then(response => setSchoolType(response?.data))
-    //         .catch(error => console.log(error));
-    // }
 
     /* for Opacity  */
     const placeCount = (name) => {
@@ -436,7 +424,7 @@ export default function SchoolGeneralStatus() {
 
     useEffect(() => {
         if (areaType == "행정구역") {
-            axios.all([axios.get("/gyeonggi/getLocalSchoolTotalCountList/" + type), axios.get('/gyeonggi/getLocalMaxTotal/' + type)])
+            axios.all([axios.get("/gyeonggi/getLocalTeacherMaxList/" + type), axios.get('/gyeonggi/getLocalTeacherMaxTotal/' + type)])
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
                     setDtoList(axios_dtoList.data);
                     setTotalCount(axios_totalCount.data);
@@ -444,7 +432,7 @@ export default function SchoolGeneralStatus() {
                 }))
 
         } else if (areaType == "지역청") {
-            axios.all([axios.get("/gyeonggi/getEduSchoolTotalCountList/" + type), axios.get('/gyeonggi/getEduMaxTotal/' + type)])
+            axios.all([axios.get("/gyeonggi/getEduTeacherMaxList/" + type), axios.get('/gyeonggi/getEduTeacherMaxTotal/' + type)])
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
                     setDtoList(axios_dtoList.data);
                     setTotalCount(axios_totalCount.data);
@@ -495,96 +483,98 @@ export default function SchoolGeneralStatus() {
     }, [])
 
     return (
-
         <div>
 
-            {/* 행정구역별 */}
-            <div className="map-box1">
+            <div>
 
-                <Map // 지도를 표시할 Container
-                    center={{
-                        lat: 37.66344698078499,
-                        lng: 127.14015019063882,
-                    }}
-                    style={{
-                        position: "absolute",
-                        top: "-80px",
-                        left: "60px",
-                        width: "400px",
-                        height: "600px",
-                    }}
-                    draggable={false}
-                    zoomable={false}
-                    disableDoubleClickZoom={true}
-                    disableDoubleClick={true}
+                {/* 행정구역별 */}
+                <div className="map-box1">
 
-                    level={11.3} // 지도의 확대 레벨
+                    <Map // 지도를 표시할 Container
+                        center={{
+                            lat: 37.66344698078499,
+                            lng: 127.14015019063882,
+                        }}
+                        style={{
+                            position: "absolute",
+                            top: "-80px",
+                            left: "60px",
+                            width: "400px",
+                            height: "600px",
+                        }}
+                        draggable={false}
+                        zoomable={false}
+                        disableDoubleClickZoom={true}
+                        disableDoubleClick={true}
 
-                    onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
-                >
+                        level={11.3} // 지도의 확대 레벨
 
-                    {areasPoly.map((area, index) => (<Polygon
-                            key={`area-${area.name}`}
-                            path={area.path}
-                            strokeWeight={2}
-                            strokeColor={"#ffffff"}
-                            strokeOpacity={0.8}
-                            fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
-                            // fillOpacity={area.isMouseOver ? 1 : 0.2}
-                            fillOpacity={area.isMouseOver ? 1 : placeCount(area?.name)}
-                            onMousemove={(_map, mouseEvent) =>
-                                setMousePosition({
-                                    lat: mouseEvent.latLng.getLat(),
-                                    lng: mouseEvent.latLng.getLng(),
-                                })
-                            }
+                        onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
+                    >
 
-                            onMouseover={() =>
-                                setAreasPoly((prev) => [
-                                    ...prev.filter((_, i) => i !== index),
-                                    {
-                                        ...prev[index],
-                                        isMouseover: true,
-                                    },
-                                ])
-                            }
-                            onMouseout={() =>
-                                setAreasPoly((prev) => [
-                                    ...prev.filter((_, i) => i !== index),
-                                    {
-                                        ...prev[index],
-                                        isMouseover: false,
-                                    },
-                                ])
-                            }
+                        {areasPoly.map((area, index) => (<Polygon
+                                key={`area-${area.name}`}
+                                path={area.path}
+                                strokeWeight={2}
+                                strokeColor={"#ffffff"}
+                                strokeOpacity={0.8}
+                                fillColor={area.isMouseover ? "#f5bb2d" : "rgb(118,156,225)"}
+                                // fillOpacity={area.isMouseOver ? 1 : 0.2}
+                                fillOpacity={area.isMouseOver ? 1 : placeCount(area?.name)}
+                                onMousemove={(_map, mouseEvent) =>
+                                    setMousePosition({
+                                        lat: mouseEvent.latLng.getLat(),
+                                        lng: mouseEvent.latLng.getLng(),
+                                    })
+                                }
 
-                            onMousedown={() => HandleAreaClick(area.name)}
-                            // setTextPlace(area.name);
-                        />
-                    ))}
-                    {areasPoly.findIndex((v) => v.isMouseover) !== -1 && (
-                        <CustomOverlayMap position={mousePosition}>
-                            <div className="area"
-                                 style={{
-                                     position: "absolute",
-                                     background: "#fff",
-                                     border: "1px",
-                                     borderColor: "#888",
-                                     borderRadius: "3px",
-                                     fontSize: "12px",
-                                     top: "-5px",
-                                     left: "15px",
-                                     padding: "2px",
-                                 }}
-                            >{areasPoly.find((v) => v.isMouseover).name}</div>
+                                onMouseover={() =>
+                                    setAreasPoly((prev) => [
+                                        ...prev.filter((_, i) => i !== index),
+                                        {
+                                            ...prev[index],
+                                            isMouseover: true,
+                                        },
+                                    ])
+                                }
+                                onMouseout={() =>
+                                    setAreasPoly((prev) => [
+                                        ...prev.filter((_, i) => i !== index),
+                                        {
+                                            ...prev[index],
+                                            isMouseover: false,
+                                        },
+                                    ])
+                                }
 
-                        </CustomOverlayMap>
-                    )}
-                </Map>
+                                onMousedown={() => HandleAreaClick(area.name)}
+                                // setTextPlace(area.name);
+                            />
+                        ))}
+                        {areasPoly.findIndex((v) => v.isMouseover) !== -1 && (
+                            <CustomOverlayMap position={mousePosition}>
+                                <div className="area"
+                                     style={{
+                                         position: "absolute",
+                                         background: "#fff",
+                                         border: "1px",
+                                         borderColor: "#888",
+                                         borderRadius: "3px",
+                                         fontSize: "12px",
+                                         top: "-5px",
+                                         left: "15px",
+                                         padding: "2px",
+                                     }}
+                                >{areasPoly.find((v) => v.isMouseover).name}</div>
+
+                            </CustomOverlayMap>
+                        )}
+                    </Map>
+
+                </div>
 
             </div>
 
         </div>
-
     );
 }

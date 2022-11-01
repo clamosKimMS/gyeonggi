@@ -17,7 +17,7 @@ class TeacherGeneralStatusServiceImplTest {
     @Test
     void getMaxTeacherMaxArea() {
 
-        Integer max = service.getMaxTeacherMaxArea("ke");
+        Integer max = service.getMaxTeacherArea("ke");
         Assertions.assertEquals(3126, max);
     }
 
@@ -33,7 +33,7 @@ class TeacherGeneralStatusServiceImplTest {
     @Test
     void getMaxTeacherMaxEdu() {
 
-        Integer max = service.getMaxTeacherMaxEdu("ke");
+        Integer max = service.getMaxTeacherEdu("ke");
         Assertions.assertEquals(3773, max);
 
     }

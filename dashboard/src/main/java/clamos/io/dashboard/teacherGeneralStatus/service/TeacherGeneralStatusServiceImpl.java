@@ -22,7 +22,7 @@ public class TeacherGeneralStatusServiceImpl implements TeacherGeneralStatusServ
 
     // 행정구역
     @Override
-    public Integer getMaxTeacherMaxArea(String type) {
+    public Integer getMaxTeacherArea(String type) {
 
         List<TeacherGeneralStatusDTO> dtoList = getListTeacherArea(type);
 
@@ -63,7 +63,7 @@ public class TeacherGeneralStatusServiceImpl implements TeacherGeneralStatusServ
 
     // 지역청
     @Override
-    public Integer getMaxTeacherMaxEdu(String type) {
+    public Integer getMaxTeacherEdu(String type) {
 
         List<TeacherGeneralStatusDTO> dtoList = getListTeacherEdu(type);
 
