@@ -470,13 +470,21 @@ export default function SchoolGeneralStatus() {
         })
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
 
-        // iframe
-        const testFunction = (e) => {
-            
+
+        // iframe -- schoolType
+        const schoolTypeReceiver = (e) => {
+            if ( typeof e.data == "object" ) {return;}
             console.log("react 리스너 : ", e.data);
             setType(e.data);
         }
-        window.addEventListener("message", testFunction, false);
+        window.addEventListener("message", schoolTypeReceiver, false);
+
+        // iframe -- mapType
+        const mapTypeReceiver = (e) => {
+            if (typeof e.data == "object") {return;}
+            console.log("react 리스너 : ", e.data);
+        }
+        window.addEventListener("message", mapTypeReceiver, false);
 
     }, [])
 
