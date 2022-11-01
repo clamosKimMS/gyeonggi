@@ -107,7 +107,10 @@ export default function SchoolGeneralStatus() {
     // 지역별 클릭 이벤트
     const HandleAreaClick = (areaName) => {
         console.log("지역명 : " + areaName)
-        // searchPlace(areaName);
+
+        let current = window.parent.document.getElementById('testIframe');
+        console.log(current);
+
         setReactAreaName(areaName);
     }
 
@@ -473,11 +476,13 @@ export default function SchoolGeneralStatus() {
 
         // iframe -- schoolType
         const schoolTypeReceiver = (e) => {
-            if (typeof e.data == "object") {
+            if (e.data.msgCode == "schoolTypeMessage") {
+                console.log("react 리스너 : ", e.data.data);
+                setType(e.data.data);
+            } else {
                 return;
+
             }
-            console.log("react 리스너 : ", e.data);
-            setType(e.data);
         }
         window.addEventListener("message", schoolTypeReceiver, false);
 
@@ -549,7 +554,6 @@ export default function SchoolGeneralStatus() {
                     level={11.3} // 지도의 확대 레벨
 
                     onTileLoaded={map => map.addOverlayMapTypeId(kakao.maps.MapTypeId["TILE_NUMBER"])}
-
                 >
 
                     {areasPoly.map((area, index) => (<Polygon
