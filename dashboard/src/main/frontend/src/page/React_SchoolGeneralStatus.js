@@ -473,7 +473,9 @@ export default function SchoolGeneralStatus() {
 
         // iframe -- schoolType
         const schoolTypeReceiver = (e) => {
-            if ( typeof e.data == "object" ) {return;}
+            if (typeof e.data == "object") {
+                return;
+            }
             console.log("react 리스너 : ", e.data);
             setType(e.data);
         }
@@ -481,10 +483,15 @@ export default function SchoolGeneralStatus() {
 
         // iframe -- mapType
         const mapTypeReceiver = (e) => {
-            if (typeof e.data == "object") {return;}
-            console.log("react 리스너 : ", e.data);
+            // if (typeof e.data == "object") {return;}
+            if (e.data.msgCode == "mapMessage") {
+                console.log("react 리스너 : " + e.data.data);
+                setAreaType(e.data.data);
+            } else {
+                return;
+            }
         }
-        window.addEventListener("message", mapTypeReceiver, false);
+        window.addEventListener("message", mapTypeReceiver)
 
     }, [])
 
