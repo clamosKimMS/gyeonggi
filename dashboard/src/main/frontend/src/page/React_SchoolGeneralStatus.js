@@ -438,7 +438,6 @@ export default function SchoolGeneralStatus() {
     }, [dtoList])
 
     useEffect(() => {
-
         if (areaType == "행정구역") {
             axios.all([axios.get("/gyeonggi/getLocalSchoolTotalCountList/" + type), axios.get('/gyeonggi/getLocalMaxTotal/' + type)])
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
@@ -473,8 +472,9 @@ export default function SchoolGeneralStatus() {
 
         // iframe
         const testFunction = (e) => {
-            console.log("리스너 : ");
-            console.log(e.data);
+            
+            console.log("react 리스너 : ", e.data);
+            setType(e.data);
         }
         window.addEventListener("message", testFunction, false);
 
@@ -484,7 +484,7 @@ export default function SchoolGeneralStatus() {
 
         <div>
 
-            <div className="content">
+            {/*<div className="content">
                 <div className="header">
                     <div className="left">
                         <h2><strong>{areaType}</strong></h2>
@@ -494,9 +494,9 @@ export default function SchoolGeneralStatus() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*/}
 
-            <div className="check-box" style={{zIndex: 1, paddingBottom: "30px"}} onChange={typeChange}>
+            {/*<div className="check-box" style={{zIndex: 1, paddingBottom: "30px"}} onChange={typeChange}>
                 <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 green" name="schoolType"
                                    value="k"/>
                     <p><em></em><span>유치원</span></p></label></div>
@@ -509,21 +509,22 @@ export default function SchoolGeneralStatus() {
                 <div><label><input type="checkbox" defaultChecked={true} className="checkbox1 pink" name="schoolType"
                                    value="h"/>
                     <p><em></em><span>고등학교</span></p></label></div>
-
-            </div>
+            </div>*/}
 
             {/* 행정구역별 */}
             <div className="map-box1">
 
                 <Map // 지도를 표시할 Container
                     center={{
-                        lat: 37.56344698078499,
+                        lat: 37.66344698078499,
                         lng: 127.14015019063882,
                     }}
                     style={{
-                        left: "5px",
-                        width: "540px",
-                        height: "495px",
+                        position: "absolute",
+                        top: "-80px",
+                        left: "60px",
+                        width: "400px",
+                        height: "600px",
                     }}
                     draggable={false}
                     zoomable={false}
