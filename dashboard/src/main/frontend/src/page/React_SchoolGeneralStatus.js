@@ -106,10 +106,8 @@ export default function SchoolGeneralStatus() {
 
     // 지역별 클릭 이벤트
     const HandleAreaClick = (areaName) => {
-        console.log("지역명 : " + areaName)
-
-        let current = window.parent.document.getElementById('testIframe');
-        console.log(current);
+        console.log("react -> html 전송 : " + areaName)
+        window.parent.postMessage(areaName, "*");
 
         setReactAreaName(areaName);
     }
