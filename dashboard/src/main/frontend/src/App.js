@@ -19,7 +19,6 @@ function App() {
                 {/*<Route path={"/totalSchool"} element={<SchoolTotal />} />*/}
                 {/*<Route path={"/test"} element={<Test />} />*/}
 
-
             </Routes>
         </Router>
     );
