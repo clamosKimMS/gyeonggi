@@ -66,7 +66,7 @@ import "../css/front.css"
 
 import {CustomOverlayMap, Map, Polygon} from "react-kakao-maps-sdk";
 
-export default function MultiCulturalFamilyStudent() {
+export default function React_MultiCulturalYearStatus() {
 
     // 행정구역 / 교육청 별 위도경도 배열
     const [areasPoly, setAreasPoly] = useState([]);
@@ -84,23 +84,18 @@ export default function MultiCulturalFamilyStudent() {
 
     // 행정구역 지역청 구분
     const [areaType, setAreaType] = useState("행정구역");
-    const toggleArea = () => {
-        if (areaType == "지역청") {
-            setAreaType("행정구역");
-        } else {
-            setAreaType("지역청");
-        }
-    }
 
     // 연도 선택
     const [year, setYear] = useState("2022");
+
     const yearChange = (e) => {
         setYear(e.target.value);
     }
 
     // 지역별 클릭 이벤트
     const HandleAreaClick = (areaName) => {
-        console.log("지역명 : " + areaName)
+        console.log("react -> html 전송 : " + areaName)
+        window.parent.postMessage(areaName, "*");
     }
 
     /* for Opacity  */
@@ -236,19 +231,18 @@ export default function MultiCulturalFamilyStudent() {
     }, [dtoList])
 
     useEffect(() => {
-
         if (areaType == "행정구역") {
-            axios.all([axios.get('/gyeonggi/getLocalMultiFmMaxList/' + year), axios.get("/gyeonggi/getLocalMultiFmMaxTotal/" + year)])
+            axios.all([axios.get("/gyeonggi/getLocalMultiFmMaxList/" + year), axios.get('/gyeonggi/getLocalMultiFmMaxTotal/' + year)])
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
                     setDtoList(axios_dtoList.data);
                     setTotalCount(axios_totalCount.data);
                 }))
 
         } else if (areaType == "지역청") {
-            axios.all([axios.get('/gyeonggi/getEduMultiFmMaxList/' + year), axios.get("/gyeonggi/getEduMultiFmMaxTotal/" + year)])
+            axios.all([axios.get("/gyeonggi/getEduMultiFmMaxList/" + year), axios.get('/gyeonggi/getEduMultiFmMaxTotal/' + year)])
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
-                    setTotalCount(axios_totalCount.data);
                     setDtoList(axios_dtoList.data);
+                    setTotalCount(axios_totalCount.data);
                 }))
         }
 
@@ -265,48 +259,34 @@ export default function MultiCulturalFamilyStudent() {
             },
         })
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
+
+        const yearReceiver = (e) => {
+            if(e.data.msgCode == "yearMessage"){
+                console.log("react 리스너 : " + e.data.data);
+                setYear(e.data.data);
+            } else {
+                return;
+            }
+        }
+        window.addEventListener("message", yearReceiver, false);
     }, [])
 
     return (
         <div>
-            {console.log(year)}
-            <div className="content">
-                <div className="header">
-                    <div className="left">
-                        <h2><strong>{areaType}</strong></h2>
-                        <div className="tabs" onClick={() => toggleArea()}>
-                            <a href="#" className={(areaType == "행정구역") ? "active" : ""}>행정구역</a>
-                            <a href="#" className={(areaType == "지역청") ? "active" : ""}>지역청</a>
-                        </div>
-                    </div>
-                    <div className="years">
-                        <div className="year">
-                            <span>연도조회 :</span>
-                            <select value={year} onChange={yearChange} className="dropdown">
-                                <option value="2022">2022</option>
-                                <option value="2021">2021</option>
-                                <option value="2020">2020</option>
-                                <option value="2019">2019</option>
-                                <option value="2018">2018</option>
-                                <option value="2017">2017</option>
-                                <option value="2016">2016</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div className="map-box1">
 
                 <Map // 지도를 표시할 Container
                     center={{
-                        lat: 37.56344698078499,
+                        lat: 37.66344698078499,
                         lng: 127.14015019063882,
                     }}
                     style={{
-                        left: "5px",
-                        width: "540px",
-                        height: "495px",
+                        position: "absolute",
+                        top: "-80px",
+                        left: "60px",
+                        width: "400px",
+                        height: "600px",
                     }}
                     draggable={false}
                     zoomable={false}

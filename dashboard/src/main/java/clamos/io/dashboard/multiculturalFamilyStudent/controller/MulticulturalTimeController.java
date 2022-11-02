@@ -38,4 +38,5 @@ public class MulticulturalTimeController {
     public List<MulticulturalTimeDTO> controller_getEduMultiFmMaxList(@PathVariable String year) {
         return service.getListMultiFmEdu(year);
     }
+
 }

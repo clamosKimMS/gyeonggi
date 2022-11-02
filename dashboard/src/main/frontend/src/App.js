@@ -3,10 +3,10 @@ import './App.css';
 import React from "react";
 import SchoolGeneralStatus from "./page/SchoolGeneralStatus";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import MultiCulturalFamilyStudent from "./page/MultiCulturalFamilyStudent";
 import React_SchoolGeneralStatus from "./page/React_SchoolGeneralStatus"
 import React_TeacherStatus from "./page/React_TeacherStatus";
 import React_StudentStatus from "./page/React_StudentStatus";
+import React_MultiCulturalYearStatus from "./page/React_MultiCulturalYearStatus";
 
 function App() {
     return (
@@ -14,8 +14,8 @@ function App() {
             <Routes>
 
                 <Route path={"/schoolGeneralStatus"} element={ <SchoolGeneralStatus/>} />
-                <Route path={"/MultiCulturalFamilyStudent"} element={ <MultiCulturalFamilyStudent/> } />
 
+                <Route path={"/ReactMultiCulturalYearStatus"} element={ <React_MultiCulturalYearStatus/>} />
                 <Route path={"/ReactSchoolGeneralStatus"} element={ <React_SchoolGeneralStatus/> } />
                 <Route path={"/ReactTeacherStatus"} element={ <React_TeacherStatus/>} />
                 <Route path={"/ReactStudentStatus"} element={ <React_StudentStatus/>} />

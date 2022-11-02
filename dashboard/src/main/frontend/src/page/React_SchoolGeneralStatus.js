@@ -102,14 +102,10 @@ export default function SchoolGeneralStatus() {
         }
     }
 
-    const [reactAreaName, setReactAreaName] = useState("");
-
     // 지역별 클릭 이벤트
     const HandleAreaClick = (areaName) => {
         console.log("react -> html 전송 : " + areaName)
         window.parent.postMessage(areaName, "*");
-
-        setReactAreaName(areaName);
     }
 
     // 지도 지역을 클릭했을 때 어느 지역인지 Controller에서 가져옴
