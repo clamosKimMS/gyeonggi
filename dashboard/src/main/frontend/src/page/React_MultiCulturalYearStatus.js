@@ -260,6 +260,7 @@ export default function React_MultiCulturalYearStatus() {
         })
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
 
+        // iframe -- yearType
         const yearReceiver = (e) => {
             if(e.data.msgCode == "yearMessage"){
                 console.log("react 리스너 : " + e.data.data);
@@ -269,6 +270,18 @@ export default function React_MultiCulturalYearStatus() {
             }
         }
         window.addEventListener("message", yearReceiver, false);
+
+        // iframe -- mapType
+        const mapTypeReceiver = (e) => {
+            // if (typeof e.data == "object") {return;}
+            if (e.data.msgCode == "mapMessage") {
+                console.log("react 리스너 : " + e.data.data);
+                setAreaType(e.data.data);
+            } else {
+                return;
+            }
+        }
+        window.addEventListener("message", mapTypeReceiver)
     }, [])
 
     return (
