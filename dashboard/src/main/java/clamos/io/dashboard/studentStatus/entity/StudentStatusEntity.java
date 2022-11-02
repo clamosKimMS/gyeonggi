@@ -2,10 +2,7 @@ package clamos.io.dashboard.studentStatus.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Builder
 @AllArgsConstructor
@@ -19,6 +16,10 @@ public class StudentStatusEntity {
     @Id
     @Column(name = "idx")
     private Integer idx;
+
+    /*@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idx_kms;*/
 
     @Column(name = "admdst")
     private String admdst;

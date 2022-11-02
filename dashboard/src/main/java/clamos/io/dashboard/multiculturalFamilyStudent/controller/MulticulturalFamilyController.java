@@ -23,7 +23,6 @@ public class MulticulturalFamilyController {
         System.out.println("연도 : " + year);
         return service.getMaxMultiFmArea(year);
     }
-
     @GetMapping("/getLocalMultiFmMaxList/{year}")
     public List<MulticulturalFamilyDTO> controller_getLocalMultiFmMaxList(@PathVariable String year) {
         return service.getListMultiFmArea(year);

@@ -13,6 +13,10 @@ import javax.persistence.*;
 @Table(name = "tb_schl_stat_kms")
 public class SchoolEntity {
 
+    /*@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idx_kms;*/
+
     @Id
     @Column(name = "idx")
     private Integer idx;
