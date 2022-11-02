@@ -1,7 +1,7 @@
 package clamos.io.dashboard.multiculturalFamilyStudent.controller;
 
-import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalFamilyDTO;
-import clamos.io.dashboard.multiculturalFamilyStudent.service.MulticulturalFamilyService;
+import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalTimeDTO;
+import clamos.io.dashboard.multiculturalFamilyStudent.service.MulticulturalTimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import java.util.List;
 @Log4j2
 @CrossOrigin(origins = "*")
 @RequestMapping("/gyeonggi")
-public class MulticulturalFamilyController {
+public class MulticulturalTimeController {
 
-    private final MulticulturalFamilyService service;
+    private final MulticulturalTimeService service;
 
     // 행정구역
     @GetMapping("/getLocalMultiFmMaxTotal/{year}")
@@ -24,7 +24,7 @@ public class MulticulturalFamilyController {
         return service.getMaxMultiFmArea(year);
     }
     @GetMapping("/getLocalMultiFmMaxList/{year}")
-    public List<MulticulturalFamilyDTO> controller_getLocalMultiFmMaxList(@PathVariable String year) {
+    public List<MulticulturalTimeDTO> controller_getLocalMultiFmMaxList(@PathVariable String year) {
         return service.getListMultiFmArea(year);
     }
 
@@ -35,7 +35,7 @@ public class MulticulturalFamilyController {
         return service.getMaxMultiFmEdu(year);
     }
     @GetMapping("/getEduMultiFmMaxList/{year}")
-    public List<MulticulturalFamilyDTO> controller_getEduMultiFmMaxList(@PathVariable String year) {
+    public List<MulticulturalTimeDTO> controller_getEduMultiFmMaxList(@PathVariable String year) {
         return service.getListMultiFmEdu(year);
     }
 }

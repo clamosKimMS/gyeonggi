@@ -1,6 +1,6 @@
 package clamos.io.dashboard.multiculturalFamilyStudent.service;
 
-import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalFamilyDTO;
+import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalTimeDTO;
 import clamos.io.dashboard.multiculturalFamilyStudent.entity.QMulticulturalFamilyEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class MulticulturalFamilyServiceImpl implements MulticulturalFamilyService{
+public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
 
     @Autowired
     EntityManager em;
@@ -42,13 +42,13 @@ public class MulticulturalFamilyServiceImpl implements MulticulturalFamilyServic
 
     // 행정구역별 Max List
     @Override
-    public List<MulticulturalFamilyDTO> getListMultiFmArea(String yr) {
+    public List<MulticulturalTimeDTO> getListMultiFmArea(String yr) {
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QMulticulturalFamilyEntity qEntity = QMulticulturalFamilyEntity.multiculturalFamilyEntity;
 
-        List<MulticulturalFamilyDTO> queryResult = queryFactory
-                .select(Projections.bean(MulticulturalFamilyDTO.class,
+        List<MulticulturalTimeDTO> queryResult = queryFactory
+                .select(Projections.bean(MulticulturalTimeDTO.class,
                         qEntity.admdst.as("admdst"), qEntity.mc_stdnt_tot.sum().as("mc_stdnt_tot_sum")))
                 .from(qEntity)
                 .where(qEntity.yr.like(yr)
@@ -66,11 +66,11 @@ public class MulticulturalFamilyServiceImpl implements MulticulturalFamilyServic
     @Override
     public Integer getMaxMultiFmEdu(String yr) {
 
-        List<MulticulturalFamilyDTO> dtoList = getListMultiFmEdu(yr);
+        List<MulticulturalTimeDTO> dtoList = getListMultiFmEdu(yr);
 
         Integer max = 0;
 
-        for (MulticulturalFamilyDTO dto : dtoList) {
+        for (MulticulturalTimeDTO dto : dtoList) {
             max = dto.getMc_stdnt_tot_sum() > max ? dto.getMc_stdnt_tot_sum() : max;
         }
 
@@ -79,7 +79,7 @@ public class MulticulturalFamilyServiceImpl implements MulticulturalFamilyServic
     }
 
     @Override
-    public List<MulticulturalFamilyDTO> getListMultiFmEdu(String yr) {
+    public List<MulticulturalTimeDTO> getListMultiFmEdu(String yr) {
 
         int guri = 0;
         int donducheon = 0;
@@ -91,8 +91,8 @@ public class MulticulturalFamilyServiceImpl implements MulticulturalFamilyServic
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QMulticulturalFamilyEntity qEntity = QMulticulturalFamilyEntity.multiculturalFamilyEntity;
 
-        List<MulticulturalFamilyDTO> queryResult = queryFactory
-                .select(Projections.bean(MulticulturalFamilyDTO.class,
+        List<MulticulturalTimeDTO> queryResult = queryFactory
+                .select(Projections.bean(MulticulturalTimeDTO.class,
                         qEntity.admdst.as("admdst"), qEntity.mc_stdnt_tot.sum().as("mc_stdnt_tot_sum")))
                 .from(qEntity)
                 .where(qEntity.yr.like(yr)

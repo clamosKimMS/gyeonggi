@@ -35,7 +35,6 @@ class StudentServiceImplTest {
         }
     }
 
-
     // 지역청 Test
     @Test
     @DisplayName("지역청 MAX")

@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @ToString
-public class MulticulturalFamilyDTO {
+public class MulticulturalTimeDTO {
 
     private String admdst;
     private Integer mc_stdnt_tot_sum;

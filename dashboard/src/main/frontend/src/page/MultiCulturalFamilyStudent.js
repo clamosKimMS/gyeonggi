@@ -269,6 +269,7 @@ export default function MultiCulturalFamilyStudent() {
 
     return (
         <div>
+            {console.log(year)}
             <div className="content">
                 <div className="header">
                     <div className="left">

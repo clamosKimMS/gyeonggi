@@ -108,12 +108,12 @@ export default function React_TeacherStatus() {
     }
 
     /* for Opacity  */
-    const placeCount = (name) => {
+    const placeCount = (admdst) => {
         if (!dtoList || dtoList?.length < 1) {
             return;
         }
-        let a = dtoList?.filter(data => data?.name === name).map((data) => {
-            return data.total_cnt;
+        let a = dtoList?.filter(data => data?.admdst === admdst).map((data) => {
+            return data.tchr_tot_sum;
         });
         return a[0] / totalCount;
     }
@@ -440,6 +440,9 @@ export default function React_TeacherStatus() {
         }
 
     }, [type, areaType])
+
+    console.log(dtoList);
+    console.log(totalCount);
 
     // GIS 그림
     useEffect(() => {

@@ -440,7 +440,6 @@ export default function SchoolGeneralStatus() {
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
                     setDtoList(axios_dtoList.data);
                     setTotalCount(axios_totalCount.data);
-
                 }))
 
         } else if (areaType == "지역청") {

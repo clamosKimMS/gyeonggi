@@ -108,12 +108,12 @@ export default function React_StudentStatus() {
     }
 
     /* for Opacity  */
-    const placeCount = (name) => {
+    const placeCount = (admdst) => {
         if (!dtoList || dtoList?.length < 1) {
             return;
         }
-        let a = dtoList?.filter(data => data?.name === name).map((data) => {
-            return data.total_cnt;
+        let a = dtoList?.filter(data => data?.admdst === admdst).map((data) => {
+            return data.stdnt_tot_by_grade_sum;
         });
         return a[0] / totalCount;
     }

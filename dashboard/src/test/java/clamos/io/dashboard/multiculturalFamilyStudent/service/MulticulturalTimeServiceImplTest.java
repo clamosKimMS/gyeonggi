@@ -1,8 +1,6 @@
 package clamos.io.dashboard.multiculturalFamilyStudent.service;
 
-import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalFamilyDTO;
-import clamos.io.dashboard.multiculturalFamilyStudent.entity.QMulticulturalFamilyEntity;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalTimeDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -14,14 +12,12 @@ import javax.persistence.EntityManager;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @Log4j2
 @SpringBootTest
-class MulticulturalFamilyServiceImplTest {
+class MulticulturalTimeServiceImplTest {
 
     @Autowired
-    private MulticulturalFamilyService service;
+    private MulticulturalTimeService service;
 
     @Autowired
     EntityManager em;
@@ -45,9 +41,9 @@ class MulticulturalFamilyServiceImplTest {
 
         String yr = "2022";
 
-        List<MulticulturalFamilyDTO> dtoList = service.getListMultiFmArea(yr);
+        List<MulticulturalTimeDTO> dtoList = service.getListMultiFmArea(yr);
 
-        for (MulticulturalFamilyDTO dto : dtoList) {
+        for (MulticulturalTimeDTO dto : dtoList) {
             System.out.println(dto);
         }
 
@@ -75,9 +71,9 @@ class MulticulturalFamilyServiceImplTest {
 
         String yr = "2022";
 
-        List<MulticulturalFamilyDTO> dtoList = service.getListMultiFmEdu(yr);
+        List<MulticulturalTimeDTO> dtoList = service.getListMultiFmEdu(yr);
 
-        for (MulticulturalFamilyDTO dto : dtoList) {
+        for (MulticulturalTimeDTO dto : dtoList) {
             System.out.println(dto);
         }
 

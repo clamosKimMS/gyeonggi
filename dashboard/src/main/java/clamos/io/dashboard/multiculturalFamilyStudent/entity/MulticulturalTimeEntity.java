@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @ToString
 @Table(name = "tb_edu_stat_kms")
-public class MulticulturalFamilyEntity {
+public class MulticulturalTimeEntity {
 
     @Id
     @Column(name = "idx")
