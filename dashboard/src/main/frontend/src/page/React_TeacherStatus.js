@@ -441,9 +441,6 @@ export default function React_TeacherStatus() {
 
     }, [type, areaType])
 
-    console.log(dtoList);
-    console.log(totalCount);
-
     // GIS 그림
     useEffect(() => {
         const tileset = new kakao.maps.Tileset({

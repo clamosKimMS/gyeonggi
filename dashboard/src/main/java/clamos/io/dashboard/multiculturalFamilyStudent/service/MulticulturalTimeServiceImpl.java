@@ -1,7 +1,7 @@
 package clamos.io.dashboard.multiculturalFamilyStudent.service;
 
 import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalTimeDTO;
-import clamos.io.dashboard.multiculturalFamilyStudent.entity.QMulticulturalFamilyEntity;
+import clamos.io.dashboard.multiculturalFamilyStudent.entity.QMulticulturalTimeEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
     public Integer getMaxMultiFmArea(String yr) {
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMulticulturalFamilyEntity qEntity = QMulticulturalFamilyEntity.multiculturalFamilyEntity;
+        QMulticulturalTimeEntity qEntity = QMulticulturalTimeEntity.multiculturalTimeEntity;
 
         Integer queryResult = queryFactory
                 .select(qEntity.mc_stdnt_tot.sum())
@@ -45,7 +45,7 @@ public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
     public List<MulticulturalTimeDTO> getListMultiFmArea(String yr) {
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMulticulturalFamilyEntity qEntity = QMulticulturalFamilyEntity.multiculturalFamilyEntity;
+        QMulticulturalTimeEntity qEntity = QMulticulturalTimeEntity.multiculturalTimeEntity;
 
         List<MulticulturalTimeDTO> queryResult = queryFactory
                 .select(Projections.bean(MulticulturalTimeDTO.class,
@@ -89,7 +89,7 @@ public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
         int uiwang = 0;
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMulticulturalFamilyEntity qEntity = QMulticulturalFamilyEntity.multiculturalFamilyEntity;
+        QMulticulturalTimeEntity qEntity = QMulticulturalTimeEntity.multiculturalTimeEntity;
 
         List<MulticulturalTimeDTO> queryResult = queryFactory
                 .select(Projections.bean(MulticulturalTimeDTO.class,
