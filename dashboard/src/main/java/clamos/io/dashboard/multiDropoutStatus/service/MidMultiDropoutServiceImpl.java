@@ -19,8 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MidMultiDropoutServiceImpl implements MidMultiDropoutService {
 
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
 
     @Override
     public List<MidMultiDropoutDTO> getLocalMidDropoutList(String year) {

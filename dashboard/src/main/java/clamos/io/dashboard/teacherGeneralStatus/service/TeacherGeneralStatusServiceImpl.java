@@ -17,8 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherGeneralStatusServiceImpl implements TeacherGeneralStatusService {
 
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
 
     // 행정구역
     @Override
@@ -223,5 +222,6 @@ public class TeacherGeneralStatusServiceImpl implements TeacherGeneralStatusServ
         return conditionBuilder;
 
     }
+
 
 }

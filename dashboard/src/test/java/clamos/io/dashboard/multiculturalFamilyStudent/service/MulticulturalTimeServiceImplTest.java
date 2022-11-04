@@ -1,6 +1,6 @@
 package clamos.io.dashboard.multiculturalFamilyStudent.service;
 
-import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalTimeDTO;
+import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalFmDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ import java.util.List;
 class MulticulturalTimeServiceImplTest {
 
     @Autowired
-    private MulticulturalTimeService service;
+    private MulticulturalFmService service;
 
     @Autowired
     EntityManager em;
@@ -41,9 +41,9 @@ class MulticulturalTimeServiceImplTest {
 
         String yr = "2022";
 
-        List<MulticulturalTimeDTO> dtoList = service.getListMultiFmArea(yr);
+        List<MulticulturalFmDTO> dtoList = service.getListMultiFmArea(yr);
 
-        for (MulticulturalTimeDTO dto : dtoList) {
+        for (MulticulturalFmDTO dto : dtoList) {
             System.out.println(dto);
         }
 
@@ -71,9 +71,9 @@ class MulticulturalTimeServiceImplTest {
 
         String yr = "2022";
 
-        List<MulticulturalTimeDTO> dtoList = service.getListMultiFmEdu(yr);
+        List<MulticulturalFmDTO> dtoList = service.getListMultiFmEdu(yr);
 
-        for (MulticulturalTimeDTO dto : dtoList) {
+        for (MulticulturalFmDTO dto : dtoList) {
             System.out.println(dto);
         }
 

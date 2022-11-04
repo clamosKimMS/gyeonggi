@@ -19,8 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
 
     @Override
     public Integer getMaxStudentArea(String type) {

@@ -24,8 +24,7 @@ public class SchoolServiceImpl implements SchoolService{
 
     private final SchoolRepository repository;
 
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
 
     @Override
     public List<SchoolDTO> getSchoolCount(String Area) {

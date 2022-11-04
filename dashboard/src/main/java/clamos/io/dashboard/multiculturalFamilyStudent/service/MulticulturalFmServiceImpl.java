@@ -1,7 +1,7 @@
 package clamos.io.dashboard.multiculturalFamilyStudent.service;
 
-import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalTimeDTO;
-import clamos.io.dashboard.multiculturalFamilyStudent.entity.QMulticulturalTimeEntity;
+import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalFmDTO;
+import clamos.io.dashboard.multiculturalFamilyStudent.entity.QMulticulturalFmEntity;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +15,16 @@ import java.util.List;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
+public class MulticulturalFmServiceImpl implements MulticulturalFmService {
 
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
 
     // 행정구역 MAX
     @Override
     public Integer getMaxMultiFmArea(String yr) {
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMulticulturalTimeEntity qEntity = QMulticulturalTimeEntity.multiculturalTimeEntity;
+        QMulticulturalFmEntity qEntity = QMulticulturalFmEntity.multiculturalFmEntity;
 
         Integer queryResult = queryFactory
                 .select(qEntity.mc_stdnt_tot.sum())
@@ -42,13 +41,13 @@ public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
 
     // 행정구역별 Max List
     @Override
-    public List<MulticulturalTimeDTO> getListMultiFmArea(String yr) {
+    public List<MulticulturalFmDTO> getListMultiFmArea(String yr) {
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMulticulturalTimeEntity qEntity = QMulticulturalTimeEntity.multiculturalTimeEntity;
+        QMulticulturalFmEntity qEntity = QMulticulturalFmEntity.multiculturalFmEntity;
 
-        List<MulticulturalTimeDTO> queryResult = queryFactory
-                .select(Projections.bean(MulticulturalTimeDTO.class,
+        List<MulticulturalFmDTO> queryResult = queryFactory
+                .select(Projections.bean(MulticulturalFmDTO.class,
                         qEntity.admdst.as("admdst"), qEntity.mc_stdnt_tot.sum().as("mc_stdnt_tot_sum")))
                 .from(qEntity)
                 .where(qEntity.yr.like(yr)
@@ -66,11 +65,11 @@ public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
     @Override
     public Integer getMaxMultiFmEdu(String yr) {
 
-        List<MulticulturalTimeDTO> dtoList = getListMultiFmEdu(yr);
+        List<MulticulturalFmDTO> dtoList = getListMultiFmEdu(yr);
 
         Integer max = 0;
 
-        for (MulticulturalTimeDTO dto : dtoList) {
+        for (MulticulturalFmDTO dto : dtoList) {
             max = dto.getMc_stdnt_tot_sum() > max ? dto.getMc_stdnt_tot_sum() : max;
         }
 
@@ -79,7 +78,7 @@ public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
     }
 
     @Override
-    public List<MulticulturalTimeDTO> getListMultiFmEdu(String yr) {
+    public List<MulticulturalFmDTO> getListMultiFmEdu(String yr) {
 
         int guri = 0;
         int donducheon = 0;
@@ -89,10 +88,10 @@ public class MulticulturalTimeServiceImpl implements MulticulturalTimeService {
         int uiwang = 0;
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMulticulturalTimeEntity qEntity = QMulticulturalTimeEntity.multiculturalTimeEntity;
+        QMulticulturalFmEntity qEntity = QMulticulturalFmEntity.multiculturalFmEntity;
 
-        List<MulticulturalTimeDTO> queryResult = queryFactory
-                .select(Projections.bean(MulticulturalTimeDTO.class,
+        List<MulticulturalFmDTO> queryResult = queryFactory
+                .select(Projections.bean(MulticulturalFmDTO.class,
                         qEntity.admdst.as("admdst"), qEntity.mc_stdnt_tot.sum().as("mc_stdnt_tot_sum")))
                 .from(qEntity)
                 .where(qEntity.yr.like(yr)

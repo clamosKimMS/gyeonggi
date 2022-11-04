@@ -19,8 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HighMultiDropoutServiceImpl implements HighMultiDropoutService {
 
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
 
     @Override
     public List<HighMultiDropoutDTO> getLocalHighDropoutList(String year) {

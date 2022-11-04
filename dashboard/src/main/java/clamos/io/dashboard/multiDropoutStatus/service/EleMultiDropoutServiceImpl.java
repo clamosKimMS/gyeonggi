@@ -2,7 +2,6 @@ package clamos.io.dashboard.multiDropoutStatus.service;
 
 import clamos.io.dashboard.multiDropoutStatus.dto.EleMultiDropoutDTO;
 import clamos.io.dashboard.multiDropoutStatus.entity.QEleMultiDropoutEntity;
-import clamos.io.dashboard.multiculturalFamilyStudent.dto.MulticulturalTimeDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EleMultiDropoutServiceImpl implements EleMultiDropoutService{
 
-    @Autowired
-    EntityManager em;
+    private final EntityManager em;
 
     @Override
     public List<EleMultiDropoutDTO> getLocalElementDropoutList(String year) {

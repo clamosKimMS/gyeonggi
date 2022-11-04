@@ -66,7 +66,7 @@ import "../css/front.css"
 
 import {CustomOverlayMap, Map, Polygon} from "react-kakao-maps-sdk";
 
-export default function React_MultiDropoutStatus() {
+export default function React_MultiCultureTime() {
 
     // 행정구역 / 교육청 별 위도경도 배열
     const [areasPoly, setAreasPoly] = useState([]);
@@ -85,13 +85,6 @@ export default function React_MultiDropoutStatus() {
     // 행정구역 지역청 구분
     const [areaType, setAreaType] = useState("행정구역");
 
-    // 연도 선택
-    const [year, setYear] = useState("2020");
-
-    const yearChange = (e) => {
-        setYear(e.target.value);
-    }
-
     // 지역별 클릭 이벤트
     const HandleAreaClick = (areaName) => {
         console.log("react -> html 전송 : " + areaName)
@@ -103,8 +96,8 @@ export default function React_MultiDropoutStatus() {
         if (!dtoList || dtoList?.length < 1) {
             return;
         }
-        let a = dtoList?.filter(data => data?.site_nm === name).map((data) => {
-            return data.ppltn_sum_total;
+        let a = dtoList?.filter(data => data?.sigun === name).map((data) => {
+            return data.multi_culture_stu_cnt_sum;
         });
         return a[0] / totalCount;
     }
@@ -232,21 +225,21 @@ export default function React_MultiDropoutStatus() {
 
     useEffect(() => {
         if (areaType == "행정구역") {
-            axios.all([axios.get("/gyeonggi/getLocalMultiDropoutList/" + year), axios.get('/gyeonggi/getLocalMultiDropoutTotal/' + year)])
+            axios.all([axios.get("/gyeonggi/getLocalMultiTimeList"), axios.get('/gyeonggi/getLocalMultiTimeMax')])
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
                     setDtoList(axios_dtoList.data);
                     setTotalCount(axios_totalCount.data);
                 }))
 
         } else if (areaType == "지역청") {
-            axios.all([axios.get("/gyeonggi/getEduMultiDropoutList/" + year), axios.get('/gyeonggi/getEduMultiDropoutTotal/' + year)])
+            axios.all([axios.get("/gyeonggi/getEduMultiTimeList"), axios.get('/gyeonggi/getEduMultiTimeMax')])
                 .then(axios.spread((axios_dtoList, axios_totalCount) => {
                     setDtoList(axios_dtoList.data);
                     setTotalCount(axios_totalCount.data);
                 }))
         }
 
-    }, [year, areaType])
+    }, [areaType])
 
     // GIS 그림
     useEffect(() => {
@@ -260,17 +253,6 @@ export default function React_MultiDropoutStatus() {
         })
         kakao.maps.Tileset.add("TILE_NUMBER", tileset)
 
-        // iframe -- yearType
-        const yearReceiver = (e) => {
-            if (e.data.msgCode == "yearMessage") {
-                console.log("react 리스너 : " + e.data.data);
-                setYear(e.data.data);
-            } else {
-                return;
-            }
-        }
-        window.addEventListener("message", yearReceiver, false);
-
         // iframe -- mapType
         const mapTypeReceiver = (e) => {
             // if (typeof e.data == "object") {return;}
@@ -282,13 +264,11 @@ export default function React_MultiDropoutStatus() {
             }
         }
         window.addEventListener("message", mapTypeReceiver)
-    }, [])
 
+    }, [])
 
     return (
         <div>
-
-
             <div className="map-box1">
 
                 <Map // 지도를 표시할 Container
@@ -374,7 +354,6 @@ export default function React_MultiDropoutStatus() {
                 </Map>
 
             </div>
-
         </div>
     )
 }

@@ -17,14 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TotalMultiDropoutServiceImpl implements TotalMultiDropoutService{
 
-    @Autowired
-    private EleMultiDropoutService eleService;
+    private final  EleMultiDropoutService eleService;
 
-    @Autowired
-    private MidMultiDropoutService midService;
+    private final  MidMultiDropoutService midService;
 
-    @Autowired
-    private HighMultiDropoutService highService;
+    private final  HighMultiDropoutService highService;
 
     @Override
     public List<TotalMultiDropoutDTO> getLocalTotalDropoutList(String year) {

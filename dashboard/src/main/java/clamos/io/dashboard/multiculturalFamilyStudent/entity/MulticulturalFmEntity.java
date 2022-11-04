@@ -2,7 +2,10 @@ package clamos.io.dashboard.multiculturalFamilyStudent.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Builder
 @AllArgsConstructor
@@ -11,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @ToString
 @Table(name = "tb_edu_stat_kms")
-public class MulticulturalTimeEntity {
+public class MulticulturalFmEntity {
 
     @Id
     @Column(name = "idx")
