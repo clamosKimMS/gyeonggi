@@ -23,6 +23,9 @@ export default function GIS_SocialWelfare() {
     }
   }
 
+  const [isAllChecked, setAllChecked] = useState(false);
+  const [checkedState, setCheckedState] = useState(new Array(3).fill(false));
+
   // 체크메뉴 선택
   const checkedChange = () => {
     const query = 'input[name="checkedMenu"]:checked';
@@ -31,7 +34,7 @@ export default function GIS_SocialWelfare() {
     selectEls.forEach((el => {
       result += el.value + ',';
     }))
-
+    console.log(result);
     setCheckedMenu(result);
   }
 
@@ -39,12 +42,33 @@ export default function GIS_SocialWelfare() {
     setSelectedAreaName(e.target.value)
   }
 
+  const handleAllCheck = () => {
+    setAllChecked((prev) => !prev);
+    let array = new Array(3).fill(!isAllChecked);
+    setCheckedState(array);
+  };
+
+  const handleMonoCheck = (position: number) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+        index === position ? !item : item
+    );
+    setCheckedState(updatedCheckedState);
+    const checkedLength = updatedCheckedState.reduce((sum, currentState) => {
+      if (currentState === true) {
+        return sum + 1;
+      }
+      return sum;
+    }, 0);
+    setAllChecked(checkedLength === updatedCheckedState.length);
+  };
+
   useEffect(() => {
-    console.log(checkedMenu)
-    console.log(checkedState)
-    console.log(isAllChecked)
+    // console.log("checkMenu : " + checkedMenu)
+    /*console.log("checkedState : " + checkedState)
+    console.log("isAllChecked : " + isAllChecked)*/
   }, [checkedMenu])
 
+  // 지역명
   useEffect(() => {
     if (areaType == "행정구역") {
       setAreaName(
@@ -63,35 +87,9 @@ export default function GIS_SocialWelfare() {
     }
 
     // 구역타입 바꿀 때 연천군으로 초기화
-   setSelectedAreaName("연천군");
+    setSelectedAreaName("연천군");
 
   }, [areaType])
-
-  /*********************************************************************************************/
-  const [isAllChecked, setAllChecked] = useState(false);
-  const [checkedState, setCheckedState] = useState(new Array(3).fill(false));
-
-  const handleAllCheck = () => {
-    setAllChecked((prev) => !prev);
-    let array = new Array(3).fill(!isAllChecked);
-    setCheckedState(array);
-  };
-
-
-  const handleMonoCheck = (position: number) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-        index === position ? !item : item
-    );
-    setCheckedState(updatedCheckedState);
-    const checkedLength = updatedCheckedState.reduce((sum, currentState) => {
-      if (currentState === true) {
-        return sum + 1;
-      }
-      return sum;
-    }, 0);
-    setAllChecked(checkedLength === updatedCheckedState.length);
-  };
-  /*********************************************************************************************/
 
   return (
       <div>
