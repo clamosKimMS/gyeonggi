@@ -1,4 +1,10 @@
 import React, {useEffect, useState} from "react";
+import {
+  CustomOverlayMap,
+  Map,
+  MapMarker,
+  MarkerClusterer
+} from "react-kakao-maps-sdk";
 
 export default function GIS_SocialWelfare() {
 
@@ -26,6 +32,11 @@ export default function GIS_SocialWelfare() {
   // 사회복지시설 동시체크 / 개별체크
   const [isAllChecked, setAllChecked] = useState(false);
   const [checkedState, setCheckedState] = useState(new Array(3).fill(false));
+
+  // 지도위에 마커 그림
+  const [info, setInfo] = useState()
+  const [markers, setMarkers] = useState([])
+  const [map, setMap] = useState()
 
   // 체크메뉴 선택
   const checkedChange = () => {
@@ -340,59 +351,70 @@ export default function GIS_SocialWelfare() {
                     <div className="map-box2">
 
                       {/* 지도 영역 */}
-                      {/*<div className="map-area"><img
-                          src="img/common/tmp_map.png"
-                          style="width:100%; height: 100%; object-fit: cover;"
-                          alt="임시 이미지"></div>
+                      <Map
+                          center={{
+                            // 지도의 중심좌표
+                            // 위도경도 (3차원)
+                            lat: 37.16248629785744,
+                            lng: 127.42286416497653,
 
-                      <div className="marker " style="left: 300px; top:300px;">
-                        <i className="i1"></i>
-                        <div className="layer">
-                          <h4>수원시 초등학교</h4>
-                          <div className="txt">
-                            경기도 수원시 수원구 7<br>
-                            전화번호: 032-256-4568<br>
-                            <a href="#"
-                               target="_blank">www.lssdfvsdagadfgd.com</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="marker" style="left: 500px; top:200px;">
-                        <i className="i2"></i>
-                        <div className="layer">
-                          <h4>수원시 초등학교</h4>
-                          <div className="txt">
-                            경기도 수원시 수원구 7<br>
-                            전화번호: 032-256-4568<br>
-                            <a href="#"
-                               target="_blank">www.lssdfvsdagadfgd.com</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="marker" style="left: 500px; top:400px;">
-                        <i className="i2"></i>
-                        <div className="layer">
-                          <h4>수원시 초등학교</h4>
-                          <div className="txt">
-                            경기도 수원시 수원구 7<br>
-                            전화번호: 032-256-4568<br>
-                            <a href="#"
-                               target="_blank">www.lssdfvsdagadfgd.com</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="marker" style="left: 350px; top:500px;">
-                        <i className="i3"></i>
-                        <div className="layer">
-                          <h4>수원시 초등학교</h4>
-                          <div className="txt">
-                            경기도 수원시 수원구 7<br>
-                            전화번호: 032-256-4568<br>
-                            <a href="#"
-                               target="_blank">www.lssdfvsdagadfgd.com</a>
-                          </div>
-                        </div>
-                      </div>*/}
+                            // 투영좌표계 (2차원)
+                            // x:371488.59014800000,
+                            // y:185884.42428200000,
+
+                          }}
+                          style={{
+                            // 지도의 크기
+                            width: "100%",
+                            height: "100vh",
+
+                          }}
+                          className={"map-view"}
+                          level={11} // 지도의 확대 레벨
+                          maxLevel={11}
+                          onCreate={setMap}
+                          id={"kakaoMap"}
+                      >
+
+                        <MarkerClusterer
+                            averageCenter={true}
+                            minLevel={10}
+                        >
+
+                          {/* 맵 마커 */}
+                          {markers.map((marker) => (
+                              <MapMarker
+                                  key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+                                  position={marker.position}
+                                  onClick={() => setInfo(marker)}
+                              >
+                                {/*클릭한 마커*/}
+                                {/*{info && info.content === marker.content && (
+                                <div style={{color: "#00abff"}}>{marker.content}</div>
+                            )}*/}
+
+                              </MapMarker>
+                          ))}
+                        </MarkerClusterer>
+
+                        {markers.map((marker) => (
+                            <CustomOverlayMap
+                                position={{lat: marker.position.lat, lng: marker.position.lng}}
+                                yAnchor={1}
+                            >
+                              <div className="customoverlay">
+                                <a
+                                    // href="https://map.kakao.com/link/map/11394059"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                  <span className="title">{marker.content}</span>
+                                </a>
+                              </div>
+
+                            </CustomOverlayMap>
+                        ))}
+                      </Map>
                     </div>
                   </div>
                   <div className="right">
