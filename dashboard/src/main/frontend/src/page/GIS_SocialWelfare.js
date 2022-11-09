@@ -23,13 +23,14 @@ export default function GIS_SocialWelfare() {
     }
   }
 
+  // 사회복지시설 동시체크 / 개별체크
   const [isAllChecked, setAllChecked] = useState(false);
   const [checkedState, setCheckedState] = useState(new Array(3).fill(false));
 
   // 체크메뉴 선택
   const checkedChange = () => {
 
-    console.log("checkedChange isAllChecked : " + isAllChecked)
+    // console.log("checkedChange isAllChecked : " + isAllChecked)
 
     const query = 'input[name="checkedMenu"]:checked';
     const selectEls = document.querySelectorAll(query);
@@ -38,19 +39,24 @@ export default function GIS_SocialWelfare() {
       result += el.value + ',';
     }))
     setCheckedMenu(result);
-    console.log("result : " + result);
+
+    // console.log("result : " + result);
+
   }
 
+  // 구역 선택
   const selectedButtonClick = (e) => {
     setSelectedAreaName(e.target.value)
   }
 
+  // 사회복지시설 클릭
   const handleAllCheck = () => {
     setAllChecked((prev) => !prev);
     let array = new Array(3).fill(!isAllChecked);
     setCheckedState(array);
   };
 
+  // 사회복지시설_서브메뉴 클릭
   const handleMonoCheck = (position: number) => {
     const updatedCheckedState = checkedState.map((item, index) =>
         index === position ? !item : item
@@ -63,18 +69,28 @@ export default function GIS_SocialWelfare() {
       return sum;
     }, 0);
     setAllChecked(checkedLength === updatedCheckedState.length);
-
-    console.log("handleMonoCheck checkState : " + checkedState)
+    // console.log("handleMonoCheck checkState : " + checkedState)
   };
 
+  // 서브메뉴 클릭했을 때 result 값 달리하기 위함
   useEffect( () => {
-    console.log("useEffect checkedState : " + checkedState);
-  }, checkedState)
+    if (checkedState[0] == true || checkedState[1] == true || checkedState[2] == true || isAllChecked == false){
+      const query = 'input[name="checkedMenu"]:checked';
+      const selectEls = document.querySelectorAll(query);
+      let result = '';
+      selectEls.forEach((el => {
+        result += el.value + ',';
+      }))
+      setCheckedMenu(result);
+      // console.log("result2 : " + result);
+    }
+  }, [checkedState])
 
+  // 체크된 메뉴 표기
   useEffect(() => {
-    // console.log("checkMenu : " + checkedMenu)
-    /*console.log("checkedState : " + checkedState)
-    console.log("isAllChecked : " + isAllChecked)*/
+
+    console.log(checkedMenu);
+
   }, [checkedMenu])
 
   // 지역명
