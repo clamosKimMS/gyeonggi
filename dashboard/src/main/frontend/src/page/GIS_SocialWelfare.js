@@ -1,3 +1,5 @@
+/*global kakao*/
+
 import React, {useEffect, useState} from "react";
 import {
   CustomOverlayMap,
@@ -38,6 +40,17 @@ export default function GIS_SocialWelfare() {
   const [markers, setMarkers] = useState([])
   const [map, setMap] = useState()
 
+  // 위도경도 배열 저장
+  const [latLong, setLatLong] = useState([]);
+
+  // DropDown 클릭한 지역 위도 경도 이동
+  const [searchLatLong, setSearchLatLong] = useState({
+    center : { lat: 37.16248629785744,  lng: 127.42286416497653 },
+  });
+
+  // 맵 확대 레벨 변환
+  const [mapLevel, setMapLevel] = useState(11);
+
   // 체크메뉴 선택
   const checkedChange = () => {
 
@@ -57,8 +70,24 @@ export default function GIS_SocialWelfare() {
 
   // 구역 선택
   const selectedButtonClick = (e) => {
-    setSelectedAreaName(e.target.value)
-  }
+    setSelectedAreaName(e.target.value);
+
+    latLong.map((item) => {
+
+      if (e.target.value == item.name) {
+        setSearchLatLong({
+          center : {
+            lat: item.latitude,
+            lng: item.longitude
+          }
+        })
+      }
+
+      setMapLevel(9);
+
+    })
+
+  };
 
   // 사회복지시설 클릭
   const handleAllCheck = () => {
@@ -125,10 +154,302 @@ export default function GIS_SocialWelfare() {
     // 구역타입 바꿀 때 연천군으로 초기화
     setSelectedAreaName("연천군");
 
+    if (areaType == "행정구역") {
+      setLatLong([
+        {
+          name: "연천군",
+          latitude : 38.096738,
+          longitude : 127.074755
+        },
+        {
+          name: "포천시",
+          latitude : 37.894867,
+          longitude : 127.2002404
+        },
+        {
+          name: "가평군",
+          latitude : 37.831508,
+          longitude : 127.509541
+        },
+        {
+          name: "양평군",
+          latitude : 37.491791,
+          longitude : 127.487597
+        },
+        {
+          name: "여주시", // 부정확
+          latitude : 37.334799,
+          longitude : 127.647938
+        },
+        {
+          name: "이천시",
+          latitude : 37.272342,
+          longitude : 127.435034
+        },
+        {
+          name: "용인시",
+          latitude : 37.2412522,
+          longitude : 127.1774916
+        },
+        {
+          name: "안성시",
+          latitude : 37.0080546,
+          longitude : 127.2797732
+        },
+        {
+          name: "평택시",
+          latitude : 36.9923537,
+          longitude : 127.1126947
+        },
+        {
+          name: "화성시",
+          latitude : 37.199565,
+          longitude : 126.831405
+        },
+        {
+          name: "안산시",
+          latitude : 37.3219123,
+          longitude : 126.8308176
+        },
+        {
+          name: "안양시",
+          latitude : 37.3942905,
+          longitude : 126.9567534
+        },
+        {
+          name: "군포시",
+          latitude : 37.361523,
+          longitude : 126.935338
+        },
+        {
+          name: "과천시",
+          latitude : 37.4292013,
+          longitude : 126.987675
+        },
+        {
+          name: "의왕시",
+          latitude : 37.3448869,
+          longitude : 126.9682786
+        },
+        {
+          name: "수원시",
+          latitude : 37.263476,
+          longitude : 127.028646
+        },
+        {
+          name: "구리시",
+          latitude : 37.594266,
+          longitude : 127.129632
+        },
+        {
+          name: "성남시",
+          latitude : 37.4200267,
+          longitude : 127.1267772
+        },
+        {
+          name: "광주시",
+          latitude : 37.4294306,
+          longitude : 127.2550476
+        },
+        {
+          name: "하남시",
+          latitude : 37.5393014,
+          longitude : 127.2148742
+        },
+        {
+          name: "광명시",
+          latitude : 37.4786176,
+          longitude : 126.8646504
+        },
+        {
+          name: "부천시",
+          latitude : 37.5035917,
+          longitude : 126.766
+        },
+        {
+          name: "시흥시",
+          latitude : 37.380177,
+          longitude : 126.802934
+        },
+        {
+          name: "오산시",
+          latitude : 37.149887,
+          longitude : 127.077462
+        },
+        {
+          name: "동두천시",
+          latitude : 37.903662,
+          longitude : 127.060671
+        },
+        {
+          name: "파주시",
+          latitude : 37.760186,
+          longitude : 126.779883
+        },
+        {
+          name: "양주시",
+          latitude : 37.785329,
+          longitude : 127.045847
+        },
+        {
+          name: "김포시",
+          latitude : 37.61535,
+          longitude : 126.715544
+        },
+        {
+          name: "고양시",
+          latitude : 37.6583981,
+          longitude : 126.8319831
+        },
+        {
+          name: "의정부시",
+          latitude : 37.738083,
+          longitude : 127.033753
+        },
+        {
+          name: "남양주시",
+          latitude : 37.635985,
+          longitude : 127.216467
+        }
+      ])
+    }
+    else if (areaType == "지역청") {
+      setLatLong([
+        {
+          name: "연천군",
+          latitude : 38.096738,
+          longitude : 127.074755
+        },
+        {
+          name: "포천시",
+          latitude : 37.894867,
+          longitude : 127.2002404
+        },
+        {
+          name: "가평군",
+          latitude : 37.831508,
+          longitude : 127.509541
+        },
+        {
+          name: "양평군",
+          latitude : 37.491791,
+          longitude : 127.487597
+        },
+        {
+          name: "여주시", // 부정확
+          latitude : 37.334799,
+          longitude : 127.647938
+        },
+        {
+          name: "이천시",
+          latitude : 37.272342,
+          longitude : 127.435034
+        },
+        {
+          name: "용인시",
+          latitude : 37.2412522,
+          longitude : 127.1774916
+        },
+        {
+          name: "안성시",
+          latitude : 37.0080546,
+          longitude : 127.2797732
+        },
+        {
+          name: "평택시",
+          latitude : 36.9923537,
+          longitude : 127.1126947
+        },
+        {
+          name: "화성시-오산시",
+          latitude : 37.199565,
+          longitude : 126.831405
+        },
+        {
+          name: "안산시",
+          latitude : 37.3219123,
+          longitude : 126.8308176
+        },
+        {
+          name: "과천시-안양시",
+          latitude : 37.4292013,
+          longitude : 126.987675
+        },
+        {
+          name: "군포시-의왕시",
+          latitude : 37.361523,
+          longitude : 126.935338
+        },
+        {
+          name: "수원시",
+          latitude : 37.263476,
+          longitude : 127.028646
+        },
+        {
+          name: "남양주시-구리시",
+          latitude : 37.635985,
+          longitude : 127.216467
+        },
+        {
+          name: "성남시",
+          latitude : 37.4200267,
+          longitude : 127.1267772
+        },
+        {
+          name: "광주시-하남시",
+          latitude : 37.4294306,
+          longitude : 127.2550476
+        },
+        {
+          name: "광명시",
+          latitude : 37.4786176,
+          longitude : 126.8646504
+        },
+        {
+          name: "부천시",
+          latitude : 37.5035917,
+          longitude : 126.766
+        },
+        {
+          name: "시흥시",
+          latitude : 37.380177,
+          longitude : 126.802934
+        },
+        {
+          name: "양주시-동두천시",
+          latitude : 37.785329,
+          longitude : 127.045847
+        },
+        {
+          name: "파주시",
+          latitude : 37.760186,
+          longitude : 126.779883
+        },
+        {
+          name: "김포시",
+          latitude : 37.61535,
+          longitude : 126.715544
+        },
+        {
+          name: "고양시",
+          latitude : 37.6583981,
+          longitude : 126.8319831
+        },
+        {
+          name: "의정부시",
+          latitude : 37.738083,
+          longitude : 127.033753
+        },
+      ])
+    }
+
+
   }, [areaType])
 
   return (
       <div>
+
+        {console.log(searchLatLong)}
 
         <div id="wrap">
           <div className="container">
@@ -148,7 +469,7 @@ export default function GIS_SocialWelfare() {
                     {selectedAreaName}
                   </button>
                   <div className="dropdown-menu">
-                    <ul style={{overflow:"scroll", height: "300px"}}>
+                    <ul style={{overflow: "scroll", height: "300px"}}>
 
                       {areaName.map((area, index) => (
                           <li key={index}>
@@ -220,7 +541,9 @@ export default function GIS_SocialWelfare() {
 
                           <li className="active">
                             <label><input type="checkbox"
-                                          className="checkbox-nav" checked={isAllChecked} onChange={() => handleAllCheck()}/><p>
+                                          className="checkbox-nav"
+                                          checked={isAllChecked}
+                                          onChange={() => handleAllCheck()}/><p>
                               <em></em><span>사회복지시설</span></p></label>
                             <a href="#" className="btn-dep3 flip"></a>
                             <ul className="dep3" style={{display: "block"}}>
@@ -228,19 +551,28 @@ export default function GIS_SocialWelfare() {
                               <li><label><input type="checkbox"
                                                 className="checkbox-nav"
                                                 name="checkedMenu"
-                                                value="youthWelfare" checked={checkedState[0]} onChange={() => handleMonoCheck(0)}/><p>
+                                                value="youthWelfare"
+                                                checked={checkedState[0]}
+                                                onChange={() => handleMonoCheck(
+                                                    0)}/><p>
                                 <em></em><span>청소년복지시설</span></p></label></li>
 
                               <li><label><input type="checkbox"
                                                 className="checkbox-nav"
                                                 name="checkedMenu"
-                                                value="mentalWelfare" checked={checkedState[1]} onChange={() => handleMonoCheck(1)}/><p>
+                                                value="mentalWelfare"
+                                                checked={checkedState[1]}
+                                                onChange={() => handleMonoCheck(
+                                                    1)}/><p>
                                 <em></em><span>정신보건</span></p></label></li>
 
                               <li><label><input type="checkbox"
                                                 className="checkbox-nav"
                                                 name="checkedMenu"
-                                                value="singleParent" checked={checkedState[2]} onChange={() => handleMonoCheck(2)}/><p>
+                                                value="singleParent"
+                                                checked={checkedState[2]}
+                                                onChange={() => handleMonoCheck(
+                                                    2)}/><p>
                                 <em></em><span>한부모가족</span></p></label></li>
 
                             </ul>
@@ -352,7 +684,7 @@ export default function GIS_SocialWelfare() {
 
                       {/* 지도 영역 */}
                       <Map
-                          center={{
+                          /*center={{
                             // 지도의 중심좌표
                             // 위도경도 (3차원)
                             lat: 37.16248629785744,
@@ -362,7 +694,9 @@ export default function GIS_SocialWelfare() {
                             // x:371488.59014800000,
                             // y:185884.42428200000,
 
-                          }}
+                          }}*/
+                          center={searchLatLong.center}
+                          isPanto={false}
                           style={{
                             // 지도의 크기
                             width: "100%",
@@ -370,36 +704,39 @@ export default function GIS_SocialWelfare() {
 
                           }}
                           className={"map-view"}
-                          level={11} // 지도의 확대 레벨
-                          maxLevel={11}
+                          level={mapLevel} // 지도의 확대 레벨
+                          // maxLevel={11}
                           onCreate={setMap}
                           id={"kakaoMap"}
                       >
 
-                        <MarkerClusterer
+                        {/*<MarkerClusterer
                             averageCenter={true}
                             minLevel={10}
                         >
 
-                          {/* 맵 마커 */}
+                           맵 마커
                           {markers.map((marker) => (
                               <MapMarker
                                   key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
                                   position={marker.position}
                                   onClick={() => setInfo(marker)}
                               >
-                                {/*클릭한 마커*/}
-                                {/*{info && info.content === marker.content && (
+                                클릭한 마커
+                                {info && info.content === marker.content && (
                                 <div style={{color: "#00abff"}}>{marker.content}</div>
-                            )}*/}
+                            )}
 
                               </MapMarker>
                           ))}
-                        </MarkerClusterer>
+                        </MarkerClusterer>*/}
 
                         {markers.map((marker) => (
                             <CustomOverlayMap
-                                position={{lat: marker.position.lat, lng: marker.position.lng}}
+                                position={{
+                                  lat: marker.position.lat,
+                                  lng: marker.position.lng
+                                }}
                                 yAnchor={1}
                             >
                               <div className="customoverlay">
@@ -408,7 +745,8 @@ export default function GIS_SocialWelfare() {
                                     target="_blank"
                                     rel="noreferrer"
                                 >
-                                  <span className="title">{marker.content}</span>
+                                  <span
+                                      className="title">{marker.content}</span>
                                 </a>
                               </div>
 
