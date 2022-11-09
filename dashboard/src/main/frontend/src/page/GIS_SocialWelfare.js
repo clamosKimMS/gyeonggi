@@ -28,14 +28,17 @@ export default function GIS_SocialWelfare() {
 
   // 체크메뉴 선택
   const checkedChange = () => {
+
+    console.log("checkedChange isAllChecked : " + isAllChecked)
+
     const query = 'input[name="checkedMenu"]:checked';
     const selectEls = document.querySelectorAll(query);
     let result = '';
     selectEls.forEach((el => {
       result += el.value + ',';
     }))
-    console.log(result);
     setCheckedMenu(result);
+    console.log("result : " + result);
   }
 
   const selectedButtonClick = (e) => {
@@ -60,7 +63,13 @@ export default function GIS_SocialWelfare() {
       return sum;
     }, 0);
     setAllChecked(checkedLength === updatedCheckedState.length);
+
+    console.log("handleMonoCheck checkState : " + checkedState)
   };
+
+  useEffect( () => {
+    console.log("useEffect checkedState : " + checkedState);
+  }, checkedState)
 
   useEffect(() => {
     // console.log("checkMenu : " + checkedMenu)
@@ -93,7 +102,6 @@ export default function GIS_SocialWelfare() {
 
   return (
       <div>
-
 
         <div id="wrap">
           <div className="container">
