@@ -449,7 +449,7 @@ export default function GIS_SocialWelfare() {
   return (
       <div>
 
-        {console.log(searchLatLong)}
+        {/*{console.log(searchLatLong)}*/}
 
         <div id="wrap">
           <div className="container">

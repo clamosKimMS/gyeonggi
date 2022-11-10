@@ -16,25 +16,21 @@ import lombok.ToString;
 @Getter
 @Entity
 @ToString
-@Table(name = "tb_etl_youngboyandgirswelfare")
-public class YoungFareEntity {
+@Table(name = "tb_etl_mindhealthinstitution")
+public class MindHealEntity {
 
      // 전화번호
      @Id
-     @Column(name = "contct_no")
-     private String contct_no;
+     @Column(name = "reprsnt_telno")
+     private String reprsnt_telno;
 
      // 시설명
-     @Column(name = "faclt_nm")
-     private String faclt_nm;
+     @Column(name = "inst_nm")
+     private String inst_nm;
 
      // 도로명 주소
      @Column(name = "refine_roadnm_addr")
      private String refine_roadnm_addr;
-
-     // 지번 주소
-     @Column(name = "refine_lotno_addr")
-     private String refine_lotno_addr;
 
      // 위도
      @Column(name = "refine_wgs84_lat")
@@ -48,8 +44,8 @@ public class YoungFareEntity {
      @Column(name = "sigun_nm")
      private String sigun_nm;
 
-     // 수용인원
-     @Column(name = "aceptnc_psn_capa")
-     private Integer aceptnc_psn_capa;
+     // 시설구분명
+     @Column(name = "faclt_div_nm")
+     private String faclt_div_nm;
 
 }
